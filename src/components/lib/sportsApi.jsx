@@ -79,14 +79,16 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     onProgress?.(`Fetching ${league} teams...`);
     const teams = await fetchTeams(league);
     if (!teams.length) continue;
-    const selected = shuffle(teams).slice(0, config.teamsPerLeague);
+    // Use all teams for harder difficulties to widen the obscure player pool
+    const maxTeams = difficulty === 'easy' ? 6 : difficulty === 'medium' ? 10 : teams.length;
+    const selected = shuffle(teams).slice(0, maxTeams);
 
     onProgress?.(`Loading ${league} rosters...`);
     const rosters = await Promise.all(selected.map(t => fetchPlayers(t.idTeam)));
 
     rosters.forEach((players, i) => {
       const team = selected[i];
-      players.slice(0, config.playersPerTeam).forEach(p => {
+      players.slice(config.playerStart, config.playerEnd).forEach(p => {
         const img = p.strCutout || p.strThumb || '';
         if (img && p.strPlayer) {
           candidates.push({
