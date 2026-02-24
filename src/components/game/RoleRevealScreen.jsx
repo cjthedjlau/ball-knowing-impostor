@@ -4,7 +4,7 @@ import { Eye, EyeOff, Check } from 'lucide-react';
 
 const haptic = () => { try { navigator.vibrate?.([30]); } catch {} };
 
-function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone }) {
+function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficulty }) {
   const [revealed, setRevealed] = useState(false);
   const bg = darkMode ? 'bg-[#0a0f1e]' : 'bg-slate-100';
   const card = darkMode ? 'bg-[#131c2e]' : 'bg-white';
