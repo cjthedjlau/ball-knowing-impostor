@@ -422,73 +422,39 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     return pool.length > 0 ? pool : LEGENDS_ATHLETES;
   }
 
-  // BALL KNOWLEDGE — live fetch, deep bench (#19+)
-  const cacheKey = [...selectedLeagues].sort().join('_') + '_bk';
-  const cached = getCached(cacheKey);
-  if (cached && cached.length > 5) {
-    onProgress?.('Loading cached roster...');
+  // BALL KNOWLEDGE — hardcoded obscure active players, photos fetched via API
+  const filteredBK = BALL_KNOWLEDGE_ATHLETES.filter(a => selectedLeagues.includes(a.league));
+  const pool = filteredBK.length > 0 ? filteredBK : BALL_KNOWLEDGE_ATHLETES;
+
+  // Fetch and cache photos in batches
+  const photoCache = getBKPhotoCache();
+  const needsPhoto = pool.filter(a => !photoCache[a.id]);
+
+  if (needsPhoto.length > 0) {
+    onProgress?.('Finding athlete photos... 0%');
+    const BATCH = 8;
+    for (let i = 0; i < needsPhoto.length; i += BATCH) {
+      const batch = needsPhoto.slice(i, i + BATCH);
+      await Promise.all(batch.map(async a => {
+        const url = await searchPlayerPhoto(a.name);
+        photoCache[a.id] = url || 'NONE';
+      }));
+      const pct = Math.min(Math.round(((i + BATCH) / needsPhoto.length) * 100), 100);
+      onProgress?.(`Finding athlete photos... ${pct}%`);
+    }
+    saveBKPhotoCache(photoCache);
+  } else {
+    onProgress?.('Loading Ball Knowledge roster...');
     await new Promise(r => setTimeout(r, 300));
-    return cached;
   }
 
-  const candidates = [];
+  // Attach photos to pool entries
+  const withPhotos = pool.map(a => ({
+    ...a,
+    photoUrl: photoCache[a.id] === 'NONE' ? '' : (photoCache[a.id] || ''),
+  }));
 
-  for (const league of selectedLeagues) {
-    onProgress?.(`Fetching ${league} teams...`);
-    const teams = await fetchTeams(league);
-    if (!teams.length) continue;
-    const selected = shuffle(teams);
-
-    onProgress?.(`Loading ${league} rosters...`);
-    const rosters = await Promise.all(selected.map(t => fetchPlayers(t.idTeam)));
-
-    rosters.forEach((players, i) => {
-    const team = selected[i];
-    // Slots 18+ are deep bench — skip starters/stars
-    players.slice(18).forEach(p => {
-      const img = p.strCutout || p.strThumb || '';
-      if (img && p.strPlayer && p.strPlayer.trim().length > 2) {
-        candidates.push({
-          id: p.idPlayer,
-          name: p.strPlayer,
-          team: p.strTeam || team.strTeam || '',
-          league,
-          position: p.strPosition || '',
-          photoUrl: img,
-          emoji: LEAGUE_EMOJI[league] || '🏅',
-        });
-      }
-    });
-    });
-  }
-
-  if (candidates.length === 0) {
-    // Fallback: use known secondary-tier players if API returns nothing
-    onProgress?.('Using fallback roster...');
-    return NORMAL_ATHLETES.filter(a => selectedLeagues.includes(a.league));
-  }
-
-  onProgress?.(`Validating ${candidates.length} photos...`);
-
-  const BATCH = 20;
-  const valid = [];
-  for (let i = 0; i < candidates.length; i += BATCH) {
-    const batch = candidates.slice(i, i + BATCH);
-    const results = await Promise.all(
-      batch.map(async a => {
-        const ok = await validateImage(a.photoUrl);
-        return ok ? a : null;
-      })
-    );
-    valid.push(...results.filter(Boolean));
-    const pct = Math.min(Math.round(((i + BATCH) / candidates.length) * 100), 100);
-    onProgress?.(`Validating photos... ${pct}%`);
-  }
-
-  // If validation kills everything, fall back gracefully
-  const final = valid.length > 3 ? valid : candidates.slice(0, 30);
-  setCache(cacheKey, final);
-  return final;
+  return withPhotos;
 };
 
 export const pickAthlete = (pool, usedIds = []) => {
