@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RotateCcw, Settings } from 'lucide-react';
+import { playImpostorReveal, playSuccess } from '../lib/soundSystem';
 
 const haptic = (pattern) => { try { navigator.vibrate?.(pattern || [30]); } catch {} };
 
