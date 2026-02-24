@@ -53,8 +53,10 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
         ) : (
           <motion.div
             key="revealed"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            initial={{ rotateY: 90, opacity: 0 }}
+            animate={{ rotateY: 0, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+            style={{ perspective: 1200 }}
             className="w-full max-w-xs"
           >
             {isImpostor ? (
