@@ -89,7 +89,7 @@ export default function Home() {
 
     setLoadingMsg('Validating athlete photo...');
     const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, setupConfig.difficulty);
-    if (athlete) usedIdsRef.current.push(athlete.id);
+    if (athlete) { usedIdsRef.current.push(athlete.id); addToSessionHistory(athlete.id); }
 
     const roles = assignRoles(setupConfig.playerNames, setupConfig.impostorCount);
     const hint = getHint(athlete);
