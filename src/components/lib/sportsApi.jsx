@@ -574,31 +574,56 @@ export const pickAthlete = (pool, usedIds = []) => {
 };
 
 // Picks an athlete with a confirmed working image.
-// Tries each candidate in random order, validates the image URL,
-// and returns the first one that passes. Falls back to a no-photo
-// athlete only if every candidate fails validation.
-export const pickValidatedAthlete = async (pool, usedIds = [], onProgress) => {
+// For Normal/Legends: uses multi-source fallback chain (SportsDB → Wikipedia → ESPN).
+// For Ball Knowledge: validates existing photoUrl as-is (untouched).
+export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, difficulty) => {
   if (!pool || pool.length === 0) return null;
 
-  // Static pools (Normal / Legends) have no photoUrl — skip validation
   const available = pool.filter(a => !usedIds.includes(a.id));
   const src = available.length > 0 ? available : pool;
-
-  // If pool has no photos (Normal/Legends), just pick randomly
-  const hasPhotos = src.some(a => a.photoUrl);
-  if (!hasPhotos) return src[Math.floor(Math.random() * src.length)];
-
-  // Shuffle so we don't always hit the same athlete
   const shuffled = [...src].sort(() => Math.random() - 0.5);
 
-  onProgress?.('Validating athlete photo...');
-  for (const athlete of shuffled) {
-    if (!athlete.photoUrl) continue;
-    const ok = await validateImage(athlete.photoUrl);
-    if (ok) return athlete;
+  const isBallKnowledge = difficulty === 'ballknowledge';
+
+  // Ball Knowledge — validate existing photoUrl, skip athletes with no working image
+  if (isBallKnowledge) {
+    onProgress?.('Validating athlete photo...');
+    for (const athlete of shuffled) {
+      if (!athlete.photoUrl) continue;
+      const ok = await validateImage(athlete.photoUrl);
+      if (ok) return athlete;
+    }
+    return shuffled[0] || null;
   }
 
-  // All images failed — return any athlete without photo requirement
+  // Normal / Legends — use photo cache + multi-source fallback chain
+  const isLegends = difficulty === 'legends';
+  const photoCache = getNLPhotoCache();
+  onProgress?.('Finding athlete photo...');
+
+  for (const athlete of shuffled) {
+    // Check session cache first
+    if (photoCache[athlete.id]) {
+      const cached = photoCache[athlete.id];
+      if (cached !== 'NONE') {
+        return { ...athlete, photoUrl: cached };
+      }
+      continue; // previously confirmed broken, skip
+    }
+
+    // Run fallback chain
+    const resolved = await resolveAthleteImage(athlete, isLegends);
+    if (resolved) {
+      photoCache[athlete.id] = resolved;
+      saveNLPhotoCache(photoCache);
+      return { ...athlete, photoUrl: resolved };
+    } else {
+      photoCache[athlete.id] = 'NONE';
+      saveNLPhotoCache(photoCache);
+    }
+  }
+
+  // Absolute last resort — return athlete without image requirement
   return shuffled[0] || null;
 };
 
