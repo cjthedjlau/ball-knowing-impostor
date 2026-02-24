@@ -8,7 +8,7 @@ const haptic = () => { try { navigator.vibrate?.([30]); } catch {} };
 function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficulty }) {
   const [revealed, setRevealed] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
-  const [impostorFlash, setImpostorFlash] = useState(false);
+...
   const bg = darkMode ? 'bg-[#0a0f1e]' : 'bg-slate-100';
   const card = darkMode ? 'bg-[#131c2e]' : 'bg-white';
   const text = darkMode ? 'text-white' : 'text-slate-900';
