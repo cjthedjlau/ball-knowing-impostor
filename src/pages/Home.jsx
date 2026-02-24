@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { buildAthletePool, pickAthlete, getHint } from '../components/lib/sportsApi';
+import { buildAthletePool, pickValidatedAthlete, getHint } from '../components/lib/sportsApi';
 import LoadingScreen from '../components/game/LoadingScreen';
 import SetupScreen from '../components/game/SetupScreen';
 import RoleRevealScreen from '../components/game/RoleRevealScreen';
