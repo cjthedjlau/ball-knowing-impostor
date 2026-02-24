@@ -60,8 +60,9 @@ export default function Home() {
 
     const roles = assignRoles(config.playerNames, config.impostorCount);
     const hint = getHint(athlete);
+    const firstPlayer = config.playerNames[Math.floor(Math.random() * config.playerNames.length)];
 
-    setGameState({ ...config, athlete, roles, hint });
+    setGameState({ ...config, athlete, roles, hint, firstPlayer });
     setScreen('roles');
   };
 
