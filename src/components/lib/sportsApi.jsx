@@ -295,6 +295,35 @@ export const pickAthlete = (pool, usedIds = []) => {
   return src[Math.floor(Math.random() * src.length)];
 };
 
+// Picks an athlete with a confirmed working image.
+// Tries each candidate in random order, validates the image URL,
+// and returns the first one that passes. Falls back to a no-photo
+// athlete only if every candidate fails validation.
+export const pickValidatedAthlete = async (pool, usedIds = [], onProgress) => {
+  if (!pool || pool.length === 0) return null;
+
+  // Static pools (Normal / Legends) have no photoUrl — skip validation
+  const available = pool.filter(a => !usedIds.includes(a.id));
+  const src = available.length > 0 ? available : pool;
+
+  // If pool has no photos (Normal/Legends), just pick randomly
+  const hasPhotos = src.some(a => a.photoUrl);
+  if (!hasPhotos) return src[Math.floor(Math.random() * src.length)];
+
+  // Shuffle so we don't always hit the same athlete
+  const shuffled = [...src].sort(() => Math.random() - 0.5);
+
+  onProgress?.('Validating athlete photo...');
+  for (const athlete of shuffled) {
+    if (!athlete.photoUrl) continue;
+    const ok = await validateImage(athlete.photoUrl);
+    if (ok) return athlete;
+  }
+
+  // All images failed — return any athlete without photo requirement
+  return shuffled[0] || null;
+};
+
 export const getHint = (athlete) => {
   if (!athlete) return 'Unknown';
   const hints = [];
