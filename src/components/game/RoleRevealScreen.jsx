@@ -78,24 +78,35 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone }) {
               </div>
             ) : (
               <div className={`${card} rounded-3xl overflow-hidden shadow-xl border-2 border-[#3b82f6]/30`}>
-                <div className="relative">
-                  <img
-                    src={athlete.photoUrl}
-                    alt={athlete.name}
-                    className="w-full h-64 object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white font-black text-xl leading-tight">{athlete.name}</p>
-                    <p className="text-white/70 text-sm">{athlete.team}</p>
+                {athlete?.photoUrl ? (
+                  <div className="relative">
+                    <img
+                      src={athlete.photoUrl}
+                      alt={athlete.name}
+                      className="w-full h-64 object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="text-white font-black text-xl leading-tight">{athlete?.name}</p>
+                      <p className="text-white/70 text-sm">{athlete?.team}</p>
+                    </div>
+                    <div className="absolute top-3 right-3 bg-[#3b82f6] text-white text-xs font-black px-2.5 py-1 rounded-full">
+                      {athlete?.league}
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 bg-[#3b82f6] text-white text-xs font-black px-2.5 py-1 rounded-full">
-                    {athlete.league}
+                ) : (
+                  <div className="relative bg-gradient-to-br from-[#1e3a6e] to-[#0a1628] flex flex-col items-center justify-center h-48">
+                    <div className="text-6xl mb-2">🏆</div>
+                    <p className="text-white font-black text-2xl text-center px-4">{athlete?.name}</p>
+                    <p className="text-white/60 text-sm mt-1">{athlete?.team}</p>
+                    <div className="absolute top-3 right-3 bg-[#3b82f6] text-white text-xs font-black px-2.5 py-1 rounded-full">
+                      {athlete?.league}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="p-4">
                   <p className={`text-xs font-bold tracking-widest uppercase mb-2 ${darkMode ? 'text-white/40' : 'text-slate-400'}`}>Your Athlete</p>
-                  {athlete.position && (
+                  {athlete?.position && (
                     <p className={`text-sm ${darkMode ? 'text-white/60' : 'text-slate-500'}`}>Position: {athlete.position}</p>
                   )}
                   <motion.button
