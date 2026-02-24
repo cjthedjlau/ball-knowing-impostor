@@ -49,6 +49,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [leagues, setLeagues] = useState(['NBA']);
   const [difficulty, setDifficulty] = useState('normal');
   const [hintEnabled, setHintEnabled] = useState(false);
+  const [selectedDecades, setSelectedDecades] = useState([]);
 
   const bg    = darkMode ? 'bg-[#0a0f1e]'    : 'bg-slate-100';
   const card  = darkMode ? 'bg-[#131c2e]'    : 'bg-white';
