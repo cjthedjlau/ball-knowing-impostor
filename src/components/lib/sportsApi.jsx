@@ -165,16 +165,7 @@ const shuffle = (arr) => {
   return a;
 };
 
-const validateImage = (url) => {
-  if (!url || !url.startsWith('http')) return Promise.resolve(false);
-  return new Promise((resolve) => {
-    const img = new Image();
-    const t = setTimeout(() => resolve(false), 5000);
-    img.onload  = () => { clearTimeout(t); resolve(img.naturalWidth > 10); };
-    img.onerror = () => { clearTimeout(t); resolve(false); };
-    img.src = url;
-  });
-};
+// (validateImage is defined at top of file as an export)
 
 const fetchTeams   = async (league) => {
   try {
