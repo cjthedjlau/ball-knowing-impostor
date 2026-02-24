@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { playTap, playSneakerSqueak } from '../lib/soundSystem';
 import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, VolumeX } from 'lucide-react';
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
