@@ -95,12 +95,15 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
                     </div>
                   </div>
                 ) : (
-                  <div className="relative bg-gradient-to-br from-[#1e3a6e] to-[#0a1628] flex flex-col items-center justify-center h-48">
-                    <div className="text-6xl mb-2">🏆</div>
-                    <p className="text-white font-black text-2xl text-center px-4">{athlete?.name}</p>
+                  <div className={`relative flex flex-col items-center justify-center py-10 px-4 h-48 ${difficulty === 'legends' ? 'bg-gradient-to-br from-yellow-900/60 to-[#0a1628]' : 'bg-gradient-to-br from-[#1e3a6e] to-[#0a1628]'}`}>
+                    <div className="text-5xl mb-2">{difficulty === 'legends' ? '🏆' : '🏀'}</div>
+                    <p className="text-white font-black text-xl text-center px-4">{athlete?.name}</p>
                     <p className="text-white/60 text-sm mt-1">{athlete?.team}</p>
-                    <div className="absolute top-3 right-3 bg-[#3b82f6] text-white text-xs font-black px-2.5 py-1 rounded-full">
-                      {athlete?.league}
+                    <div className="absolute top-3 right-3 flex gap-1.5">
+                      {difficulty === 'legends' && (
+                        <span className="bg-yellow-500 text-black text-xs font-black px-2 py-0.5 rounded-full">⭐</span>
+                      )}
+                      <span className="bg-[#3b82f6] text-white text-xs font-black px-2.5 py-1 rounded-full">{athlete?.league}</span>
                     </div>
                   </div>
                 )}
