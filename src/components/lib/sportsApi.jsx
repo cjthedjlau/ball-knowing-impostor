@@ -527,8 +527,17 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
   if (difficulty === 'legends') {
     onProgress?.('Loading Legends roster...');
     await new Promise(r => setTimeout(r, 300));
-    const pool = LEGENDS_ATHLETES.filter(a => selectedLeagues.includes(a.league));
-    return pool.length > 0 ? pool : LEGENDS_ATHLETES;
+    let pool = LEGENDS_ATHLETES.filter(a => selectedLeagues.includes(a.league));
+    if (pool.length === 0) pool = LEGENDS_ATHLETES;
+    // Decade filter — only apply if decades are selected
+    if (selectedDecades && selectedDecades.length > 0) {
+      const decadeFiltered = pool.filter(a => {
+        const decades = a.decades || [];
+        return decades.some(d => selectedDecades.includes(d));
+      });
+      if (decadeFiltered.length > 0) pool = decadeFiltered;
+    }
+    return pool;
   }
 
   // BALL KNOWLEDGE — hardcoded obscure active players, photos fetched via API
