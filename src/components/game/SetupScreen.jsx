@@ -4,8 +4,9 @@ import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus } from 'lucide-
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const DIFFICULTIES = [
-  { id: 'normal',        label: 'Normal',         desc: 'Household names — even your grandma knows them' },
-  { id: 'ballknowledge', label: 'Ball Knowledge', desc: 'Deep bench obscurity — brutal even for real fans' },
+  { id: 'normal',        label: 'Normal',         emoji: '🏀', desc: 'Active stars — everyone knows them' },
+  { id: 'legends',       label: 'Legends',        emoji: '🏆', desc: 'Iconic retired GOATs — timeless legends' },
+  { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎', desc: 'Deep bench — brutal even for real fans' },
 ];
 
 export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark }) {
