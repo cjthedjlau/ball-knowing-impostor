@@ -26,6 +26,18 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
 
   return (
     <div className={`fixed inset-0 ${bg} flex flex-col items-center justify-center p-6 z-50`}>
+      <AnimatePresence>
+        {impostorFlash && (
+          <motion.div
+            key="flash"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.85 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12 }}
+            className="absolute inset-0 bg-red-600 z-50 pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
       <p className={`text-sm font-bold tracking-widest uppercase mb-8 ${darkMode ? 'text-white/40' : 'text-slate-400'}`}>
         {player}'s turn
       </p>
