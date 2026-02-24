@@ -1,13 +1,12 @@
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3';
 
-// playerStart/playerEnd: slice into each team's roster.
-// TheSportsDB lists players roughly by prominence — starters first, deep bench last.
-// Easy = only top stars (first 3 per team), Ball Knowledge = skip the known guys entirely.
+// TheSportsDB lists players roughly by prominence — starters/stars first, deep bench last.
+// We use strict non-overlapping slices per tier so pools never bleed into each other.
 const DIFFICULTY_CONFIG = {
-  easy:          { playerStart: 0,  playerEnd: 3   }, // superstars only
-  medium:        { playerStart: 0,  playerEnd: 13  }, // starters + rotation
-  hard:          { playerStart: 8,  playerEnd: 28  }, // bench & role players, no superstars
-  ballknowledge: { playerStart: 18, playerEnd: 999 }, // deep cuts, practice squad obscurity
+  easy:          { playerStart: 0,  playerEnd: 2,  maxTeams: 5  }, // #1-2: superstars, household names
+  medium:        { playerStart: 2,  playerEnd: 8,  maxTeams: 10 }, // #3-8: solid starters / All-Stars
+  hard:          { playerStart: 8,  playerEnd: 18, maxTeams: 20 }, // #9-18: role players / deep starters
+  ballknowledge: { playerStart: 18, playerEnd: 999, maxTeams: 999 }, // #19+: bench warmers, obscure
 };
 
 const shuffle = (arr) => {
