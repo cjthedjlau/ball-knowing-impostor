@@ -148,7 +148,7 @@ const LEGENDS_ATHLETES_RAW = [
 ];
 
 const toStaticPool = (raw, prefix) =>
-  raw.map((a, i) => ({ ...a, id: `${prefix}_${i}`, photoUrl: '' }));
+  raw.map((a, i) => ({ ...a, id: `${prefix}_${i}`, photoUrl: '', emoji: LEAGUE_EMOJI[a.league] || '🏅' }));
 
 const NORMAL_ATHLETES  = toStaticPool(NORMAL_ATHLETES_RAW,  'normal');
 const LEGENDS_ATHLETES = toStaticPool(LEGENDS_ATHLETES_RAW, 'legend');
