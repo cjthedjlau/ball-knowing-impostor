@@ -13,7 +13,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [playerNames, setPlayerNames] = useState(['', '', '', '']);
   const [impostorCount, setImpostorCount] = useState(1);
   const [leagues, setLeagues] = useState(['NBA']);
-  const [difficulty, setDifficulty] = useState('medium');
+  const [difficulty, setDifficulty] = useState('normal');
   const [hintEnabled, setHintEnabled] = useState(false);
 
   const bg    = darkMode ? 'bg-[#0a0f1e]'    : 'bg-slate-100';
