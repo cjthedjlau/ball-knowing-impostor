@@ -32,12 +32,19 @@ const assignRoles = (players, impostorCount) => {
 export default function Home() {
   const [screen, setScreen] = useState('setup');
   const [darkMode, setDarkMode] = useState(true);
+  const [soundOn, setSoundOn] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState('');
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [gameState, setGameState] = useState(null);
   const [setupConfig, setSetupConfig] = useState(null);
   const poolRef = useRef([]);
   const usedIdsRef = useRef([]);
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+  };
 
   const handleProgressMsg = (msg) => {
     setLoadingMsg(msg);
