@@ -108,9 +108,12 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
                         <div className="w-10 h-10 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
                       </div>
                     )}
-                    <img
+                    <motion.img
                       src={athlete.photoUrl}
                       alt={athlete.name}
+                      initial={{ scale: 1.08, opacity: 0 }}
+                      animate={imgLoaded ? { scale: 1, opacity: 1 } : {}}
+                      transition={{ duration: 0.55, ease: 'easeOut' }}
                       className={`w-full h-64 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
                       onLoad={() => setImgLoaded(true)}
                       onError={() => setImgLoaded(true)}
