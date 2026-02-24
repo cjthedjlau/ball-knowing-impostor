@@ -142,17 +142,19 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           </div>
           <div className="grid grid-cols-4 gap-2">
             {LEAGUES.map(l => (
-              <button
+              <motion.button
                 key={l}
-                onClick={() => toggleLeague(l)}
-                className={`py-3 rounded-xl font-bold text-sm transition ${
+                onClick={() => { toggleLeague(l); playTap(); }}
+                whileTap={{ scale: 0.88 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                className={`py-3 rounded-xl font-bold text-sm transition-colors ${
                   leagues.includes(l)
                     ? 'bg-[#3b82f6] text-white'
                     : darkMode ? 'bg-white/10 text-white/50' : 'bg-slate-100 text-slate-500'
                 }`}
               >
                 {l}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
