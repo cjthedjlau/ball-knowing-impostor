@@ -58,7 +58,7 @@ export default function Home() {
     setLoadingProgress(0);
     setLoadingMsg('Building roster...');
 
-    const pool = await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg);
+    const pool = await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || []);
     poolRef.current = pool;
     usedIdsRef.current = [];
 
