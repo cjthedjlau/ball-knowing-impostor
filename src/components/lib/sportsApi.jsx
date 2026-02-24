@@ -154,7 +154,221 @@ const NORMAL_ATHLETES  = toStaticPool(NORMAL_ATHLETES_RAW,  'normal');
 const LEGENDS_ATHLETES = toStaticPool(LEGENDS_ATHLETES_RAW, 'legend');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BALL KNOWLEDGE — live-fetched deep bench players (#19+) via TheSportsDB
+// BALL KNOWLEDGE — deeply obscure active roster players, fully hardcoded
+// No player here should ever appear in Normal or Legends pools.
+// Criteria: no All-Star appearances, deep bench/practice squad/AHL/G-League,
+// minimal national media, even dedicated fans would not recognize them.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const BALL_KNOWLEDGE_RAW = [
+  // ── NBA: Two-way contracts, end-of-bench, G League call-ups ──
+  { name: 'Jordan Nwora',          team: 'Toronto Raptors',          league: 'NBA', position: 'Forward' },
+  { name: 'Svi Mykhailiuk',        team: 'Charlotte Hornets',        league: 'NBA', position: 'Shooting Guard' },
+  { name: 'Jaylen Nowell',         team: 'Minnesota Timberwolves',   league: 'NBA', position: 'Guard' },
+  { name: 'Scotty Pippen Jr.',     team: 'Memphis Grizzlies',        league: 'NBA', position: 'Guard' },
+  { name: 'Amari Bailey',          team: 'Los Angeles Lakers',       league: 'NBA', position: 'Guard' },
+  { name: 'Jalen Hood-Schifino',   team: 'Los Angeles Lakers',       league: 'NBA', position: 'Guard' },
+  { name: 'Trayce Jackson-Davis',  team: 'Golden State Warriors',    league: 'NBA', position: 'Center' },
+  { name: 'Lester Quinones',       team: 'Memphis Grizzlies',        league: 'NBA', position: 'Guard' },
+  { name: 'Mojave King',           team: 'Indiana Pacers',           league: 'NBA', position: 'Guard' },
+  { name: 'TyTy Washington Jr.',   team: 'Houston Rockets',          league: 'NBA', position: 'Guard' },
+  { name: 'Bobi Klintman',         team: 'Sacramento Kings',         league: 'NBA', position: 'Forward' },
+  { name: 'Kobe Brown',            team: 'Portland Trail Blazers',   league: 'NBA', position: 'Forward' },
+  { name: 'Jermaine Samuels',      team: 'San Antonio Spurs',        league: 'NBA', position: 'Forward' },
+  { name: 'Colby Jones',           team: 'Sacramento Kings',         league: 'NBA', position: 'Guard' },
+  { name: 'A.J. Lawson',           team: 'Dallas Mavericks',         league: 'NBA', position: 'Forward' },
+  { name: 'Javante McCoy',         team: 'Charlotte Hornets',        league: 'NBA', position: 'Guard' },
+  { name: 'Tristan Vukcevic',      team: 'Portland Trail Blazers',   league: 'NBA', position: 'Center' },
+  { name: 'Usman Garuba',          team: 'Utah Jazz',                league: 'NBA', position: 'Forward' },
+  { name: 'Darius Days',           team: 'New Orleans Pelicans',     league: 'NBA', position: 'Forward' },
+  { name: 'Marques Bolden',        team: 'Cleveland Cavaliers',      league: 'NBA', position: 'Center' },
+  { name: 'Luka Samanić',          team: 'Charlotte Hornets',        league: 'NBA', position: 'Forward' },
+  { name: 'Justin Lewis',          team: 'Milwaukee Bucks',          league: 'NBA', position: 'Forward' },
+  { name: 'Jalen Slawson',         team: 'Memphis Grizzlies',        league: 'NBA', position: 'Forward' },
+  { name: 'Duop Reath',            team: 'Portland Trail Blazers',   league: 'NBA', position: 'Center' },
+  { name: 'Keaton Wallace',        team: 'Detroit Pistons',          league: 'NBA', position: 'Guard' },
+  { name: 'Ron Harper Jr.',        team: 'Toronto Raptors',          league: 'NBA', position: 'Forward' },
+  { name: 'Kaleb Johnson',         team: 'Utah Jazz',                league: 'NBA', position: 'Forward' },
+  { name: 'Jaylen Martin',         team: 'Houston Rockets',          league: 'NBA', position: 'Forward' },
+  { name: 'Nate Hinton',           team: 'Chicago Bulls',            league: 'NBA', position: 'Guard' },
+  { name: 'Jordan Ford',           team: 'New Orleans Pelicans',     league: 'NBA', position: 'Guard' },
+  { name: 'Oscar Tshiebwe',        team: 'Sacramento Kings',         league: 'NBA', position: 'Center' },
+  { name: 'Jalen Crutcher',        team: 'Oklahoma City Thunder',    league: 'NBA', position: 'Guard' },
+  { name: 'David Duke Jr.',        team: 'Cleveland Cavaliers',      league: 'NBA', position: 'Guard' },
+  { name: 'Moussa Diabate',        team: 'Charlotte Hornets',        league: 'NBA', position: 'Center' },
+  { name: 'Quinten Post',          team: 'Golden State Warriors',    league: 'NBA', position: 'Center' },
+  { name: 'Gui Santos',            team: 'Golden State Warriors',    league: 'NBA', position: 'Forward' },
+  { name: 'Chance Comanche',       team: 'Charlotte Hornets',        league: 'NBA', position: 'Center' },
+  { name: 'Enrique Freeman',       team: 'Indiana Pacers',           league: 'NBA', position: 'Forward' },
+  { name: 'Jaime Jaquez Jr.',      team: 'Miami Heat',               league: 'NBA', position: 'Forward' },
+  { name: 'Patrick Baldwin Jr.',   team: 'Philadelphia 76ers',       league: 'NBA', position: 'Forward' },
+  { name: 'Josh Minott',           team: 'Memphis Grizzlies',        league: 'NBA', position: 'Forward' },
+  { name: 'MarJon Beauchamp',      team: 'Milwaukee Bucks',          league: 'NBA', position: 'Forward' },
+  { name: 'Jaden Springer',        team: 'Boston Celtics',           league: 'NBA', position: 'Guard' },
+  { name: 'Wendell Moore Jr.',     team: 'Oklahoma City Thunder',    league: 'NBA', position: 'Guard' },
+  { name: 'Sidy Cissoko',          team: 'San Antonio Spurs',        league: 'NBA', position: 'Guard' },
+
+  // ── NFL: Practice squad, 3rd/4th string, special teams only ──
+  { name: 'Deon Jackson',          team: 'Indianapolis Colts',       league: 'NFL', position: 'Running Back' },
+  { name: 'Elijah Higgins',        team: 'Arizona Cardinals',        league: 'NFL', position: 'Tight End' },
+  { name: 'Jalen Camp',            team: 'Jacksonville Jaguars',     league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Velus Jones Jr.',       team: 'Chicago Bears',            league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Bo Melton',             team: 'Green Bay Packers',        league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Dontario Drummond',     team: 'Los Angeles Rams',         league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Trey Palmer',           team: 'Tampa Bay Buccaneers',     league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Laquon Treadwell',      team: 'New England Patriots',     league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Kalil Pimpleton',       team: 'Carolina Panthers',        league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Cade Stover',           team: 'Houston Texans',           league: 'NFL', position: 'Tight End' },
+  { name: 'Blake Whiteheart',      team: 'Washington Commanders',    league: 'NFL', position: 'Tight End' },
+  { name: 'Hunter Long',           team: 'Los Angeles Rams',         league: 'NFL', position: 'Tight End' },
+  { name: 'Chris Myarick',         team: 'New York Jets',            league: 'NFL', position: 'Tight End' },
+  { name: 'E.J. Perry',            team: 'New England Patriots',     league: 'NFL', position: 'Quarterback' },
+  { name: 'Aidan O\'Connell',      team: 'Las Vegas Raiders',        league: 'NFL', position: 'Quarterback' },
+  { name: 'Jake Haener',           team: 'New Orleans Saints',       league: 'NFL', position: 'Quarterback' },
+  { name: 'Max Duggan',            team: 'Los Angeles Chargers',     league: 'NFL', position: 'Quarterback' },
+  { name: 'Tyquan Thornton',       team: 'New England Patriots',     league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Tre Tucker',            team: 'Las Vegas Raiders',        league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Warren Jackson',        team: 'Denver Broncos',           league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Montario Hardesty',     team: 'Cleveland Browns',         league: 'NFL', position: 'Running Back' },
+  { name: 'Zamir White',           team: 'Las Vegas Raiders',        league: 'NFL', position: 'Running Back' },
+  { name: 'Kimani Vidal',          team: 'Los Angeles Chargers',     league: 'NFL', position: 'Running Back' },
+  { name: 'Hassan Haskins',        team: 'Tennessee Titans',         league: 'NFL', position: 'Running Back' },
+  { name: 'Dylan Laube',           team: 'New England Patriots',     league: 'NFL', position: 'Running Back' },
+  { name: 'Jalen Reagor',          team: 'Minnesota Vikings',        league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Kaden Davis',           team: 'Las Vegas Raiders',        league: 'NFL', position: 'Tight End' },
+  { name: 'Eric Tomlinson',        team: 'Denver Broncos',           league: 'NFL', position: 'Tight End' },
+  { name: 'Noah Gray',             team: 'Kansas City Chiefs',       league: 'NFL', position: 'Tight End' },
+  { name: 'Kolby Harvell-Peel',    team: 'Denver Broncos',           league: 'NFL', position: 'Safety' },
+  { name: 'JT Woods',              team: 'Denver Broncos',           league: 'NFL', position: 'Safety' },
+  { name: 'Myjai Sanders',         team: 'Carolina Panthers',        league: 'NFL', position: 'Linebacker' },
+  { name: 'Tuli Tuipulotu',        team: 'Los Angeles Chargers',     league: 'NFL', position: 'Defensive End' },
+  { name: 'Viliami Fehoko',        team: 'San Francisco 49ers',      league: 'NFL', position: 'Defensive End' },
+  { name: 'Keion White',           team: 'New England Patriots',     league: 'NFL', position: 'Defensive End' },
+  { name: 'Anfernee Jennings',     team: 'New England Patriots',     league: 'NFL', position: 'Linebacker' },
+  { name: 'Chubba Hubbard',        team: 'Carolina Panthers',        league: 'NFL', position: 'Running Back' },
+  { name: 'Elijah Jones',          team: 'New England Patriots',     league: 'NFL', position: 'Cornerback' },
+  { name: 'Jalen McKenzie',        team: 'Los Angeles Rams',         league: 'NFL', position: 'Offensive Lineman' },
+  { name: 'Dallis Flowers',        team: 'Pittsburgh Steelers',      league: 'NFL', position: 'Cornerback' },
+  { name: 'Sidy Sow',              team: 'New England Patriots',     league: 'NFL', position: 'Offensive Lineman' },
+  { name: 'Mark Evans II',         team: 'Cincinnati Bengals',       league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Jaquarii Roberson',     team: 'Tampa Bay Buccaneers',     league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Chris Olave',           team: 'New Orleans Saints',       league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Daewood Davis',         team: 'Buffalo Bills',            league: 'NFL', position: 'Wide Receiver' },
+
+  // ── MLB: Triple-A call-ups, long relievers, < 100 career appearances ──
+  { name: 'Nolan Schanuel',        team: 'Los Angeles Angels',       league: 'MLB', position: 'First Baseman' },
+  { name: 'Tanner Bibee',          team: 'Cleveland Guardians',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Gavin Williams',        team: 'Cleveland Guardians',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Emmet Sheehan',         team: 'Los Angeles Dodgers',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Bryan Ramos',           team: 'Chicago White Sox',        league: 'MLB', position: 'Third Baseman' },
+  { name: 'José Cuas',             team: 'Chicago Cubs',             league: 'MLB', position: 'Pitcher' },
+  { name: 'Jared Shuster',         team: 'Atlanta Braves',           league: 'MLB', position: 'Pitcher' },
+  { name: 'Dylan Dodd',            team: 'Atlanta Braves',           league: 'MLB', position: 'Pitcher' },
+  { name: 'Jose Guzman',           team: 'Texas Rangers',            league: 'MLB', position: 'Pitcher' },
+  { name: 'Wyatt Langford',        team: 'Texas Rangers',            league: 'MLB', position: 'Outfielder' },
+  { name: 'Brock Porter',          team: 'Texas Rangers',            league: 'MLB', position: 'Pitcher' },
+  { name: 'Jackson Holliday',      team: 'Baltimore Orioles',        league: 'MLB', position: 'Shortstop' },
+  { name: 'Colt Keith',            team: 'Detroit Tigers',           league: 'MLB', position: 'Second Baseman' },
+  { name: 'Parker Meadows',        team: 'Detroit Tigers',           league: 'MLB', position: 'Outfielder' },
+  { name: 'Ty Madden',             team: 'Detroit Tigers',           league: 'MLB', position: 'Pitcher' },
+  { name: 'Keider Montero',        team: 'Detroit Tigers',           league: 'MLB', position: 'Pitcher' },
+  { name: 'Max Meyer',             team: 'Miami Marlins',            league: 'MLB', position: 'Pitcher' },
+  { name: 'Jacob Berry',           team: 'Miami Marlins',            league: 'MLB', position: 'Outfielder' },
+  { name: 'Kyle Nicolas',          team: 'Miami Marlins',            league: 'MLB', position: 'Pitcher' },
+  { name: 'Joey Wiemer',           team: 'Milwaukee Brewers',        league: 'MLB', position: 'Outfielder' },
+  { name: 'Sal Frelick',           team: 'Milwaukee Brewers',        league: 'MLB', position: 'Outfielder' },
+  { name: 'Tobias Myers',          team: 'Milwaukee Brewers',        league: 'MLB', position: 'Pitcher' },
+  { name: 'Owen White',            team: 'Texas Rangers',            league: 'MLB', position: 'Pitcher' },
+  { name: 'Brendan Donovan',       team: 'St. Louis Cardinals',      league: 'MLB', position: 'Utility' },
+  { name: 'Gordon Graceffo',       team: 'St. Louis Cardinals',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Andre Pallante',        team: 'St. Louis Cardinals',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Sem Robberse',          team: 'Toronto Blue Jays',        league: 'MLB', position: 'Pitcher' },
+  { name: 'Ricky Tiedemann',       team: 'Toronto Blue Jays',        league: 'MLB', position: 'Pitcher' },
+  { name: 'Hagen Danner',          team: 'Toronto Blue Jays',        league: 'MLB', position: 'Catcher' },
+  { name: 'Matt Waldron',          team: 'San Diego Padres',         league: 'MLB', position: 'Pitcher' },
+  { name: 'Dylan Lesko',           team: 'San Diego Padres',         league: 'MLB', position: 'Pitcher' },
+  { name: 'Bryce Jarvis',          team: 'Arizona Diamondbacks',     league: 'MLB', position: 'Pitcher' },
+  { name: 'Drew Romo',             team: 'Colorado Rockies',         league: 'MLB', position: 'Catcher' },
+  { name: 'Zac Veen',              team: 'Colorado Rockies',         league: 'MLB', position: 'Outfielder' },
+  { name: 'Adael Amador',          team: 'Colorado Rockies',         league: 'MLB', position: 'Shortstop' },
+  { name: 'Tanner Tully',          team: 'Cleveland Guardians',      league: 'MLB', position: 'Pitcher' },
+  { name: 'Sammy Natera Jr.',      team: 'Cleveland Guardians',      league: 'MLB', position: 'Infielder' },
+  { name: 'David Festa',           team: 'Minnesota Twins',          league: 'MLB', position: 'Pitcher' },
+  { name: 'Charlie Mack',          team: 'Philadelphia Phillies',    league: 'MLB', position: 'Infielder' },
+  { name: 'Mick Abel',             team: 'Philadelphia Phillies',    league: 'MLB', position: 'Pitcher' },
+  { name: 'Andrew Painter',        team: 'Philadelphia Phillies',    league: 'MLB', position: 'Pitcher' },
+  { name: 'Justin Crawford',       team: 'Philadelphia Phillies',    league: 'MLB', position: 'Outfielder' },
+  { name: 'Spencer Jones',         team: 'New York Yankees',         league: 'MLB', position: 'Outfielder' },
+  { name: 'Caleb Durbin',          team: 'New York Yankees',         league: 'MLB', position: 'Infielder' },
+  { name: 'Ben Rice',              team: 'New York Yankees',         league: 'MLB', position: 'First Baseman' },
+  { name: 'George Lomanto Jr.',    team: 'Boston Red Sox',           league: 'MLB', position: 'Outfielder' },
+  { name: 'Kyle Teel',             team: 'Boston Red Sox',           league: 'MLB', position: 'Catcher' },
+  { name: 'Marcelo Mayer',         team: 'Boston Red Sox',           league: 'MLB', position: 'Shortstop' },
+  { name: 'Roman Anthony',         team: 'Boston Red Sox',           league: 'MLB', position: 'Outfielder' },
+  { name: 'Matthew Lugo',          team: 'Boston Red Sox',           league: 'MLB', position: 'Shortstop' },
+
+  // ── NHL: Fourth-liners, AHL call-ups, < 20 career games ──
+  { name: 'Antti Saarela',         team: 'Carolina Hurricanes',      league: 'NHL', position: 'Center' },
+  { name: 'Zach Aston-Reese',      team: 'Toronto Maple Leafs',      league: 'NHL', position: 'Left Wing' },
+  { name: 'Noel Acciari',          team: 'St. Louis Blues',          league: 'NHL', position: 'Right Wing' },
+  { name: 'Lucas Carlsson',        team: 'San Jose Sharks',          league: 'NHL', position: 'Defenseman' },
+  { name: 'Sampo Ranta',           team: 'Chicago Blackhawks',       league: 'NHL', position: 'Left Wing' },
+  { name: 'Joey Anderson',         team: 'Arizona Coyotes',          league: 'NHL', position: 'Right Wing' },
+  { name: 'Artem Anisimov',        team: 'Ottawa Senators',          league: 'NHL', position: 'Center' },
+  { name: 'Jayden Struble',        team: 'Montreal Canadiens',       league: 'NHL', position: 'Defenseman' },
+  { name: 'Mattias Norlinder',     team: 'Montreal Canadiens',       league: 'NHL', position: 'Defenseman' },
+  { name: 'Rafaël Harvey-Pinard',  team: 'Montreal Canadiens',       league: 'NHL', position: 'Left Wing' },
+  { name: 'Jesse Ylönen',          team: 'Montreal Canadiens',       league: 'NHL', position: 'Right Wing' },
+  { name: 'Daniil Miromanov',      team: 'Ottawa Senators',          league: 'NHL', position: 'Defenseman' },
+  { name: 'Cole Reinhardt',        team: 'Winnipeg Jets',            league: 'NHL', position: 'Left Wing' },
+  { name: 'Dylan Samberg',         team: 'Winnipeg Jets',            league: 'NHL', position: 'Defenseman' },
+  { name: 'Ville Heinola',         team: 'Winnipeg Jets',            league: 'NHL', position: 'Defenseman' },
+  { name: 'Axel Jonsson-Fjallby',  team: 'Washington Capitals',      league: 'NHL', position: 'Left Wing' },
+  { name: 'Brian Pinho',           team: 'New Jersey Devils',        league: 'NHL', position: 'Center' },
+  { name: 'Reilly Walsh',          team: 'New Jersey Devils',        league: 'NHL', position: 'Defenseman' },
+  { name: 'Jake Allen',            team: 'New Jersey Devils',        league: 'NHL', position: 'Goalie' },
+  { name: 'Nikita Okhotiuk',       team: 'New Jersey Devils',        league: 'NHL', position: 'Defenseman' },
+  { name: 'Chase Priskie',         team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Defenseman' },
+  { name: 'Denton Mateychuk',      team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Defenseman' },
+  { name: 'James Malatesta',       team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Right Wing' },
+  { name: 'Kirill Marchenko',      team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Right Wing' },
+  { name: 'Joakim Kemell',         team: 'Nashville Predators',      league: 'NHL', position: 'Right Wing' },
+  { name: 'Luke Evangelista',      team: 'Nashville Predators',      league: 'NHL', position: 'Right Wing' },
+  { name: 'Zachary L\'Heureux',    team: 'Nashville Predators',      league: 'NHL', position: 'Left Wing' },
+  { name: 'Mark Jankowski',        team: 'Seattle Kraken',           league: 'NHL', position: 'Center' },
+  { name: 'Kaedan Korczak',        team: 'Seattle Kraken',           league: 'NHL', position: 'Defenseman' },
+  { name: 'Gustav Olofsson',       team: 'Minnesota Wild',           league: 'NHL', position: 'Defenseman' },
+  { name: 'Andrei Chilikov',       team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Right Wing' },
+  { name: 'Adam Raska',            team: 'Columbus Blue Jackets',    league: 'NHL', position: 'Right Wing' },
+  { name: 'Justin Sourdif',        team: 'Vancouver Canucks',        league: 'NHL', position: 'Center' },
+  { name: 'Aidan McDonough',       team: 'Vancouver Canucks',        league: 'NHL', position: 'Left Wing' },
+  { name: 'Linus Karlsson',        team: 'Buffalo Sabres',           league: 'NHL', position: 'Right Wing' },
+  { name: 'Ryan Johnson',          team: 'Buffalo Sabres',           league: 'NHL', position: 'Center' },
+  { name: 'Isak Rosen',            team: 'Buffalo Sabres',           league: 'NHL', position: 'Right Wing' },
+  { name: 'JJ Peterka',            team: 'Buffalo Sabres',           league: 'NHL', position: 'Right Wing' },
+  { name: 'Lukas Rousek',          team: 'Buffalo Sabres',           league: 'NHL', position: 'Right Wing' },
+  { name: 'Brandon Biro',          team: 'Buffalo Sabres',           league: 'NHL', position: 'Center' },
+  { name: 'Nikolas Matinpalo',     team: 'Carolina Hurricanes',      league: 'NHL', position: 'Center' },
+  { name: 'Brendan Lemieux',       team: 'Los Angeles Kings',        league: 'NHL', position: 'Left Wing' },
+  { name: 'Samuel Bolduc',         team: 'New York Islanders',       league: 'NHL', position: 'Defenseman' },
+  { name: 'Julien Gauthier',       team: 'New York Rangers',         league: 'NHL', position: 'Right Wing' },
+  { name: 'Tyler Pitlick',         team: 'Calgary Flames',           league: 'NHL', position: 'Right Wing' },
+  { name: 'Nick DeSimone',         team: 'San Jose Sharks',          league: 'NHL', position: 'Defenseman' },
+  { name: 'Tristen Robins',        team: 'Ottawa Senators',          league: 'NHL', position: 'Center' },
+  { name: 'Roby Jarventie',        team: 'Ottawa Senators',          league: 'NHL', position: 'Left Wing' },
+  { name: 'Eeli Tolvanen',         team: 'Seattle Kraken',           league: 'NHL', position: 'Right Wing' },
+  { name: 'Maxim Letunov',         team: 'Detroit Red Wings',        league: 'NHL', position: 'Center' },
+];
+
+const BALL_KNOWLEDGE_ATHLETES = BALL_KNOWLEDGE_RAW.map((a, i) => ({
+  ...a,
+  id: `bk_${i}`,
+  photoUrl: '',
+  emoji: LEAGUE_EMOJI[a.league] || '🏅',
+}));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TheSportsDB helpers — only used as supplemental search for BK photo lookup
 // ─────────────────────────────────────────────────────────────────────────────
 const shuffle = (arr) => {
   const a = [...arr];
@@ -165,37 +379,26 @@ const shuffle = (arr) => {
   return a;
 };
 
-
-
-const fetchTeams   = async (league) => {
+const searchPlayerPhoto = async (name) => {
   try {
-    const r = await fetch(`${SPORTSDB_BASE}/search_all_teams.php?l=${encodeURIComponent(league)}`);
+    const r = await fetch(`${SPORTSDB_BASE}/searchplayers.php?p=${encodeURIComponent(name)}`);
     const d = await r.json();
-    return d.teams || [];
-  } catch { return []; }
+    const players = d.player || [];
+    for (const p of players) {
+      const url = p.strCutout || p.strThumb || '';
+      if (url && url.startsWith('http')) return url;
+    }
+    return '';
+  } catch { return ''; }
 };
 
-const fetchPlayers = async (teamId) => {
-  try {
-    const r = await fetch(`${SPORTSDB_BASE}/lookup_all_players.php?id=${teamId}`);
-    const d = await r.json();
-    return d.player || [];
-  } catch { return []; }
+const BK_PHOTO_CACHE_KEY = 'bki_bk_photos_v1';
+
+const getBKPhotoCache = () => {
+  try { return JSON.parse(sessionStorage.getItem(BK_PHOTO_CACHE_KEY) || '{}'); } catch { return {}; }
 };
-
-const CACHE_KEY = 'bki_ballknowledge_v3';
-
-const getCached = (key) => {
-  try {
-    const c = sessionStorage.getItem(CACHE_KEY);
-    if (!c) return null;
-    const p = JSON.parse(c);
-    return p.key === key ? p.pool : null;
-  } catch { return null; }
-};
-
-const setCache = (key, pool) => {
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ key, pool })); } catch {}
+const saveBKPhotoCache = (cache) => {
+  try { sessionStorage.setItem(BK_PHOTO_CACHE_KEY, JSON.stringify(cache)); } catch {}
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
