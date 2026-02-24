@@ -84,7 +84,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
             <h1 className={`text-2xl font-black tracking-tight ${text}`}>
               🏆 Ball Knowing
             </h1>
-            <p className="text-[#3b82f6] font-bold text-sm tracking-widest uppercase">Impostor</p>
+            <p className="text-[#3b82f6] font-bold text-sm tracking-widest uppercase">Imposter</p>
           </div>
           <div className="flex gap-2">
             <button
