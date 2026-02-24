@@ -75,17 +75,27 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
         </div>
       </motion.div>
 
-      {/* Reveal Button */}
-      <motion.button
+      {/* Reveal Button — heartbeat glow */}
+      <motion.div
+        className="mt-8 w-full max-w-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        whileTap={{ scale: 0.96 }}
-        onClick={() => { haptic(); onReveal(); }}
-        className="mt-8 w-full max-w-sm py-5 rounded-2xl bg-[#3b82f6] text-white font-black text-lg flex items-center justify-center gap-3 shadow-lg shadow-blue-500/30"
       >
-        <Eye size={22} /> Reveal the Impostor
-      </motion.button>
+        <motion.div
+          animate={{ boxShadow: ['0 0 16px 2px rgba(59,130,246,0.35)', '0 0 40px 10px rgba(59,130,246,0.7)', '0 0 16px 2px rgba(59,130,246,0.35)'] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          className="rounded-2xl"
+        >
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            onClick={() => { haptic(); onReveal(); }}
+            className="w-full py-5 rounded-2xl bg-[#3b82f6] text-white font-black text-lg flex items-center justify-center gap-3"
+          >
+            <Eye size={22} /> Reveal the Impostor
+          </motion.button>
+        </motion.div>
+      </motion.div>
 
       <p className={`mt-4 text-xs text-center ${sub}`}>Ready? Tap when everyone has voted.</p>
     </div>
