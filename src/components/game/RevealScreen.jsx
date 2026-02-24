@@ -42,9 +42,16 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             key="suspense"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.2 }}
-            className="text-center"
+            exit={{ opacity: 0 }}
+            className="text-center w-full flex flex-col items-center"
           >
+            {/* Spotlight expanding from center */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.10) 0%, transparent 70%)' }}
+            />
             <motion.div
               animate={{ scale: [1, 1.05, 1], opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 1.2, repeat: Infinity }}
