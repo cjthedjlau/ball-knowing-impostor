@@ -130,6 +130,67 @@ export const pickAthlete = (pool, usedIds = []) => {
 };
 
 export const getHint = (athlete) => {
-  const map = { NBA: 'Basketball', NFL: 'Football', MLB: 'Baseball', NHL: 'Hockey' };
-  return map[athlete?.league] || 'Athletics';
+  if (!athlete) return 'Unknown';
+
+  const hints = [];
+
+  // Position-based hints
+  const pos = (athlete.position || '').toLowerCase();
+  if (pos.includes('quarterback') || pos === 'qb') hints.push('Quarterback');
+  else if (pos.includes('wide receiver') || pos === 'wr') hints.push('Wide Receiver');
+  else if (pos.includes('running back') || pos === 'rb') hints.push('Running Back');
+  else if (pos.includes('linebacker') || pos === 'lb') hints.push('Linebacker');
+  else if (pos.includes('defensive') && pos.includes('end')) hints.push('Pass Rusher');
+  else if (pos.includes('cornerback') || pos === 'cb') hints.push('Cornerback');
+  else if (pos.includes('safety')) hints.push('Safety');
+  else if (pos.includes('tight end') || pos === 'te') hints.push('Tight End');
+  else if (pos.includes('offensive line') || pos.includes('tackle') || pos.includes('guard') || pos.includes('center')) hints.push('Lineman');
+  else if (pos.includes('point guard') || pos === 'pg') hints.push('Point Guard');
+  else if (pos.includes('shooting guard') || pos === 'sg') hints.push('Shooting Guard');
+  else if (pos.includes('small forward') || pos === 'sf') hints.push('Small Forward');
+  else if (pos.includes('power forward') || pos === 'pf') hints.push('Power Forward');
+  else if (pos === 'center' || pos === 'c') hints.push('Center');
+  else if (pos.includes('pitcher')) hints.push('Pitcher');
+  else if (pos.includes('catcher')) hints.push('Catcher');
+  else if (pos.includes('shortstop')) hints.push('Shortstop');
+  else if (pos.includes('outfield')) hints.push('Outfielder');
+  else if (pos.includes('first base') || pos === '1b') hints.push('First Baseman');
+  else if (pos.includes('second base') || pos === '2b') hints.push('Second Baseman');
+  else if (pos.includes('third base') || pos === '3b') hints.push('Third Baseman');
+  else if (pos.includes('goalie') || pos.includes('goalkeeper') || pos.includes('goaltender')) hints.push('Goalie');
+  else if (pos.includes('winger') || pos.includes('wing')) hints.push('Winger');
+  else if (pos.includes('defenseman') || pos.includes('defence')) hints.push('Defenseman');
+  else if (pos.includes('forward')) hints.push('Forward');
+  else if (pos && pos.length > 0) hints.push(athlete.position); // fallback: use raw position
+
+  // League conference/division hints
+  const league = athlete.league || '';
+  if (league === 'NBA') hints.push('NBA Player');
+  else if (league === 'NFL') hints.push('NFL Player');
+  else if (league === 'MLB') hints.push('MLB Player');
+  else if (league === 'NHL') hints.push('NHL Player');
+
+  // Name-based hints (first letter)
+  const firstName = (athlete.name || '').split(' ')[0];
+  if (firstName) hints.push(`First name starts with "${firstName[0].toUpperCase()}"`);
+
+  // Team name hint (vague)
+  if (athlete.team) {
+    const teamWords = athlete.team.split(' ');
+    const lastWord = teamWords[teamWords.length - 1];
+    if (lastWord && lastWord.length > 3) hints.push(`Team: ${lastWord}`);
+  }
+
+  // Pick a random hint from the meaningful ones (prefer position if available)
+  const positionHint = hints[0]; // first added is always position-based if found
+  const otherHints = hints.slice(1);
+
+  // 60% chance to use position, 40% chance to use another hint
+  if (positionHint && (otherHints.length === 0 || Math.random() < 0.6)) {
+    return positionHint;
+  }
+  if (otherHints.length > 0) {
+    return otherHints[Math.floor(Math.random() * otherHints.length)];
+  }
+  return positionHint || 'Unknown';
 };
