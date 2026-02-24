@@ -168,14 +168,17 @@ export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed })
       </div>
 
       <div className="px-5 grid grid-cols-2 gap-3 flex-1">
-        {playerNames.map((name) => {
+        {playerNames.map((name, idx) => {
           const isDone = done.has(name);
           return (
             <motion.button
               key={name}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => { if (!isDone) { haptic(); setActivePlayer(name); } }}
-              className={`py-6 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.07, type: 'spring', stiffness: 300, damping: 22 }}
+              whileTap={{ scale: 0.93 }}
+              onClick={() => { if (!isDone) { haptic(); playTap(); setActivePlayer(name); } }}
+              className={`py-6 rounded-2xl flex flex-col items-center justify-center gap-2 transition-colors ${
                 isDone
                   ? 'bg-green-500/20 border-2 border-green-500/40'
                   : darkMode ? 'bg-[#131c2e] border-2 border-white/10' : 'bg-white border-2 border-slate-200'
