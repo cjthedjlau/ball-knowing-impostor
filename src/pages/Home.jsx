@@ -63,7 +63,7 @@ export default function Home() {
     usedIdsRef.current = [];
 
     setLoadingMsg('Validating athlete photo...');
-    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg);
+    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, config.difficulty);
     if (athlete) usedIdsRef.current.push(athlete.id);
 
     const roles = assignRoles(config.playerNames, config.impostorCount);
