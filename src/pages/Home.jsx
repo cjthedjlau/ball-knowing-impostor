@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { buildAthletePool, pickValidatedAthlete, getHint } from '../components/lib/sportsApi';
+import { buildAthletePool, pickValidatedAthlete, getHint, clearSessionHistory, addToSessionHistory } from '../components/lib/sportsApi';
 import { playTransition, playConfirmation, setSoundEnabled, isSoundEnabled } from '../components/lib/soundSystem';
 import LoadingScreen from '../components/game/LoadingScreen';
 import SetupScreen from '../components/game/SetupScreen';
