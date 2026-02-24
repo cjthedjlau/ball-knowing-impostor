@@ -131,7 +131,7 @@ export default function Home() {
             <RoleRevealScreen
               gameState={gameState}
               darkMode={darkMode}
-              onAllRevealed={() => setScreen('discussion')}
+              onAllRevealed={() => { playTransition(gameState.leagues); setScreen('discussion'); }}
             />
           </motion.div>
         )}
