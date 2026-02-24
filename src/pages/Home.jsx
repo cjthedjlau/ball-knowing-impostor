@@ -112,6 +112,8 @@ export default function Home() {
             <SetupScreen
               darkMode={darkMode}
               onToggleDark={() => setDarkMode(d => !d)}
+              soundOn={soundOn}
+              onToggleSound={toggleSound}
               onStart={startGame}
               onHowToPlay={() => setScreen('howtoplay')}
             />
