@@ -114,23 +114,41 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
 
             {/* Athlete card */}
             <div className={`${card} rounded-3xl overflow-hidden shadow-2xl`}>
-              <div className="relative">
-                <img
-                  src={athlete.photoUrl}
-                  alt={athlete.name}
-                  className="w-full h-72 object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute top-3 right-3 bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">
-                  {athlete.league}
+              {athlete.photoUrl ? (
+                <div className="relative">
+                  <img
+                    src={athlete.photoUrl}
+                    alt={athlete.name}
+                    className="w-full h-72 object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute top-3 right-3 flex gap-2">
+                    {gameState.difficulty === 'legends' && (
+                      <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
+                    )}
+                    <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete.league}</span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-1">The Secret Athlete</p>
+                    <p className="text-white font-black text-2xl leading-tight">{athlete.name}</p>
+                    <p className="text-white/70 text-sm">{athlete.team}</p>
+                    {athlete.position && <p className="text-white/50 text-xs mt-0.5">{athlete.position}</p>}
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-1">The Secret Athlete</p>
-                  <p className="text-white font-black text-2xl leading-tight">{athlete.name}</p>
-                  <p className="text-white/70 text-sm">{athlete.team}</p>
-                  {athlete.position && <p className="text-white/50 text-xs mt-0.5">{athlete.position}</p>}
+              ) : (
+                <div className={`relative flex flex-col items-center justify-center py-10 px-6 ${gameState.difficulty === 'legends' ? 'bg-gradient-to-br from-yellow-900/60 to-[#0a1628]' : 'bg-gradient-to-br from-[#1e3a6e] to-[#0a1628]'}`}>
+                  <div className="text-7xl mb-3">{gameState.difficulty === 'legends' ? '🏆' : '🏀'}</div>
+                  <p className="text-white font-black text-2xl text-center leading-tight">{athlete.name}</p>
+                  <p className="text-white/60 text-sm mt-1">{athlete.team}</p>
+                  {athlete.position && <p className="text-white/40 text-xs mt-0.5">{athlete.position}</p>}
+                  <div className="absolute top-3 right-3 flex gap-2">
+                    {gameState.difficulty === 'legends' && (
+                      <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
+                    )}
+                    <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete.league}</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Actions */}
