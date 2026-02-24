@@ -64,7 +64,7 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
                 <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center text-5xl">🕵️</div>
                 <div className="text-center">
                   <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-1">Classified</p>
-                  <p className={`text-2xl font-black ${text}`}>You Are the Impostor</p>
+                  <p className={`text-2xl font-black ${text}`}>You Are the Imposter</p>
                   {hint && (
                     <div className="mt-4 px-5 py-3 rounded-xl bg-red-500/10 border border-red-500/20">
                       <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-1">Hint</p>
