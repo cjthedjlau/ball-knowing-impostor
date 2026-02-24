@@ -199,6 +199,7 @@ export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed })
             isImpostor={roles[activePlayer] === 'impostor'}
             hint={hintEnabled ? gameState.hint : null}
             darkMode={darkMode}
+            difficulty={difficulty}
             onDone={() => handleDone(activePlayer)}
           />
         )}
