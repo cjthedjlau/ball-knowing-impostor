@@ -1,14 +1,77 @@
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3';
 
-// TheSportsDB lists players roughly by prominence — starters/stars first, deep bench last.
-// We use strict non-overlapping slices per tier so pools never bleed into each other.
-const DIFFICULTY_CONFIG = {
-  easy:          { playerStart: 0,  playerEnd: 2,  maxTeams: 5  }, // #1-2: superstars, household names
-  medium:        { playerStart: 2,  playerEnd: 8,  maxTeams: 10 }, // #3-8: solid starters / All-Stars
-  hard:          { playerStart: 8,  playerEnd: 18, maxTeams: 20 }, // #9-18: role players / deep starters
-  ballknowledge: { playerStart: 18, playerEnd: 999, maxTeams: 999 }, // #19+: bench warmers, obscure
-};
+// ─────────────────────────────────────────────────────────────────────────────
+// NORMAL MODE — hardcoded household names only.
+// Every single name here must be universally recognizable, even to non-fans.
+// ─────────────────────────────────────────────────────────────────────────────
+const NORMAL_ATHLETES_RAW = [
+  // NBA
+  { name: 'LeBron James',       team: 'Los Angeles Lakers',      league: 'NBA', position: 'Small Forward' },
+  { name: 'Stephen Curry',      team: 'Golden State Warriors',   league: 'NBA', position: 'Point Guard' },
+  { name: 'Kevin Durant',       team: 'Phoenix Suns',            league: 'NBA', position: 'Small Forward' },
+  { name: 'Giannis Antetokounmpo', team: 'Milwaukee Bucks',      league: 'NBA', position: 'Power Forward' },
+  { name: 'Shaquille O\'Neal',  team: 'Retired',                 league: 'NBA', position: 'Center' },
+  { name: 'Kobe Bryant',        team: 'Retired',                 league: 'NBA', position: 'Shooting Guard' },
+  { name: 'Michael Jordan',     team: 'Retired',                 league: 'NBA', position: 'Shooting Guard' },
+  { name: 'Dwyane Wade',        team: 'Retired',                 league: 'NBA', position: 'Shooting Guard' },
+  { name: 'Magic Johnson',      team: 'Retired',                 league: 'NBA', position: 'Point Guard' },
+  { name: 'Larry Bird',         team: 'Retired',                 league: 'NBA', position: 'Small Forward' },
+  { name: 'Charles Barkley',    team: 'Retired',                 league: 'NBA', position: 'Power Forward' },
+  { name: 'Dirk Nowitzki',      team: 'Retired',                 league: 'NBA', position: 'Power Forward' },
+  { name: 'Scottie Pippen',     team: 'Retired',                 league: 'NBA', position: 'Small Forward' },
+  { name: 'Jayson Tatum',       team: 'Boston Celtics',          league: 'NBA', position: 'Small Forward' },
+  { name: 'Nikola Jokic',       team: 'Denver Nuggets',          league: 'NBA', position: 'Center' },
+  { name: 'Luka Doncic',        team: 'Dallas Mavericks',        league: 'NBA', position: 'Point Guard' },
 
+  // NFL
+  { name: 'Patrick Mahomes',    team: 'Kansas City Chiefs',      league: 'NFL', position: 'Quarterback' },
+  { name: 'Tom Brady',          team: 'Retired',                 league: 'NFL', position: 'Quarterback' },
+  { name: 'Aaron Rodgers',      team: 'New York Jets',           league: 'NFL', position: 'Quarterback' },
+  { name: 'Travis Kelce',       team: 'Kansas City Chiefs',      league: 'NFL', position: 'Tight End' },
+  { name: 'Peyton Manning',     team: 'Retired',                 league: 'NFL', position: 'Quarterback' },
+  { name: 'Jerry Rice',         team: 'Retired',                 league: 'NFL', position: 'Wide Receiver' },
+  { name: 'Deion Sanders',      team: 'Retired',                 league: 'NFL', position: 'Cornerback' },
+  { name: 'Lawrence Taylor',    team: 'Retired',                 league: 'NFL', position: 'Linebacker' },
+  { name: 'Joe Montana',        team: 'Retired',                 league: 'NFL', position: 'Quarterback' },
+  { name: 'Emmitt Smith',       team: 'Retired',                 league: 'NFL', position: 'Running Back' },
+  { name: 'Lamar Jackson',      team: 'Baltimore Ravens',        league: 'NFL', position: 'Quarterback' },
+  { name: 'Josh Allen',         team: 'Buffalo Bills',           league: 'NFL', position: 'Quarterback' },
+  { name: 'Justin Jefferson',   team: 'Minnesota Vikings',       league: 'NFL', position: 'Wide Receiver' },
+
+  // MLB
+  { name: 'Mike Trout',         team: 'Los Angeles Angels',      league: 'MLB', position: 'Outfielder' },
+  { name: 'Aaron Judge',        team: 'New York Yankees',        league: 'MLB', position: 'Outfielder' },
+  { name: 'Derek Jeter',        team: 'Retired',                 league: 'MLB', position: 'Shortstop' },
+  { name: 'Babe Ruth',          team: 'Retired',                 league: 'MLB', position: 'Outfielder' },
+  { name: 'Ken Griffey Jr.',    team: 'Retired',                 league: 'MLB', position: 'Outfielder' },
+  { name: 'Barry Bonds',        team: 'Retired',                 league: 'MLB', position: 'Outfielder' },
+  { name: 'Roger Clemens',      team: 'Retired',                 league: 'MLB', position: 'Pitcher' },
+  { name: 'Hank Aaron',         team: 'Retired',                 league: 'MLB', position: 'Outfielder' },
+  { name: 'Willie Mays',        team: 'Retired',                 league: 'MLB', position: 'Outfielder' },
+  { name: 'Shohei Ohtani',      team: 'Los Angeles Dodgers',     league: 'MLB', position: 'Pitcher' },
+  { name: 'Fernando Tatis Jr.', team: 'San Diego Padres',        league: 'MLB', position: 'Shortstop' },
+  { name: 'Mookie Betts',       team: 'Los Angeles Dodgers',     league: 'MLB', position: 'Outfielder' },
+
+  // NHL
+  { name: 'Wayne Gretzky',      team: 'Retired',                 league: 'NHL', position: 'Center' },
+  { name: 'Mario Lemieux',      team: 'Retired',                 league: 'NHL', position: 'Center' },
+  { name: 'Sidney Crosby',      team: 'Pittsburgh Penguins',     league: 'NHL', position: 'Center' },
+  { name: 'Alexander Ovechkin', team: 'Washington Capitals',     league: 'NHL', position: 'Winger' },
+  { name: 'Connor McDavid',     team: 'Edmonton Oilers',         league: 'NHL', position: 'Center' },
+  { name: 'Gordie Howe',        team: 'Retired',                 league: 'NHL', position: 'Right Wing' },
+  { name: 'Bobby Orr',          team: 'Retired',                 league: 'NHL', position: 'Defenseman' },
+];
+
+// Attach deterministic IDs and empty photoUrl (Normal mode uses a name card, no image needed)
+const NORMAL_ATHLETES = NORMAL_ATHLETES_RAW.map((a, i) => ({
+  ...a,
+  id: `normal_${i}`,
+  photoUrl: '',
+}));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BALL KNOWLEDGE — fetched live from TheSportsDB, deep bench only (#19+)
+// ─────────────────────────────────────────────────────────────────────────────
 const shuffle = (arr) => {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -45,7 +108,7 @@ const fetchPlayers = async (teamId) => {
   } catch { return []; }
 };
 
-const CACHE_KEY = 'bki_pool_v1';
+const CACHE_KEY = 'bki_pool_v2';
 
 const getCached = (key) => {
   try {
@@ -62,8 +125,21 @@ const setCache = (key, pool) => {
   } catch {}
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Public API
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) => {
-  const cacheKey = [...selectedLeagues].sort().join('_') + '_' + difficulty;
+  // NORMAL: filter curated list by selected leagues, no network call needed
+  if (difficulty === 'normal') {
+    onProgress?.('Loading Normal roster...');
+    await new Promise(r => setTimeout(r, 400));
+    const pool = NORMAL_ATHLETES.filter(a => selectedLeagues.includes(a.league));
+    return pool.length > 0 ? pool : NORMAL_ATHLETES; // fallback to all if no league match
+  }
+
+  // BALL KNOWLEDGE: live fetch, deep bench (#19 onward per team)
+  const cacheKey = [...selectedLeagues].sort().join('_') + '_ballknowledge';
   const cached = getCached(cacheKey);
   if (cached && cached.length > 5) {
     onProgress?.('Loading cached roster...');
@@ -71,21 +147,21 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     return cached;
   }
 
-  const config = DIFFICULTY_CONFIG[difficulty] || DIFFICULTY_CONFIG.medium;
   const candidates = [];
 
   for (const league of selectedLeagues) {
     onProgress?.(`Fetching ${league} teams...`);
     const teams = await fetchTeams(league);
     if (!teams.length) continue;
-    const selected = shuffle(teams).slice(0, config.maxTeams);
+    const selected = shuffle(teams); // use ALL teams to maximize obscure player pool
 
     onProgress?.(`Loading ${league} rosters...`);
     const rosters = await Promise.all(selected.map(t => fetchPlayers(t.idTeam)));
 
     rosters.forEach((players, i) => {
       const team = selected[i];
-      players.slice(config.playerStart, config.playerEnd).forEach(p => {
+      // Skip the first 18 — those are starters/stars. Only take deep bench.
+      players.slice(18).forEach(p => {
         const img = p.strCutout || p.strThumb || '';
         if (img && p.strPlayer) {
           candidates.push({
@@ -133,18 +209,16 @@ export const getHint = (athlete) => {
   if (!athlete) return 'Unknown';
 
   const hints = [];
-
-  // Position-based hints
   const pos = (athlete.position || '').toLowerCase();
+
   if (pos.includes('quarterback') || pos === 'qb') hints.push('Quarterback');
   else if (pos.includes('wide receiver') || pos === 'wr') hints.push('Wide Receiver');
   else if (pos.includes('running back') || pos === 'rb') hints.push('Running Back');
   else if (pos.includes('linebacker') || pos === 'lb') hints.push('Linebacker');
-  else if (pos.includes('defensive') && pos.includes('end')) hints.push('Pass Rusher');
+  else if (pos.includes('tight end') || pos === 'te') hints.push('Tight End');
   else if (pos.includes('cornerback') || pos === 'cb') hints.push('Cornerback');
   else if (pos.includes('safety')) hints.push('Safety');
-  else if (pos.includes('tight end') || pos === 'te') hints.push('Tight End');
-  else if (pos.includes('offensive line') || pos.includes('tackle') || pos.includes('guard') || pos.includes('center')) hints.push('Lineman');
+  else if (pos.includes('tackle') || pos.includes('guard') || pos.includes('lineman')) hints.push('Lineman');
   else if (pos.includes('point guard') || pos === 'pg') hints.push('Point Guard');
   else if (pos.includes('shooting guard') || pos === 'sg') hints.push('Shooting Guard');
   else if (pos.includes('small forward') || pos === 'sf') hints.push('Small Forward');
@@ -157,40 +231,24 @@ export const getHint = (athlete) => {
   else if (pos.includes('first base') || pos === '1b') hints.push('First Baseman');
   else if (pos.includes('second base') || pos === '2b') hints.push('Second Baseman');
   else if (pos.includes('third base') || pos === '3b') hints.push('Third Baseman');
-  else if (pos.includes('goalie') || pos.includes('goalkeeper') || pos.includes('goaltender')) hints.push('Goalie');
-  else if (pos.includes('winger') || pos.includes('wing')) hints.push('Winger');
-  else if (pos.includes('defenseman') || pos.includes('defence')) hints.push('Defenseman');
+  else if (pos.includes('goalie') || pos.includes('goaltender')) hints.push('Goalie');
+  else if (pos.includes('winger') || pos === 'rw' || pos === 'lw') hints.push('Winger');
+  else if (pos.includes('defenseman')) hints.push('Defenseman');
   else if (pos.includes('forward')) hints.push('Forward');
-  else if (pos && pos.length > 0) hints.push(athlete.position); // fallback: use raw position
+  else if (athlete.position) hints.push(athlete.position);
 
-  // League conference/division hints
-  const league = athlete.league || '';
-  if (league === 'NBA') hints.push('NBA Player');
-  else if (league === 'NFL') hints.push('NFL Player');
-  else if (league === 'MLB') hints.push('MLB Player');
-  else if (league === 'NHL') hints.push('NHL Player');
-
-  // Name-based hints (first letter)
+  // Secondary hints
   const firstName = (athlete.name || '').split(' ')[0];
-  if (firstName) hints.push(`First name starts with "${firstName[0].toUpperCase()}"`);
-
-  // Team name hint (vague)
+  if (firstName) hints.push(`First name: "${firstName[0].toUpperCase()}"`);
   if (athlete.team) {
-    const teamWords = athlete.team.split(' ');
-    const lastWord = teamWords[teamWords.length - 1];
+    const lastWord = athlete.team.split(' ').pop();
     if (lastWord && lastWord.length > 3) hints.push(`Team: ${lastWord}`);
   }
 
-  // Pick a random hint from the meaningful ones (prefer position if available)
-  const positionHint = hints[0]; // first added is always position-based if found
-  const otherHints = hints.slice(1);
-
-  // 60% chance to use position, 40% chance to use another hint
-  if (positionHint && (otherHints.length === 0 || Math.random() < 0.6)) {
-    return positionHint;
-  }
-  if (otherHints.length > 0) {
-    return otherHints[Math.floor(Math.random() * otherHints.length)];
-  }
-  return positionHint || 'Unknown';
+  // 60% position, 40% secondary
+  const posHint = hints[0];
+  const others = hints.slice(1);
+  if (posHint && (others.length === 0 || Math.random() < 0.6)) return posHint;
+  if (others.length > 0) return others[Math.floor(Math.random() * others.length)];
+  return posHint || 'Unknown';
 };
