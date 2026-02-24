@@ -10,9 +10,10 @@ const DIFFICULTIES = [
   { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎', desc: 'Deep bench — brutal even for real fans' },
 ];
 
-export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark, soundOn, onToggleSound }) {
-  const [playerCount, setPlayerCount] = useState(4);
-  const [playerNames, setPlayerNames] = useState(['', '', '', '']);
+export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark, soundOn, onToggleSound, initialPlayerNames }) {
+  const savedNames = initialPlayerNames && initialPlayerNames.length >= 3 ? initialPlayerNames : null;
+  const [playerCount, setPlayerCount] = useState(savedNames ? savedNames.length : 4);
+  const [playerNames, setPlayerNames] = useState(savedNames || ['', '', '', '']);
   const [impostorCount, setImpostorCount] = useState(1);
   const [leagues, setLeagues] = useState(['NBA']);
   const [difficulty, setDifficulty] = useState('normal');
