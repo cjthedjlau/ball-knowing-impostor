@@ -402,11 +402,120 @@ const saveBKPhotoCache = (cache) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Multi-source image fallback for Normal / Legends athletes
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Encode a name for URL use
+const enc = (n) => encodeURIComponent(n);
+
+// Build candidate URLs for a known athlete (Normal/Legends)
+const getImageCandidates = (athlete) => {
+  const name = athlete.name;
+  const nameDash = name.replace(/\s+/g, '-').replace(/['.]/g, '').toLowerCase();
+  const nameUnderscore = name.replace(/\s+/g, '_');
+  const urls = [];
+
+  // 1. TheSportsDB search (returns cutout + thumb)
+  // (handled separately via API call — see fetchNLPhoto below)
+
+  // 2. Wikipedia REST API thumbnail
+  urls.push(`https://en.wikipedia.org/api/rest_v1/page/summary/${enc(name)}`);  // metadata, not direct img
+
+  // 3. ESPN athlete image patterns
+  if (athlete.league === 'NBA') {
+    urls.push(`https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${nameDash}.png&w=350&h=254`);
+  } else if (athlete.league === 'NFL') {
+    urls.push(`https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${nameDash}.png&w=350&h=254`);
+  } else if (athlete.league === 'MLB') {
+    urls.push(`https://a.espncdn.com/combiner/i?img=/i/headshots/mlb/players/full/${nameDash}.png&w=350&h=254`);
+  } else if (athlete.league === 'NHL') {
+    urls.push(`https://a.espncdn.com/combiner/i?img=/i/headshots/nhl/players/full/${nameDash}.png&w=350&h=254`);
+  }
+
+  return urls;
+};
+
+// Fetch a photo URL for a Normal/Legends athlete using TheSportsDB search
+const fetchNLPhoto = async (athlete) => {
+  const name = athlete.name;
+  try {
+    const r = await fetch(`${SPORTSDB_BASE}/searchplayers.php?p=${enc(name)}`);
+    const d = await r.json();
+    const players = d.player || [];
+    // Prefer exact name match
+    const exact = players.find(p => p.strPlayer?.toLowerCase() === name.toLowerCase());
+    const candidate = exact || players[0];
+    if (candidate) {
+      const url = candidate.strCutout || candidate.strThumb || '';
+      if (url && url.startsWith('http')) return url;
+    }
+  } catch {}
+  return null;
+};
+
+// Fetch Wikipedia thumbnail for legends
+const fetchWikiPhoto = async (name) => {
+  try {
+    const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${enc(name)}`);
+    const d = await r.json();
+    const url = d.thumbnail?.source || d.originalimage?.source || '';
+    if (url && url.startsWith('http')) return url;
+  } catch {}
+  return null;
+};
+
+// Run the full fallback chain for a Normal/Legends athlete
+// Returns the first confirmed working image URL, or null
+const resolveAthleteImage = async (athlete, isLegends) => {
+  // Step 1: TheSportsDB (best structured data)
+  const sportsdbUrl = await fetchNLPhoto(athlete);
+  if (sportsdbUrl) {
+    const ok = await validateImage(sportsdbUrl);
+    if (ok) return sportsdbUrl;
+  }
+
+  // Step 2: Wikipedia (especially good for legends)
+  if (isLegends) {
+    const wikiUrl = await fetchWikiPhoto(athlete.name);
+    if (wikiUrl) {
+      const ok = await validateImage(wikiUrl);
+      if (ok) return wikiUrl;
+    }
+  }
+
+  // Step 3: Try ESPN direct image URL patterns
+  const nameDash = athlete.name.replace(/\s+/g, '-').replace(/['.]/g, '').toLowerCase();
+  const leagueKey = athlete.league.toLowerCase();
+  const espnUrl = `https://a.espncdn.com/combiner/i?img=/i/headshots/${leagueKey}/players/full/${nameDash}.png&w=350&h=254`;
+  const espnOk = await validateImage(espnUrl);
+  if (espnOk) return espnUrl;
+
+  // For legends, also try Wikipedia as final attempt if not tried yet
+  if (!isLegends) {
+    const wikiUrl = await fetchWikiPhoto(athlete.name);
+    if (wikiUrl) {
+      const ok = await validateImage(wikiUrl);
+      if (ok) return wikiUrl;
+    }
+  }
+
+  return null;
+};
+
+const NL_PHOTO_CACHE_KEY = 'bki_nl_photos_v2';
+const getNLPhotoCache = () => {
+  try { return JSON.parse(sessionStorage.getItem(NL_PHOTO_CACHE_KEY) || '{}'); } catch { return {}; }
+};
+const saveNLPhotoCache = (cache) => {
+  try { sessionStorage.setItem(NL_PHOTO_CACHE_KEY, JSON.stringify(cache)); } catch {}
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Public API
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) => {
-  // NORMAL — active players only, no network call
+  // NORMAL — active players, photos resolved via fallback chain
   if (difficulty === 'normal') {
     onProgress?.('Loading Normal roster...');
     await new Promise(r => setTimeout(r, 300));
@@ -414,7 +523,7 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     return pool.length > 0 ? pool : NORMAL_ATHLETES;
   }
 
-  // LEGENDS — iconic retired players, no network call
+  // LEGENDS — iconic retired players, photos resolved via fallback chain (incl. Wikipedia)
   if (difficulty === 'legends') {
     onProgress?.('Loading Legends roster...');
     await new Promise(r => setTimeout(r, 300));
