@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playTap, playSneakerSqueak } from '../lib/soundSystem';
 import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, VolumeX } from 'lucide-react';
+import LeagueDecadeSelector from './LeagueDecadeSelector';
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const DIFFICULTIES = [
