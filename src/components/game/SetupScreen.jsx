@@ -62,6 +62,12 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
               <HelpCircle size={20} />
             </button>
             <button
+              onClick={onToggleSound}
+              className={`p-2.5 rounded-xl ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-600'}`}
+            >
+              {soundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
+            </button>
+            <button
               onClick={onToggleDark}
               className={`p-2.5 rounded-xl ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-600'}`}
             >
