@@ -141,7 +141,7 @@ export default function Home() {
             <DiscussionScreen
               gameState={gameState}
               darkMode={darkMode}
-              onReveal={() => setScreen('reveal')}
+              onReveal={() => { playConfirmation(gameState.leagues); setScreen('reveal'); }}
             />
           </motion.div>
         )}
