@@ -23,12 +23,13 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
     if (stage === 'suspense') {
       const t = setTimeout(() => {
         haptic([50, 100, 50, 100, 200]);
+        playImpostorReveal(gameState.leagues || []);
         setStage('reveal');
       }, 2200);
       return () => clearTimeout(t);
     }
     if (stage === 'reveal') {
-      const t = setTimeout(() => setStage('athlete'), 2800);
+      const t = setTimeout(() => { playSuccess(); setStage('athlete'); }, 2800);
       return () => clearTimeout(t);
     }
   }, [stage]);
