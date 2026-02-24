@@ -78,9 +78,7 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     onProgress?.(`Fetching ${league} teams...`);
     const teams = await fetchTeams(league);
     if (!teams.length) continue;
-    // Use all teams for harder difficulties to widen the obscure player pool
-    const maxTeams = difficulty === 'easy' ? 6 : difficulty === 'medium' ? 10 : teams.length;
-    const selected = shuffle(teams).slice(0, maxTeams);
+    const selected = shuffle(teams).slice(0, config.maxTeams);
 
     onProgress?.(`Loading ${league} rosters...`);
     const rosters = await Promise.all(selected.map(t => fetchPlayers(t.idTeam)));
