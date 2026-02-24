@@ -71,6 +71,7 @@ export default function Home() {
     const firstPlayer = config.playerNames[Math.floor(Math.random() * config.playerNames.length)];
 
     setGameState({ ...config, athlete, roles, hint, firstPlayer });
+    playTransition(config.leagues);
     setScreen('roles');
   };
 
