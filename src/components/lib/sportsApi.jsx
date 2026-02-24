@@ -165,7 +165,7 @@ const shuffle = (arr) => {
   return a;
 };
 
-// (validateImage is defined at top of file as an export)
+
 
 const fetchTeams   = async (league) => {
   try {
