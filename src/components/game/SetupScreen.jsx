@@ -179,7 +179,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
                   <span className="font-bold text-sm">{d.label}</span>
                   <span className="text-xs opacity-70">{d.desc}</span>
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
