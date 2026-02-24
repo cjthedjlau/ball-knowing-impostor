@@ -116,6 +116,7 @@ export default function Home() {
               onToggleSound={toggleSound}
               onStart={startGame}
               onHowToPlay={() => setScreen('howtoplay')}
+              initialPlayerNames={setupConfig?.playerNames}
             />
           </motion.div>
         )}
