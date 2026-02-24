@@ -154,7 +154,7 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onPlayAgain={handlePlayAgain}
-              onChangeSettings={() => { setScreen('setup'); setGameState(null); }}
+              onChangeSettings={() => { clearSessionHistory(); usedIdsRef.current = []; poolRef.current = []; setScreen('setup'); setGameState(null); }}
             />
           </motion.div>
         )}
