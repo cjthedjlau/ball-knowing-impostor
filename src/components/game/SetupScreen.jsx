@@ -9,7 +9,7 @@ const DIFFICULTIES = [
   { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎', desc: 'Deep bench — brutal even for real fans' },
 ];
 
-export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark }) {
+export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark, soundOn, onToggleSound }) {
   const [playerCount, setPlayerCount] = useState(4);
   const [playerNames, setPlayerNames] = useState(['', '', '', '']);
   const [impostorCount, setImpostorCount] = useState(1);
