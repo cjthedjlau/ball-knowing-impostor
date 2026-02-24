@@ -5,10 +5,40 @@ import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, Volum
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const DIFFICULTIES = [
-  { id: 'normal',        label: 'Normal',         emoji: '🏀', desc: 'Active stars — everyone knows them' },
-  { id: 'legends',       label: 'Legends',        emoji: '🏆', desc: 'Iconic retired GOATs — timeless legends' },
-  { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎', desc: 'Deep bench — brutal even for real fans' },
+  { id: 'normal',        label: 'Normal',         desc: 'Active stars — everyone knows them' },
+  { id: 'legends',       label: 'Legends',        desc: 'Iconic retired GOATs — timeless legends' },
+  { id: 'ballknowledge', label: 'Ball Knowledge', desc: 'Deep bench — brutal even for real fans' },
 ];
+
+// Ordered display — always MLB, NBA, NFL, NHL
+const LEAGUE_ORDER = ['MLB', 'NBA', 'NFL', 'NHL'];
+const LEAGUE_EMOJI_MAP = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
+
+function LeagueEmojiCluster({ leagues }) {
+  const active = LEAGUE_ORDER.filter(l => leagues.includes(l));
+  const OFFSET = 14; // px per emoji
+  const totalWidth = active.length > 1 ? OFFSET * (active.length - 1) + 24 : 24;
+
+  return (
+    <div className="relative flex-shrink-0" style={{ width: totalWidth, height: 28 }}>
+      <AnimatePresence>
+        {active.map((league, i) => (
+          <motion.span
+            key={league}
+            initial={{ x: -10, opacity: 0, scale: 0.6 }}
+            animate={{ x: i * OFFSET, opacity: 1, scale: 1 }}
+            exit={{ x: -10, opacity: 0, scale: 0.6 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 28 }}
+            className="absolute top-0 left-0 text-xl leading-none select-none"
+            style={{ zIndex: i }}
+          >
+            {LEAGUE_EMOJI_MAP[league]}
+          </motion.span>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark, soundOn, onToggleSound, initialPlayerNames }) {
   const savedNames = initialPlayerNames && initialPlayerNames.length >= 3 ? initialPlayerNames : null;
