@@ -4,6 +4,26 @@
 
 const SPORTSDB_BASE = 'https://www.thesportsdb.com/api/v1/json/3';
 
+// Strict league → emoji mapping. Set once, never re-derived at display time.
+export const LEAGUE_EMOJI = {
+  MLB: '⚾',
+  NBA: '🏀',
+  NFL: '🏈',
+  NHL: '🏒',
+};
+
+// Validate that an image URL is reachable and renders (returns true/false)
+export const validateImage = (url) => {
+  if (!url || !url.startsWith('http')) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    const img = new Image();
+    const t = setTimeout(() => resolve(false), 6000);
+    img.onload  = () => { clearTimeout(t); resolve(img.naturalWidth > 10); };
+    img.onerror = () => { clearTimeout(t); resolve(false); };
+    img.src = url;
+  });
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // NORMAL MODE — Active current-season players only (hardcoded, curated)
 // ─────────────────────────────────────────────────────────────────────────────
