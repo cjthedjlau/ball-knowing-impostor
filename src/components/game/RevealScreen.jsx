@@ -9,6 +9,7 @@ const STAGES = ['suspense', 'reveal', 'athlete'];
 export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChangeSettings }) {
   const { playerNames, roles, athlete, impostorCount } = gameState;
   const [stage, setStage] = useState('suspense');
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const impostors = playerNames.filter(n => roles[n] === 'impostor');
 
