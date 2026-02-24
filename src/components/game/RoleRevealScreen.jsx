@@ -16,7 +16,12 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
   const reveal = () => {
     haptic();
     playPop();
-    setRevealed(true);
+    if (isImpostor) {
+      setImpostorFlash(true);
+      setTimeout(() => { setImpostorFlash(false); setRevealed(true); }, 350);
+    } else {
+      setRevealed(true);
+    }
   };
 
   return (
