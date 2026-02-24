@@ -31,6 +31,18 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
         {fmt(seconds)}
       </motion.div>
 
+      {/* First player banner */}
+      <motion.div
+        initial={{ scale: 0.85, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.05 }}
+        className={`w-full max-w-sm mb-4 rounded-2xl px-6 py-4 text-center ${darkMode ? 'bg-[#3b82f6]/20 border border-[#3b82f6]/40' : 'bg-blue-50 border border-blue-200'}`}
+      >
+        <p className={`text-xs font-bold tracking-widest uppercase mb-1 ${darkMode ? 'text-[#3b82f6]' : 'text-blue-500'}`}>Goes First</p>
+        <p className={`text-2xl font-black ${text}`}>{gameState.firstPlayer}</p>
+        <p className={`text-xs mt-1 ${darkMode ? 'text-white/50' : 'text-slate-500'}`}>give your clue!</p>
+      </motion.div>
+
       {/* Main card */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
