@@ -54,7 +54,7 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
         <h2 className={`text-2xl font-black mb-2 ${text}`}>Discussion Time</h2>
         <p className={`text-sm leading-relaxed ${sub}`}>
           Go around the table. Each player gives a <span className={`font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>one-sentence clue</span> about the athlete.
-          Be vague enough to fool the {impostorCount === 1 ? 'impostor' : 'impostors'} — but not so vague you seem suspicious.
+          Be vague enough to fool the {impostorCount === 1 ? 'imposter' : 'imposters'} — but not so vague you seem suspicious.
         </p>
 
         <div className={`mt-6 p-4 rounded-2xl ${darkMode ? 'bg-white/5 border border-white/10' : 'bg-slate-50 border border-slate-200'}`}>
@@ -70,7 +70,7 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
 
         <div className={`mt-4 p-3 rounded-xl ${darkMode ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-yellow-50 border border-yellow-200'}`}>
           <p className="text-yellow-500 text-xs">
-            🎯 Find the {impostorCount === 1 ? 'impostor' : `${impostorCount} impostors`} hiding among you!
+            🎯 Find the {impostorCount === 1 ? 'imposter' : `${impostorCount} imposters`} hiding among you!
           </p>
         </div>
       </motion.div>
@@ -92,7 +92,7 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
             onClick={() => { haptic(); onReveal(); }}
             className="w-full py-5 rounded-2xl bg-[#3b82f6] text-white font-black text-lg flex items-center justify-center gap-3"
           >
-            <Eye size={22} /> Reveal the Impostor
+            <Eye size={22} /> Reveal the Imposter
           </motion.button>
         </motion.div>
       </motion.div>

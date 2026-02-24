@@ -59,7 +59,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             >
               🕵️
             </motion.div>
-            <p className={`text-2xl font-black ${text}`}>The impostor was...</p>
+            <p className={`text-2xl font-black ${text}`}>The imposter was...</p>
             <motion.div className="flex gap-2 justify-center mt-4">
               {[0, 1, 2].map(i => (
                 <motion.div
@@ -91,7 +91,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             </motion.div>
             <div className={`${card} rounded-3xl px-8 py-6 shadow-xl`}>
               <p className={`text-xs font-bold tracking-widest uppercase mb-3 text-red-400`}>
-                {impostorCount > 1 ? 'The Impostors Were' : 'The Impostor Was'}
+                {impostorCount > 1 ? 'The Imposters Were' : 'The Imposter Was'}
               </p>
               {impostors.map(name => (
                 <motion.p
@@ -117,7 +117,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             {/* Impostors */}
             <div className={`${card} rounded-3xl p-4 mb-4 text-center`}>
               <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-1">
-                {impostorCount > 1 ? 'The Impostors' : 'The Impostor'}
+                  {impostorCount > 1 ? 'The Imposters' : 'The Imposter'}
               </p>
               <p className={`text-xl font-black ${text}`}>{impostors.join(' & ')}</p>
             </div>

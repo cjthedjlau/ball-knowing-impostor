@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 
 const STEPS = [
   { emoji: '⚙️', title: 'Set Up',       desc: 'Enter player names, pick leagues, and choose a difficulty.' },
-  { emoji: '🔒', title: 'Get Your Role', desc: 'Each player secretly taps their name to see if they\'re a Crewmate or Impostor.' },
+  { emoji: '🔒', title: 'Get Your Role', desc: 'Each player secretly taps their name to see if they\'re a Crewmate or Imposter.' },
   { emoji: '🧠', title: 'Give Clues',   desc: 'Each player gives ONE vague sentence about the athlete. Don\'t make it too obvious!' },
   { emoji: '🗳️', title: 'Vote',         desc: 'Discuss and vote on who you think the impostor is.' },
   { emoji: '🎯', title: 'Reveal',       desc: 'Tap "Reveal" to unveil the impostor and the secret athlete.' },
@@ -27,7 +27,7 @@ export default function HowToPlayScreen({ darkMode, onBack }) {
         </button>
         <div>
           <h1 className={`text-xl font-black ${text}`}>How to Play</h1>
-          <p className={`text-xs ${sub}`}>Ball Knowing Impostor</p>
+          <p className={`text-xs ${sub}`}>Ball Knowing Imposter</p>
         </div>
       </div>
 
