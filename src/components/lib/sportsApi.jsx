@@ -240,21 +240,22 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) 
     const rosters = await Promise.all(selected.map(t => fetchPlayers(t.idTeam)));
 
     rosters.forEach((players, i) => {
-      const team = selected[i];
-      // Slots 18+ are deep bench — skip starters/stars
-      players.slice(18).forEach(p => {
-        const img = p.strCutout || p.strThumb || '';
-        if (img && p.strPlayer && p.strPlayer.trim().length > 2) {
-          candidates.push({
-            id: p.idPlayer,
-            name: p.strPlayer,
-            team: p.strTeam || team.strTeam || '',
-            league,
-            position: p.strPosition || '',
-            photoUrl: img,
-          });
-        }
-      });
+    const team = selected[i];
+    // Slots 18+ are deep bench — skip starters/stars
+    players.slice(18).forEach(p => {
+      const img = p.strCutout || p.strThumb || '';
+      if (img && p.strPlayer && p.strPlayer.trim().length > 2) {
+        candidates.push({
+          id: p.idPlayer,
+          name: p.strPlayer,
+          team: p.strTeam || team.strTeam || '',
+          league,
+          position: p.strPosition || '',
+          photoUrl: img,
+          emoji: LEAGUE_EMOJI[league] || '🏅',
+        });
+      }
+    });
     });
   }
 
