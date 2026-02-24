@@ -130,7 +130,7 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
 }
 
 export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed }) {
-  const { playerNames, roles, athlete, hintEnabled } = gameState;
+  const { playerNames, roles, athlete, hintEnabled, difficulty } = gameState;
   const [activePlayer, setActivePlayer] = useState(null);
   const [done, setDone] = useState(new Set());
 
