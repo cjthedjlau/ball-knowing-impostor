@@ -514,7 +514,7 @@ const saveNLPhotoCache = (cache) => {
 // Public API
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const buildAthletePool = async (selectedLeagues, difficulty, onProgress) => {
+export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, selectedDecades = []) => {
   // NORMAL — active players, photos resolved via fallback chain
   if (difficulty === 'normal') {
     onProgress?.('Loading Normal roster...');
