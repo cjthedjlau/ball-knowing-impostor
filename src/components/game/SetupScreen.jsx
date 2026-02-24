@@ -205,7 +205,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
                     : darkMode ? 'bg-white/5 text-white/60 border border-white/10' : 'bg-slate-50 text-slate-600 border border-slate-200'
                 }`}
               >
-                <span className="text-xl">{d.emoji}</span>
+                <LeagueEmojiCluster leagues={leagues} />
                 <div className="flex flex-col items-start text-left">
                   <span className="font-bold text-sm">{d.label}</span>
                   <span className="text-xs opacity-70">{d.desc}</span>
