@@ -66,6 +66,7 @@ export default function Home() {
     const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, config.difficulty);
     if (athlete) usedIdsRef.current.push(athlete.id);
 
+    if (athlete) addToSessionHistory(athlete.id);
     const roles = assignRoles(config.playerNames, config.impostorCount);
     const hint = getHint(athlete);
     const firstPlayer = config.playerNames[Math.floor(Math.random() * config.playerNames.length)];
