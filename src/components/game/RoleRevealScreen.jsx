@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Check } from 'lucide-react';
-import { playPop, playTap, playConfirmation } from '../lib/soundSystem';
+import { playPop, playTap } from '../lib/soundSystem';
 
 const haptic = () => { try { navigator.vibrate?.([30]); } catch {} };
 
 function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficulty }) {
   const [revealed, setRevealed] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
-...
   const bg = darkMode ? 'bg-[#0a0f1e]' : 'bg-slate-100';
   const card = darkMode ? 'bg-[#131c2e]' : 'bg-white';
   const text = darkMode ? 'text-white' : 'text-slate-900';
@@ -16,28 +15,11 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
   const reveal = () => {
     haptic();
     playPop();
-    if (isImpostor) {
-      setImpostorFlash(true);
-      setTimeout(() => { setImpostorFlash(false); setRevealed(true); }, 350);
-    } else {
-      setRevealed(true);
-    }
+    setRevealed(true);
   };
 
   return (
     <div className={`fixed inset-0 ${bg} flex flex-col items-center justify-center p-6 z-50`}>
-      <AnimatePresence>
-        {impostorFlash && (
-          <motion.div
-            key="flash"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.85 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.12 }}
-            className="absolute inset-0 bg-red-600 z-50 pointer-events-none"
-          />
-        )}
-      </AnimatePresence>
       <p className={`text-sm font-bold tracking-widest uppercase mb-8 ${darkMode ? 'text-white/40' : 'text-slate-400'}`}>
         {player}'s turn
       </p>
