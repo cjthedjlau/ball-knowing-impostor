@@ -5,9 +5,9 @@ import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, Volum
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const DIFFICULTIES = [
-  { id: 'normal',        label: 'Normal',         desc: 'Active stars — everyone knows them' },
-  { id: 'legends',       label: 'Legends',        desc: 'Iconic retired GOATs — timeless legends' },
-  { id: 'ballknowledge', label: 'Ball Knowledge', desc: 'Deep bench — brutal even for real fans' },
+  { id: 'normal',        label: 'Normal',         emoji: null,  desc: 'Active stars — everyone knows them' },
+  { id: 'legends',       label: 'Legends',        emoji: '🏆',  desc: 'Iconic retired GOATs — timeless legends' },
+  { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎',  desc: 'Deep bench — brutal even for real fans' },
 ];
 
 // Ordered display — always MLB, NBA, NFL, NHL
