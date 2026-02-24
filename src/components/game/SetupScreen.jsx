@@ -164,10 +164,11 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           <p className={`font-bold ${text} mb-3`}>Difficulty</p>
           <div className="space-y-2">
             {DIFFICULTIES.map(d => (
-              <button
+              <motion.button
                 key={d.id}
-                onClick={() => setDifficulty(d.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                onClick={() => { setDifficulty(d.id); playTap(); }}
+                whileTap={{ scale: 0.97 }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors relative overflow-hidden ${
                   difficulty === d.id
                     ? d.id === 'legends' ? 'bg-yellow-500 text-black' : 'bg-[#3b82f6] text-white'
                     : darkMode ? 'bg-white/5 text-white/60 border border-white/10' : 'bg-slate-50 text-slate-600 border border-slate-200'
