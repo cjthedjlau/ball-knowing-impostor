@@ -137,7 +137,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
                 </div>
               ) : (
                 <div className={`relative flex flex-col items-center justify-center py-10 px-6 ${gameState.difficulty === 'legends' ? 'bg-gradient-to-br from-yellow-900/60 to-[#0a1628]' : 'bg-gradient-to-br from-[#1e3a6e] to-[#0a1628]'}`}>
-                  <div className="text-7xl mb-3">{gameState.difficulty === 'legends' ? '🏆' : '🏀'}</div>
+                  <div className="text-7xl mb-3">{gameState.difficulty === 'legends' ? '🏆' : (athlete.emoji || '🏅')}</div>
                   <p className="text-white font-black text-2xl text-center leading-tight">{athlete.name}</p>
                   <p className="text-white/60 text-sm mt-1">{athlete.team}</p>
                   {athlete.position && <p className="text-white/40 text-xs mt-0.5">{athlete.position}</p>}
