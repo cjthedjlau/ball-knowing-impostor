@@ -117,10 +117,17 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             <div className={`${card} rounded-3xl overflow-hidden shadow-2xl`}>
               {athlete.photoUrl ? (
                 <div className="relative">
+                  {!imgLoaded && (
+                    <div className="w-full h-72 flex items-center justify-center bg-gradient-to-br from-[#0d1b35] to-[#0a0f1e]">
+                      <div className="w-12 h-12 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
+                    </div>
+                  )}
                   <img
                     src={athlete.photoUrl}
                     alt={athlete.name}
-                    className="w-full h-72 object-cover object-top"
+                    className={`w-full h-72 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
+                    onLoad={() => setImgLoaded(true)}
+                    onError={() => setImgLoaded(true)}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   <div className="absolute top-3 right-3 flex gap-2">
