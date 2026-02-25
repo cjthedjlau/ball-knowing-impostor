@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { buildAthletePool, pickValidatedAthlete, getHint, clearSessionHistory, addToSessionHistory } from '../components/lib/sportsApi';
 import { buildExpansionPool, buildTeamPackPool } from '../components/game/expansionPacks/expansionPacksApi';
+import { runSupplementationIfOnline, clearSuppCache } from '../components/lib/apiSupplementation';
 import { playTransition, playConfirmation, setSoundEnabled, isSoundEnabled } from '../components/lib/soundSystem';
 import LoadingScreen from '../components/game/LoadingScreen';
 import SetupScreen from '../components/game/SetupScreen';
