@@ -132,7 +132,10 @@ export default function Home() {
     }
 
     setLoadingMsg('Validating athlete photo...');
-    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, setupConfig.difficulty, setupConfig.leagues);
+    // Merge supplementary athletes into pool for subsequent rounds
+    const suppFlat = Object.values(suppPoolRef.current).flat();
+    const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
+    const athlete = await pickValidatedAthlete(mergedPool, usedIdsRef.current, handleProgressMsg, setupConfig.difficulty, setupConfig.leagues);
     if (athlete) { usedIdsRef.current.push(athlete.id); addToSessionHistory(athlete.id); }
 
     const roles = assignRoles(setupConfig.playerNames, setupConfig.impostorCount);
