@@ -63,7 +63,7 @@ export default function Home() {
     usedIdsRef.current = [];
 
     setLoadingMsg('Validating athlete photo...');
-    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, config.difficulty);
+    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, config.difficulty, config.leagues);
     if (athlete) usedIdsRef.current.push(athlete.id);
 
     if (athlete) addToSessionHistory(athlete.id);
