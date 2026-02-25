@@ -100,10 +100,10 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
       <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 pt-12 pb-6 sticky top-0 z-10 shadow-sm`}>
         <div className="flex items-center justify-between max-w-lg mx-auto">
           <div className="flex flex-col items-center text-center flex-1">
-            <h1 className={`text-3xl font-black tracking-tight flex items-center gap-2 ${text}`}>
-              🏆 Ball Knowing 🏆
+            <h1 className={`text-3xl font-black tracking-tight ${text}`}>
+              🏆 Ball Knowing
             </h1>
-            <p className="text-[#3b82f6] font-bold text-base tracking-widest uppercase mt-0.5">Imposter</p>
+            <p className="text-[#3b82f6] font-black tracking-[0.25em] uppercase w-full text-center" style={{ fontSize: 'clamp(0.85rem, 4.5vw, 1.25rem)' }}>Imposter</p>
           </div>
           <div className="flex gap-2">
             <button
