@@ -201,7 +201,7 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onPlayAgain={handlePlayAgain}
-              onChangeSettings={() => { clearSessionHistory(); usedIdsRef.current = []; poolRef.current = []; setScreen('setup'); setGameState(null); }}
+              onChangeSettings={() => { clearSessionHistory(); clearSuppCache(); usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {}; setScreen('setup'); setGameState(null); }}
             />
           </motion.div>
         )}
