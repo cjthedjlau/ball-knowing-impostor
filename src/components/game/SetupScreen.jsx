@@ -289,40 +289,67 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
         </div>
 
         {/* Difficulty */}
-        <div className={`${card} rounded-2xl p-5`}>
-          <p className={`font-bold ${text} mb-3`}>Difficulty</p>
-          <div className="space-y-2">
-            {DIFFICULTIES.map(d => (
-              <React.Fragment key={d.id}>
-                <motion.button
-                  onClick={() => { setDifficulty(d.id); playTap(); }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors relative overflow-hidden ${
-                    difficulty === d.id
-                      ? d.id === 'legends' ? 'bg-yellow-500 text-black' : 'bg-[#3b82f6] text-white'
-                      : darkMode ? 'bg-white/5 text-white/60 border border-white/10' : 'bg-slate-50 text-slate-600 border border-slate-200'
-                  }`}
-                >
-                  {d.emoji
-                    ? <span className="text-xl flex-shrink-0">{d.emoji}</span>
-                    : <LeagueEmojiCluster leagues={allActiveLeagues} />
-                  }
-                  <div className="flex flex-col items-start text-left">
-                    <span className="font-bold text-sm">{d.label}</span>
-                    <span className="text-xs opacity-70">{d.desc}</span>
-                  </div>
-                </motion.button>
-                {d.id === 'legends' && difficulty === 'legends' && (
-                  <LeagueDecadeSelector
-                    darkMode={darkMode}
-                    selectedDecades={selectedDecades}
-                    onChange={setSelectedDecades}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
+        <AnimatePresence initial={false}>
+          {teamPackActive ? (
+            <motion.div
+              key="team-pack-mode"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className={`${card} rounded-2xl p-5 flex items-center gap-3`}>
+                <Zap size={18} className="text-[#3b82f6] flex-shrink-0" />
+                <p className="font-bold text-[#3b82f6] text-sm">Team Pack Mode Active</p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="difficulty-selector"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className={`${card} rounded-2xl p-5`}>
+                <p className={`font-bold ${text} mb-3`}>Difficulty</p>
+                <div className="space-y-2">
+                  {DIFFICULTIES.map(d => (
+                    <React.Fragment key={d.id}>
+                      <motion.button
+                        onClick={() => { setDifficulty(d.id); playTap(); }}
+                        whileTap={{ scale: 0.97 }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors relative overflow-hidden ${
+                          difficulty === d.id
+                            ? d.id === 'legends' ? 'bg-yellow-500 text-black' : 'bg-[#3b82f6] text-white'
+                            : darkMode ? 'bg-white/5 text-white/60 border border-white/10' : 'bg-slate-50 text-slate-600 border border-slate-200'
+                        }`}
+                      >
+                        {d.emoji
+                          ? <span className="text-xl flex-shrink-0">{d.emoji}</span>
+                          : <LeagueEmojiCluster leagues={allActiveLeagues} />
+                        }
+                        <div className="flex flex-col items-start text-left">
+                          <span className="font-bold text-sm">{d.label}</span>
+                          <span className="text-xs opacity-70">{d.desc}</span>
+                        </div>
+                      </motion.button>
+                      {d.id === 'legends' && difficulty === 'legends' && (
+                        <LeagueDecadeSelector
+                          darkMode={darkMode}
+                          selectedDecades={selectedDecades}
+                          onChange={setSelectedDecades}
+                        />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Hint Toggle */}
         <div className={`${card} rounded-2xl p-5 flex items-center justify-between`}>
