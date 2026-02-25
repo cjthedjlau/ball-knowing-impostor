@@ -218,6 +218,7 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onAllRevealed={() => { playTransition(gameState.leagues); setScreen('discussion'); }}
+              onBack={() => { clearSessionHistory(); clearSuppCache(); usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {}; setGameState(null); navigate('#setup', { replace: true }); }}
             />
           </motion.div>
         )}
@@ -228,6 +229,7 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onReveal={() => { playConfirmation(gameState.leagues); setScreen('reveal'); }}
+              onBack={() => { clearSessionHistory(); clearSuppCache(); usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {}; setGameState(null); navigate('#setup', { replace: true }); }}
             />
           </motion.div>
         )}
@@ -238,6 +240,7 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onPlayAgain={handlePlayAgain}
+              onBack={() => { clearSessionHistory(); clearSuppCache(); usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {}; setGameState(null); navigate('#setup', { replace: true }); }}
               onChangeSettings={() => {
                 clearSessionHistory(); clearSuppCache();
                 usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {};
