@@ -6,7 +6,8 @@ import LeagueDecadeSelector from './LeagueDecadeSelector';
 import ExpansionPacksModal from './expansionPacks/ExpansionPacksModal';
 import { EXPANSION_LEAGUE_EMOJI } from './expansionPacks/expansionData';
 
-const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
+const STANDARD_LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
+const EXPANSION_LEAGUE_LABELS = { PGA: '⛳ PGA', FIFA: '⚽ FIFA', NCAAF: '🏈 NCAAF', NCAAMB: '🏀 NCAAMB' };
 const DIFFICULTIES = [
   { id: 'normal',        label: 'Normal',         emoji: null,  desc: 'Active stars — everyone knows them' },
   { id: 'legends',       label: 'Legends',        emoji: '🏆',  desc: 'Iconic retired GOATs — timeless legends' },
