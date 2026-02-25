@@ -107,7 +107,8 @@ export default function Home() {
     // Merge supplementary athletes (if already available) into pool for first pick
     const suppFlat = Object.values(suppPoolRef.current).flat();
     const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
-    const athlete = await pickValidatedAthlete(mergedPool, usedIdsRef.current, handleProgressMsg, config.difficulty, config.leagues);
+    const standardLeaguesForValidation = (config.leagues || []).filter(l => !EXPANSION_IDS.includes(l));
+    const athlete = await pickValidatedAthlete(mergedPool, usedIdsRef.current, handleProgressMsg, config.difficulty, standardLeaguesForValidation);
     if (athlete) usedIdsRef.current.push(athlete.id);
 
     if (athlete) addToSessionHistory(athlete.id);
