@@ -129,6 +129,7 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal, onBack
       </motion.div>
 
       <p className={`mt-4 text-xs text-center ${sub}`}>Ready? Tap when everyone has voted.</p>
+      </div>{/* end flex-1 */}
     </div>
   );
 }

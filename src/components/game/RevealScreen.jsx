@@ -7,10 +7,11 @@ const haptic = (pattern) => { try { navigator.vibrate?.(pattern || [30]); } catc
 
 const STAGES = ['suspense', 'reveal', 'athlete'];
 
-export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChangeSettings }) {
+export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChangeSettings, onBack }) {
   const { playerNames, roles, athlete, impostorCount } = gameState;
   const [stage, setStage] = useState('suspense');
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const impostors = playerNames.filter(n => roles[n] === 'impostor');
 
