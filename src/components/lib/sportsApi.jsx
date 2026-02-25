@@ -1538,15 +1538,21 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
   if (difficulty === 'normal') {
     onProgress?.('Loading Normal roster...');
     await new Promise(r => setTimeout(r, 300));
-    const pool = NORMAL_ATHLETES.filter(a => selectedLeagues.includes(a.league));
-    return shuffle(pool.length > 0 ? pool : NORMAL_ATHLETES);
+    // Hard filter: only athletes whose league is explicitly in selectedLeagues
+    const pool = NORMAL_ATHLETES
+      .filter(a => selectedLeagues.includes(a.league) && VALID_LEAGUES.includes(a.league))
+      .map(stampSportTag);
+    return shuffle(pool.length > 0 ? pool : NORMAL_ATHLETES.map(stampSportTag));
   }
 
   if (difficulty === 'legends') {
     onProgress?.('Loading Legends roster...');
     await new Promise(r => setTimeout(r, 300));
-    let pool = LEGENDS_ATHLETES.filter(a => selectedLeagues.includes(a.league));
-    if (pool.length === 0) pool = [...LEGENDS_ATHLETES];
+    // Hard filter at source
+    let pool = LEGENDS_ATHLETES
+      .filter(a => selectedLeagues.includes(a.league) && VALID_LEAGUES.includes(a.league))
+      .map(stampSportTag);
+    if (pool.length === 0) pool = LEGENDS_ATHLETES.map(stampSportTag);
     if (selectedDecades && selectedDecades.length > 0) {
       const filtered = pool.filter(a => (a.decades || []).some(d => selectedDecades.includes(d)));
       if (filtered.length > 0) pool = filtered;
@@ -1554,9 +1560,11 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
     return shuffle(pool);
   }
 
-  // BALL KNOWLEDGE
-  const filteredBK = BALL_KNOWLEDGE_ATHLETES.filter(a => selectedLeagues.includes(a.league));
-  const pool = shuffle(filteredBK.length > 0 ? filteredBK : BALL_KNOWLEDGE_ATHLETES);
+  // BALL KNOWLEDGE — hard filter at source
+  const filteredBK = BALL_KNOWLEDGE_ATHLETES
+    .filter(a => selectedLeagues.includes(a.league) && VALID_LEAGUES.includes(a.league))
+    .map(stampSportTag);
+  const pool = shuffle(filteredBK.length > 0 ? filteredBK : BALL_KNOWLEDGE_ATHLETES.map(stampSportTag));
 
   const photoCache = getBKPhotoCache();
   const needsPhoto = pool.filter(a => !photoCache[a.id]);
