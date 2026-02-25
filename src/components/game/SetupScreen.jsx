@@ -58,6 +58,31 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [showExpansionModal, setShowExpansionModal] = useState(false);
   const [priorDifficulty, setPriorDifficulty] = useState(null);
 
+  // Pull-to-refresh
+  const [pullY, setPullY] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const touchStartY = React.useRef(null);
+  const scrollRef = React.useRef(null);
+
+  const handleTouchStart = (e) => {
+    const el = scrollRef.current;
+    if (el && el.scrollTop === 0) touchStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchMove = (e) => {
+    if (touchStartY.current === null) return;
+    const delta = e.touches[0].clientY - touchStartY.current;
+    if (delta > 0) setPullY(Math.min(delta * 0.4, 70));
+  };
+  const handleTouchEnd = () => {
+    if (pullY > 50) {
+      setRefreshing(true);
+      setTimeout(() => { setRefreshing(false); setPullY(0); touchStartY.current = null; }, 1000);
+    } else {
+      setPullY(0);
+      touchStartY.current = null;
+    }
+  };
+
   const EXPANSION_IDS = ['PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
   const expansionLeagues = leagues.filter(l => EXPANSION_IDS.includes(l));
 
