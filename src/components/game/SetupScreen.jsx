@@ -207,6 +207,39 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
               </motion.button>
             ))}
           </div>
+
+          {/* Expansion Packs Button */}
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={() => { setShowExpansionModal(true); playTap(); }}
+            className={`mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-colors border ${
+              expansionLeagues.length > 0 || selectedTeamPack
+                ? 'border-[#3b82f6] text-[#3b82f6] bg-[#3b82f6]/10'
+                : darkMode ? 'border-white/15 text-white/50 bg-white/5' : 'border-slate-200 text-slate-500 bg-slate-50'
+            }`}
+          >
+            <Zap size={15} className="text-[#3b82f6]" />
+            Expansion Packs
+            {(expansionLeagues.length > 0 || selectedTeamPack) && (
+              <span className="bg-[#3b82f6] text-white text-xs font-black px-1.5 py-0.5 rounded-full">
+                {expansionLeagues.length + (selectedTeamPack ? 1 : 0)}
+              </span>
+            )}
+          </motion.button>
+
+          {/* Active team pack indicator */}
+          {selectedTeamPack && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mt-2 flex items-center gap-2 px-3 py-2 rounded-xl ${darkMode ? 'bg-[#3b82f6]/10' : 'bg-blue-50'}`}
+            >
+              <span className="text-sm">📦</span>
+              <span className={`text-xs font-bold ${darkMode ? 'text-[#3b82f6]' : 'text-blue-600'}`}>
+                Team Pack: {selectedTeamPack}
+              </span>
+            </motion.div>
+          )}
         </div>
 
         {/* Difficulty */}
