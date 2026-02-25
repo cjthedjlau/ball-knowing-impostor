@@ -89,7 +89,6 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
 
   const toggleLeague = (l) => {
     if (leagues.includes(l)) {
-      if (leagues.length === 1) return;
       setLeagues(leagues.filter(x => x !== l));
     } else {
       setLeagues([...leagues, l]);
