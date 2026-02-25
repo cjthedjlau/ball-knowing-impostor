@@ -131,7 +131,7 @@ export default function Home() {
     if (!pool || pool.length === 0) {
       const teamPacks = setupConfig.selectedTeamPacks || (setupConfig.selectedTeamPack ? [setupConfig.selectedTeamPack] : []);
       if (teamPacks.length > 0) {
-        pool = teamPacks.flatMap(tp => buildTeamPackPool(tp, setupConfig.difficulty)).sort(() => Math.random() - 0.5);
+        pool = teamPacks.flatMap(tp => buildTeamPackPool(tp)).sort(() => Math.random() - 0.5);
       } else {
         const allLeagues = setupConfig.leagues || [];
         const standardLeagues = allLeagues.filter(l => !EXPANSION_IDS_PA.includes(l));
