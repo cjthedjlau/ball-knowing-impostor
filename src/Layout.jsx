@@ -25,10 +25,9 @@ export default function Layout({ children }) {
         }
         @media (max-width: 640px) { html { font-size: 16px; } }
         /* iOS safe area meta */
-        @supports (padding-top: env(safe-area-inset-top)) {
-          .safe-top    { padding-top: env(safe-area-inset-top); }
-          .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-        }
+        .safe-top    { padding-top: max(1.25rem, env(safe-area-inset-top)); }
+        .safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+        button, [role="button"] { user-select: none; }
       `}</style>
       {children}
     </div>
