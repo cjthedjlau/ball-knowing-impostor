@@ -174,9 +174,8 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
       <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 safe-top pb-6 sticky top-0 z-10 shadow-sm`}>
         <div className="flex items-center justify-between max-w-lg mx-auto">
           <div className="flex flex-col items-center text-center flex-1">
-            <h1 className={`text-3xl font-black tracking-tight flex items-center gap-2 ${text}`}>
-              <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c9c3da1d6fe8c0e6d8293/5fcd390c0_LogoBKI.png" alt="BKI Logo" className="w-10 h-10 object-contain" />
-              Ball Knowing
+            <h1 className={`text-3xl font-black tracking-tight ${text}`}>
+              🏆 Ball Knowing
             </h1>
             <p className={`text-[#3b82f6] font-black tracking-[0.25em] uppercase text-3xl`}>Imposter</p>
           </div>
