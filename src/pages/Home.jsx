@@ -70,7 +70,7 @@ export default function Home() {
     const teamPacks = config.selectedTeamPacks || (config.selectedTeamPack ? [config.selectedTeamPack] : []);
     if (teamPacks.length > 0) {
       // Merge all selected team pack pools
-      const merged = teamPacks.flatMap(tp => buildTeamPackPool(tp, config.difficulty));
+      const merged = teamPacks.flatMap(tp => buildTeamPackPool(tp));
       pool = merged.sort(() => Math.random() - 0.5);
     } else {
       // Split leagues array into standard vs expansion
