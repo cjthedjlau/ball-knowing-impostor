@@ -66,12 +66,16 @@ export default function Home() {
     suppPoolRef.current = {};
 
     let pool;
-    if (config.selectedTeamPack) {
-      // Team pack replaces entire league pool
-      pool = buildTeamPackPool(config.selectedTeamPack, config.difficulty);
+    const teamPacks = config.selectedTeamPacks || (config.selectedTeamPack ? [config.selectedTeamPack] : []);
+    if (teamPacks.length > 0) {
+      // Merge all selected team pack pools
+      const merged = teamPacks.flatMap(tp => buildTeamPackPool(tp, config.difficulty));
+      pool = merged.sort(() => Math.random() - 0.5);
     } else {
       // Main leagues + expansion leagues combined
-      const mainPool = await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || []);
+      const mainPool = config.leagues && config.leagues.length > 0
+        ? await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || [])
+        : [];
       const expansionPool = config.expansionLeagues && config.expansionLeagues.length > 0
         ? buildExpansionPool(config.expansionLeagues, config.difficulty)
         : [];
@@ -79,7 +83,7 @@ export default function Home() {
       const combined = [...mainPool, ...expansionPool];
       pool = combined.sort(() => Math.random() - 0.5);
 
-      // Kick off background API supplementation (non-blocking)
+      // Kick off background API supplementation (non-blocking, only for standard leagues)
       if (config.leagues && config.leagues.length > 0) {
         const hardcodedNames = new Set(combined.map(a => a.name.toLowerCase()));
         runSupplementationIfOnline(
