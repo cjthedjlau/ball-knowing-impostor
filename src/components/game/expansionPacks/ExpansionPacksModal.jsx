@@ -96,7 +96,7 @@ export default function ExpansionPacksModal({
               <p className={`font-black text-sm tracking-widest uppercase mb-1 ${darkMode ? 'text-[#3b82f6]' : 'text-blue-600'}`}>
                 Team Packs
               </p>
-              <p className={`text-xs ${sub}`}>One team pack active at a time. Replaces the league pool.</p>
+              <p className={`text-xs ${sub}`}>Select any teams. Their pools will be merged together.</p>
             </div>
 
             {TEAM_SECTIONS.map(section => (
@@ -128,12 +128,12 @@ export default function ExpansionPacksModal({
                       <div className="px-4 pb-3 grid grid-cols-1 gap-1.5">
                         {section.teams.map(teamName => {
                           const pack = TEAM_PACKS[teamName];
-                          const active = selectedTeamPack === teamName;
+                          const active = selectedTeamPacks.includes(teamName);
                           return (
                             <motion.button
                               key={teamName}
                               whileTap={{ scale: 0.97 }}
-                              onClick={() => { onSelectTeamPack(active ? null : teamName); playTap(); }}
+                              onClick={() => { onToggleTeamPack(teamName); playTap(); }}
                               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                                 active
                                   ? 'bg-[#3b82f6] text-white'
@@ -146,7 +146,7 @@ export default function ExpansionPacksModal({
                                 style={{ backgroundColor: pack?.color || '#888' }}
                               />
                               <span>{teamName}</span>
-                              {active && <span className="ml-auto text-xs opacity-80">Active</span>}
+                              {active && <span className="ml-auto text-xs opacity-80">✓</span>}
                             </motion.button>
                           );
                         })}
