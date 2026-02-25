@@ -65,6 +65,7 @@ export default function Home() {
     clearSuppCache();
     suppPoolRef.current = {};
 
+    const EXPANSION_IDS = ['PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
     let pool;
     const teamPacks = config.selectedTeamPacks || (config.selectedTeamPack ? [config.selectedTeamPack] : []);
     if (teamPacks.length > 0) {
@@ -72,22 +73,25 @@ export default function Home() {
       const merged = teamPacks.flatMap(tp => buildTeamPackPool(tp, config.difficulty));
       pool = merged.sort(() => Math.random() - 0.5);
     } else {
-      // Main leagues + expansion leagues combined
-      const mainPool = config.leagues && config.leagues.length > 0
-        ? await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || [])
+      // Split leagues array into standard vs expansion
+      const allLeagues = config.leagues || [];
+      const standardLeagues = allLeagues.filter(l => !EXPANSION_IDS.includes(l));
+      const expansionLeagueIds = allLeagues.filter(l => EXPANSION_IDS.includes(l));
+
+      const mainPool = standardLeagues.length > 0
+        ? await buildAthletePool(standardLeagues, config.difficulty, handleProgressMsg, config.selectedDecades || [])
         : [];
-      const expansionPool = config.expansionLeagues && config.expansionLeagues.length > 0
-        ? buildExpansionPool(config.expansionLeagues, config.difficulty)
+      const expansionPool = expansionLeagueIds.length > 0
+        ? buildExpansionPool(expansionLeagueIds, config.difficulty)
         : [];
-      // Shuffle-merge
       const combined = [...mainPool, ...expansionPool];
       pool = combined.sort(() => Math.random() - 0.5);
 
       // Kick off background API supplementation (non-blocking, only for standard leagues)
-      if (config.leagues && config.leagues.length > 0) {
+      if (standardLeagues.length > 0) {
         const hardcodedNames = new Set(combined.map(a => a.name.toLowerCase()));
         runSupplementationIfOnline(
-          config.leagues,
+          standardLeagues,
           config.difficulty,
           hardcodedNames,
           config.selectedDecades || []
