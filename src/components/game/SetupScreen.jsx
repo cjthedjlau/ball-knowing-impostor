@@ -317,7 +317,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
             darkMode,
             selectedDecades,
             expansionLeagues,
-            selectedTeamPack,
+            selectedTeamPacks,
           })}
           className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 transition ${
             canStart
