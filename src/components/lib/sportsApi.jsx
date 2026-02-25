@@ -1467,6 +1467,70 @@ const getNLPhotoCache = () => { try { return JSON.parse(sessionStorage.getItem(N
 const saveNLPhotoCache = (cache) => { try { sessionStorage.setItem(NL_PHOTO_CACHE_KEY, JSON.stringify(cache)); } catch {} };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SPORT VERIFICATION LAYER
+// ─────────────────────────────────────────────────────────────────────────────
+
+// The four valid league values — immutable
+const VALID_LEAGUES = ['MLB', 'NBA', 'NFL', 'NHL'];
+
+// Strict emoji map — used for cross-verification
+const LEAGUE_EMOJI_STRICT = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
+
+// Internal failure log for identifying unreliable sources
+const _sportVerifyLog = [];
+
+const logVerifyFailure = (athlete, reason) => {
+  _sportVerifyLog.push({ name: athlete?.name, league: athlete?.league, emoji: athlete?.emoji, reason, ts: Date.now() });
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(`[SportVerify FAIL] ${athlete?.name} (${athlete?.league}): ${reason}`);
+  }
+};
+
+/**
+ * Verifies that an athlete is valid for the given selectedLeagues.
+ * Check 1: athlete.league is one of the 4 valid values and is in selectedLeagues.
+ * Check 2: athlete.emoji matches the strict mapping for athlete.league.
+ * Returns true only if ALL checks pass.
+ */
+const verifySportTag = (athlete, selectedLeagues) => {
+  if (!athlete) { return false; }
+
+  // Check 1: league is a known valid league
+  if (!VALID_LEAGUES.includes(athlete.league)) {
+    logVerifyFailure(athlete, `Unknown league value: "${athlete.league}"`);
+    return false;
+  }
+
+  // Check 2: league is in the selected set for this round
+  if (!selectedLeagues.includes(athlete.league)) {
+    logVerifyFailure(athlete, `League "${athlete.league}" not in selected [${selectedLeagues.join(',')}]`);
+    return false;
+  }
+
+  // Check 3: emoji matches the strict map for this league
+  const expectedEmoji = LEAGUE_EMOJI_STRICT[athlete.league];
+  if (athlete.emoji && athlete.emoji !== expectedEmoji) {
+    logVerifyFailure(athlete, `Emoji mismatch: got "${athlete.emoji}", expected "${expectedEmoji}" for ${athlete.league}`);
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * Ensures the athlete's emoji is stamped from the strict map at retrieval time.
+ * This must be called when an athlete is pulled from any pool.
+ */
+const stampSportTag = (athlete) => {
+  if (!athlete) return athlete;
+  return {
+    ...athlete,
+    league: athlete.league,           // explicit — never derived
+    emoji: LEAGUE_EMOJI_STRICT[athlete.league] || '🏅',
+  };
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Public API
 // ─────────────────────────────────────────────────────────────────────────────
 
