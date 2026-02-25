@@ -142,7 +142,34 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const canStart = playerNames.slice(0, playerCount).every(n => n.trim().length > 0) && hasAnyLeague;
 
   return (
-    <div className={`min-h-screen ${bg} pb-10 transition-colors duration-300`}>
+    <div
+      ref={scrollRef}
+      className={`min-h-screen ${bg} pb-10 transition-colors duration-300 overflow-y-auto`}
+      style={{ overscrollBehavior: 'none' }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Pull-to-refresh indicator */}
+      <AnimatePresence>
+        {(pullY > 0 || refreshing) && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex justify-center items-center"
+            style={{ height: refreshing ? 44 : pullY, overflow: 'hidden', transition: refreshing ? 'height 0.2s' : 'none' }}
+          >
+            <motion.div
+              animate={refreshing ? { rotate: 360 } : { rotate: pullY * 3 }}
+              transition={refreshing ? { repeat: Infinity, duration: 0.7, ease: 'linear' } : {}}
+              className="text-[#3b82f6] text-xl"
+            >
+              ↻
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Header */}
       <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 pt-12 pb-6 sticky top-0 z-10 shadow-sm`}>
         <div className="flex items-center justify-between max-w-lg mx-auto">
