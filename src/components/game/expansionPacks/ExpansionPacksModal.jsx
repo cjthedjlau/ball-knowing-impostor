@@ -24,8 +24,8 @@ export default function ExpansionPacksModal({
   darkMode,
   selectedExpansionLeagues,
   onToggleExpansionLeague,
-  selectedTeamPack,
-  onSelectTeamPack,
+  selectedTeamPacks,
+  onToggleTeamPack,
   onClose,
 }) {
   const [openSection, setOpenSection] = useState(null);
