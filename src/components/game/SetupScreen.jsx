@@ -53,6 +53,15 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [difficulty, setDifficulty] = useState('normal');
   const [hintEnabled, setHintEnabled] = useState(false);
   const [selectedDecades, setSelectedDecades] = useState([]);
+  const [expansionLeagues, setExpansionLeagues] = useState([]);
+  const [selectedTeamPack, setSelectedTeamPack] = useState(null);
+  const [showExpansionModal, setShowExpansionModal] = useState(false);
+
+  const toggleExpansionLeague = (id) => {
+    setExpansionLeagues(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
 
   const bg    = darkMode ? 'bg-[#0a0f1e]'    : 'bg-slate-100';
   const card  = darkMode ? 'bg-[#131c2e]'    : 'bg-white';
