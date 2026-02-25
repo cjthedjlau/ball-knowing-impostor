@@ -59,7 +59,20 @@ export default function Home() {
     setLoadingProgress(0);
     setLoadingMsg('Building roster...');
 
-    const pool = await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || []);
+    let pool;
+    if (config.selectedTeamPack) {
+      // Team pack replaces entire league pool
+      pool = buildTeamPackPool(config.selectedTeamPack, config.difficulty);
+    } else {
+      // Main leagues + expansion leagues combined
+      const mainPool = await buildAthletePool(config.leagues, config.difficulty, handleProgressMsg, config.selectedDecades || []);
+      const expansionPool = config.expansionLeagues && config.expansionLeagues.length > 0
+        ? buildExpansionPool(config.expansionLeagues, config.difficulty)
+        : [];
+      // Shuffle-merge
+      const combined = [...mainPool, ...expansionPool];
+      pool = combined.sort(() => Math.random() - 0.5);
+    }
     poolRef.current = pool;
     usedIdsRef.current = [];
 
