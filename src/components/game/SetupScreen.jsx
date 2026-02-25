@@ -199,8 +199,9 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
             <Trophy size={18} className="text-[#3b82f6]" />
             <span className={`font-bold ${text}`}>Leagues</span>
           </div>
+          {/* Standard leagues */}
           <div className="grid grid-cols-4 gap-2">
-            {LEAGUES.map(l => (
+            {STANDARD_LEAGUES.map(l => (
               <motion.button
                 key={l}
                 onClick={() => { toggleLeague(l); playTap(); }}
@@ -217,21 +218,42 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
             ))}
           </div>
 
+          {/* Migrated expansion league toggles */}
+          {expansionLeagues.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="grid grid-cols-2 gap-2 mt-2"
+            >
+              {expansionLeagues.map(l => (
+                <motion.button
+                  key={l}
+                  onClick={() => { toggleLeague(l); playTap(); }}
+                  whileTap={{ scale: 0.88 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                  className="py-3 rounded-xl font-bold text-sm transition-colors bg-[#3b82f6] text-white"
+                >
+                  {EXPANSION_LEAGUE_LABELS[l] || l}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+
           {/* Expansion Packs Button */}
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => { setShowExpansionModal(true); playTap(); }}
             className={`mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-colors border ${
-              expansionLeagues.length > 0 || selectedTeamPacks.length > 0
+              selectedTeamPacks.length > 0
                 ? 'border-[#3b82f6] text-[#3b82f6] bg-[#3b82f6]/10'
                 : darkMode ? 'border-white/15 text-white/50 bg-white/5' : 'border-slate-200 text-slate-500 bg-slate-50'
             }`}
           >
             <Zap size={15} className="text-[#3b82f6]" />
             Expansion Packs
-            {(expansionLeagues.length > 0 || selectedTeamPacks.length > 0) && (
+            {selectedTeamPacks.length > 0 && (
               <span className="bg-[#3b82f6] text-white text-xs font-black px-1.5 py-0.5 rounded-full">
-                {expansionLeagues.length + selectedTeamPacks.length}
+                {selectedTeamPacks.length}
               </span>
             )}
           </motion.button>
