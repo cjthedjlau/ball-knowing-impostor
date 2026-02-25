@@ -56,6 +56,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [selectedDecades, setSelectedDecades] = useState([]);
   const [selectedTeamPacks, setSelectedTeamPacks] = useState([]);
   const [showExpansionModal, setShowExpansionModal] = useState(false);
+  const [priorDifficulty, setPriorDifficulty] = useState(null);
 
   const EXPANSION_IDS = ['PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
   const expansionLeagues = leagues.filter(l => EXPANSION_IDS.includes(l));
