@@ -144,10 +144,11 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
   );
 }
 
-export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed }) {
+export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed, onBack }) {
   const { playerNames, roles, athlete, hintEnabled, difficulty } = gameState;
   const [activePlayer, setActivePlayer] = useState(null);
   const [done, setDone] = useState(new Set());
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const bg   = darkMode ? 'bg-[#0a0f1e]' : 'bg-slate-100';
   const card = darkMode ? 'bg-[#131c2e]' : 'bg-white';
@@ -163,11 +164,38 @@ export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed })
   const allDone = done.size === playerNames.length;
 
   return (
-    <div className={`min-h-screen ${bg} flex flex-col`}>
-      <div className="px-5 pt-12 pb-4">
-        <p className={`text-xs font-bold tracking-widest uppercase ${darkMode ? 'text-white/40' : 'text-slate-400'}`}>Step 1</p>
-        <h2 className={`text-2xl font-black mt-1 ${text}`}>Check Your Role</h2>
-        <p className={`text-sm mt-1 ${darkMode ? 'text-white/50' : 'text-slate-500'}`}>Tap your name — keep it secret!</p>
+    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none' }}>
+      {/* Confirm quit dialog */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              className={`${card} rounded-3xl p-6 w-full max-w-xs`}
+            >
+              <p className={`text-lg font-black mb-2 ${text}`}>Quit Game?</p>
+              <p className={`text-sm mb-5 ${darkMode ? 'text-white/50' : 'text-slate-500'}`}>This will end the current game and return to setup.</p>
+              <div className="flex gap-3">
+                <button onClick={() => setShowConfirm(false)} className={`flex-1 py-3 rounded-2xl font-bold text-sm select-none ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>
+                <button onClick={() => { setShowConfirm(false); onBack(); }} className="flex-1 py-3 rounded-2xl font-bold text-sm bg-red-500 text-white select-none">Quit</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="px-5 safe-top pb-4 flex items-center gap-3">
+        <button onClick={() => setShowConfirm(true)} className={`p-2 rounded-xl flex-shrink-0 select-none ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
+          <ArrowLeft size={20} />
+        </button>
+        <div>
+          <p className={`text-xs font-bold tracking-widest uppercase ${darkMode ? 'text-white/40' : 'text-slate-400'}`}>Step 1</p>
+          <h2 className={`text-2xl font-black ${text}`}>Check Your Role</h2>
+          <p className={`text-sm ${darkMode ? 'text-white/50' : 'text-slate-500'}`}>Tap your name — keep it secret!</p>
+        </div>
       </div>
 
       <div className="px-5 grid grid-cols-2 gap-3 flex-1">
