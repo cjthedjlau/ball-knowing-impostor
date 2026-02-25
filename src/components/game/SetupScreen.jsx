@@ -299,7 +299,17 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
         {/* Start */}
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={() => canStart && onStart({ playerNames: playerNames.slice(0, playerCount).map(n => n.trim()), impostorCount, leagues, difficulty, hintEnabled, darkMode, selectedDecades })}
+          onClick={() => canStart && onStart({
+            playerNames: playerNames.slice(0, playerCount).map(n => n.trim()),
+            impostorCount,
+            leagues,
+            difficulty,
+            hintEnabled,
+            darkMode,
+            selectedDecades,
+            expansionLeagues,
+            selectedTeamPack,
+          })}
           className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 transition ${
             canStart
               ? 'bg-[#3b82f6] text-white shadow-lg shadow-blue-500/30'
@@ -310,6 +320,20 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           Start Game
         </motion.button>
       </div>
+
+      {/* Expansion Packs Modal */}
+      <AnimatePresence>
+        {showExpansionModal && (
+          <ExpansionPacksModal
+            darkMode={darkMode}
+            selectedExpansionLeagues={expansionLeagues}
+            onToggleExpansionLeague={toggleExpansionLeague}
+            selectedTeamPack={selectedTeamPack}
+            onSelectTeamPack={setSelectedTeamPack}
+            onClose={() => setShowExpansionModal(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
