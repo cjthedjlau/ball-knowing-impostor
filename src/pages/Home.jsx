@@ -125,17 +125,21 @@ export default function Home() {
     setLoadingMsg('Picking new athlete...');
     setLoadingProgress(0);
 
+    const EXPANSION_IDS_PA = ['PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
     let pool = poolRef.current;
     if (!pool || pool.length === 0) {
       const teamPacks = setupConfig.selectedTeamPacks || (setupConfig.selectedTeamPack ? [setupConfig.selectedTeamPack] : []);
       if (teamPacks.length > 0) {
         pool = teamPacks.flatMap(tp => buildTeamPackPool(tp, setupConfig.difficulty)).sort(() => Math.random() - 0.5);
       } else {
-        const mainPool = setupConfig.leagues && setupConfig.leagues.length > 0
-          ? await buildAthletePool(setupConfig.leagues, setupConfig.difficulty, handleProgressMsg, setupConfig.selectedDecades || [])
+        const allLeagues = setupConfig.leagues || [];
+        const standardLeagues = allLeagues.filter(l => !EXPANSION_IDS_PA.includes(l));
+        const expansionLeagueIds = allLeagues.filter(l => EXPANSION_IDS_PA.includes(l));
+        const mainPool = standardLeagues.length > 0
+          ? await buildAthletePool(standardLeagues, setupConfig.difficulty, handleProgressMsg, setupConfig.selectedDecades || [])
           : [];
-        const expansionPool = setupConfig.expansionLeagues && setupConfig.expansionLeagues.length > 0
-          ? buildExpansionPool(setupConfig.expansionLeagues, setupConfig.difficulty)
+        const expansionPool = expansionLeagueIds.length > 0
+          ? buildExpansionPool(expansionLeagueIds, setupConfig.difficulty)
           : [];
         pool = [...mainPool, ...expansionPool].sort(() => Math.random() - 0.5);
       }
