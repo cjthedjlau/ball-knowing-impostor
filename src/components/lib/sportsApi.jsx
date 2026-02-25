@@ -1616,17 +1616,20 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
   const candidates = available;
   const isBallKnowledge = difficulty === 'ballknowledge';
 
+  // Helper: does this athlete type skip photo validation entirely?
+  const shouldSkipPhoto = (athlete) => athlete.noPhoto === true || athlete.photoUrl === null;
+
   if (isBallKnowledge) {
     onProgress?.('Validating athlete photo...');
     for (const raw of candidates) {
       const athlete = stampSportTag(raw);
-      // Mandatory sport verification check
       if (!verifySportTag(athlete, effectiveLeagues)) continue;
+      // No-photo leagues are immediately valid
+      if (shouldSkipPhoto(athlete)) return athlete;
       if (!athlete.photoUrl) continue;
       const ok = await validateImage(athlete.photoUrl);
       if (ok) return athlete;
     }
-    // Fallback: return first that passes sport check even without photo
     for (const raw of candidates) {
       const athlete = stampSportTag(raw);
       if (verifySportTag(athlete, effectiveLeagues)) return athlete;
@@ -1641,8 +1644,10 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
   for (const raw of candidates) {
     const athlete = stampSportTag(raw);
 
-    // Mandatory sport verification — silently discard and try next if any check fails
     if (!verifySportTag(athlete, effectiveLeagues)) continue;
+
+    // No-photo leagues skip all image logic
+    if (shouldSkipPhoto(athlete)) return athlete;
 
     if (photoCache[athlete.id]) {
       const cached = photoCache[athlete.id];
