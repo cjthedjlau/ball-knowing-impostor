@@ -219,7 +219,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
           </motion.div>
         )}
       </AnimatePresence>
-      </div>{/* end flex-1 */}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Eye, ArrowLeft } from 'lucide-react';
 
 const haptic = () => { try { navigator.vibrate?.([20, 50, 20]); } catch {} };
