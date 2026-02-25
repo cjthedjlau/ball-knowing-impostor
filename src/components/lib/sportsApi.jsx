@@ -1587,7 +1587,7 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
     await new Promise(r => setTimeout(r, 300));
   }
 
-  return pool.map(a => ({ ...a, photoUrl: photoCache[a.id] === 'NONE' ? '' : (photoCache[a.id] || '') }));
+  return pool.map(a => stampSportTag({ ...a, photoUrl: photoCache[a.id] === 'NONE' ? '' : (photoCache[a.id] || '') }));
 };
 
 export const pickAthlete = (pool, usedIds = []) => {
@@ -1598,37 +1598,52 @@ export const pickAthlete = (pool, usedIds = []) => {
 };
 
 // Picks an athlete with a confirmed working image, respecting session history globally.
-export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, difficulty) => {
+// Runs mandatory sport verification on every candidate before accepting.
+export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, difficulty, selectedLeagues = []) => {
   if (!pool || pool.length === 0) return null;
+
+  // Derive selectedLeagues from pool if not passed — pool is already hard-filtered at build time
+  const poolLeagues = [...new Set(pool.map(a => a.league))];
+  const effectiveLeagues = selectedLeagues.length > 0 ? selectedLeagues : poolLeagues;
 
   const sessionHistory = getSessionHistory();
   const allUsed = [...new Set([...usedIds, ...sessionHistory])];
 
   let available = pool.filter(a => !allUsed.includes(a.id));
-  // If session has exhausted the pool, fall back to just usedIds exclusion (don't block the game)
   if (available.length === 0) available = pool.filter(a => !usedIds.includes(a.id));
   if (available.length === 0) available = [...pool];
 
-  // Pool is already shuffled from buildAthletePool; work sequentially through it
   const candidates = available;
-
   const isBallKnowledge = difficulty === 'ballknowledge';
 
   if (isBallKnowledge) {
     onProgress?.('Validating athlete photo...');
-    for (const athlete of candidates) {
+    for (const raw of candidates) {
+      const athlete = stampSportTag(raw);
+      // Mandatory sport verification check
+      if (!verifySportTag(athlete, effectiveLeagues)) continue;
       if (!athlete.photoUrl) continue;
       const ok = await validateImage(athlete.photoUrl);
       if (ok) return athlete;
     }
-    return candidates[0] || null;
+    // Fallback: return first that passes sport check even without photo
+    for (const raw of candidates) {
+      const athlete = stampSportTag(raw);
+      if (verifySportTag(athlete, effectiveLeagues)) return athlete;
+    }
+    return null;
   }
 
   const isLegends = difficulty === 'legends';
   const photoCache = getNLPhotoCache();
   onProgress?.('Finding athlete photo...');
 
-  for (const athlete of candidates) {
+  for (const raw of candidates) {
+    const athlete = stampSportTag(raw);
+
+    // Mandatory sport verification — silently discard and try next if any check fails
+    if (!verifySportTag(athlete, effectiveLeagues)) continue;
+
     if (photoCache[athlete.id]) {
       const cached = photoCache[athlete.id];
       if (cached !== 'NONE') return { ...athlete, photoUrl: cached };
@@ -1645,7 +1660,13 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
     }
   }
 
-  return candidates[0] || null;
+  // Last resort: return first sport-verified candidate regardless of photo
+  for (const raw of candidates) {
+    const athlete = stampSportTag(raw);
+    if (verifySportTag(athlete, effectiveLeagues)) return athlete;
+  }
+
+  return null;
 };
 
 export const getHint = (athlete) => {
