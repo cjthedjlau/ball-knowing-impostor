@@ -61,6 +61,10 @@ export default function Home() {
     setLoadingProgress(0);
     setLoadingMsg('Building roster...');
 
+    // Clear stale supplementary cache from previous session config
+    clearSuppCache();
+    suppPoolRef.current = {};
+
     let pool;
     if (config.selectedTeamPack) {
       // Team pack replaces entire league pool
@@ -74,6 +78,19 @@ export default function Home() {
       // Shuffle-merge
       const combined = [...mainPool, ...expansionPool];
       pool = combined.sort(() => Math.random() - 0.5);
+
+      // Kick off background API supplementation (non-blocking)
+      if (config.leagues && config.leagues.length > 0) {
+        const hardcodedNames = new Set(combined.map(a => a.name.toLowerCase()));
+        runSupplementationIfOnline(
+          config.leagues,
+          config.difficulty,
+          hardcodedNames,
+          config.selectedDecades || []
+        ).then(suppAthletes => {
+          if (suppAthletes) suppPoolRef.current = suppAthletes;
+        }).catch(() => {});
+      }
     }
     poolRef.current = pool;
     usedIdsRef.current = [];
