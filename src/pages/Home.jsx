@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { buildAthletePool, pickValidatedAthlete, getHint, clearSessionHistory, addToSessionHistory } from '../components/lib/sportsApi';
 import { buildExpansionPool, buildTeamPackPool } from '../components/game/expansionPacks/expansionPacksApi';
 import { runSupplementationIfOnline, clearSuppCache } from '../components/lib/apiSupplementation';
-import { playTransition, playConfirmation, setSoundEnabled, isSoundEnabled } from '../components/lib/soundSystem';
+import { playTransition, playConfirmation, setSoundEnabled } from '../components/lib/soundSystem';
 import LoadingScreen from '../components/game/LoadingScreen';
 import SetupScreen from '../components/game/SetupScreen';
 import RoleRevealScreen from '../components/game/RoleRevealScreen';
@@ -11,7 +12,10 @@ import DiscussionScreen from '../components/game/DiscussionScreen';
 import RevealScreen from '../components/game/RevealScreen';
 import HowToPlayScreen from '../components/game/HowToPlayScreen';
 
-const SCREENS = ['setup', 'loading', 'roles', 'discussion', 'reveal', 'howtoplay'];
+// Screen order for back-button logic
+const SCREEN_ORDER = ['setup', 'howtoplay', 'loading', 'roles', 'discussion', 'reveal'];
+// Screens that should NOT be pushed onto browser history (transient)
+const NO_HISTORY_SCREENS = new Set(['loading']);
 
 const shuffle = (arr) => {
   const a = [...arr];
@@ -31,9 +35,36 @@ const assignRoles = (players, impostorCount) => {
   return roles;
 };
 
+// Detect system dark mode preference
+const getSystemDark = () =>
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 export default function Home() {
-  const [screen, setScreen] = useState('setup');
-  const [darkMode, setDarkMode] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Derive screen from URL hash, fallback to 'setup'
+  const screenFromHash = location.hash.replace('#', '') || 'setup';
+  const screen = SCREEN_ORDER.includes(screenFromHash) ? screenFromHash : 'setup';
+
+  const setScreen = useCallback((next) => {
+    if (NO_HISTORY_SCREENS.has(next)) {
+      // Replace so loading screen doesn't pollute history
+      navigate(`#${next}`, { replace: true });
+    } else {
+      navigate(`#${next}`);
+    }
+  }, [navigate]);
+
+  // Dark mode: init from system, update on system change
+  const [darkMode, setDarkMode] = useState(getSystemDark);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e) => setDarkMode(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const [soundOn, setSoundOn] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState('');
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -41,7 +72,12 @@ export default function Home() {
   const [setupConfig, setSetupConfig] = useState(null);
   const poolRef = useRef([]);
   const usedIdsRef = useRef([]);
-  const suppPoolRef = useRef({});  // supplementary athletes by league
+  const suppPoolRef = useRef({});
+
+  // Ensure we start at setup if no hash
+  useEffect(() => {
+    if (!location.hash) navigate('#setup', { replace: true });
+  }, []);
 
   const toggleSound = () => {
     const next = !soundOn;
@@ -61,7 +97,6 @@ export default function Home() {
     setLoadingProgress(0);
     setLoadingMsg('Building roster...');
 
-    // Clear stale supplementary cache from previous session config
     clearSuppCache();
     suppPoolRef.current = {};
 
@@ -69,15 +104,11 @@ export default function Home() {
     let pool;
     const teamPacks = config.selectedTeamPacks || (config.selectedTeamPack ? [config.selectedTeamPack] : []);
     if (teamPacks.length > 0) {
-      // Merge all selected team pack pools
-      const merged = teamPacks.flatMap(tp => buildTeamPackPool(tp));
-      pool = merged.sort(() => Math.random() - 0.5);
+      pool = teamPacks.flatMap(tp => buildTeamPackPool(tp)).sort(() => Math.random() - 0.5);
     } else {
-      // Split leagues array into standard vs expansion
       const allLeagues = config.leagues || [];
       const standardLeagues = allLeagues.filter(l => !EXPANSION_IDS.includes(l));
       const expansionLeagueIds = allLeagues.filter(l => EXPANSION_IDS.includes(l));
-
       const mainPool = standardLeagues.length > 0
         ? await buildAthletePool(standardLeagues, config.difficulty, handleProgressMsg, config.selectedDecades || [])
         : [];
@@ -86,36 +117,27 @@ export default function Home() {
         : [];
       const combined = [...mainPool, ...expansionPool];
       pool = combined.sort(() => Math.random() - 0.5);
-
-      // Kick off background API supplementation (non-blocking, only for standard leagues)
       if (standardLeagues.length > 0) {
         const hardcodedNames = new Set(combined.map(a => a.name.toLowerCase()));
-        runSupplementationIfOnline(
-          standardLeagues,
-          config.difficulty,
-          hardcodedNames,
-          config.selectedDecades || []
-        ).then(suppAthletes => {
-          if (suppAthletes) suppPoolRef.current = suppAthletes;
-        }).catch(() => {});
+        runSupplementationIfOnline(standardLeagues, config.difficulty, hardcodedNames, config.selectedDecades || [])
+          .then(suppAthletes => { if (suppAthletes) suppPoolRef.current = suppAthletes; })
+          .catch(() => {});
       }
     }
     poolRef.current = pool;
     usedIdsRef.current = [];
 
     setLoadingMsg('Validating athlete photo...');
-    // Merge supplementary athletes (if already available) into pool for first pick
     const suppFlat = Object.values(suppPoolRef.current).flat();
     const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
     const standardLeaguesForValidation = (config.leagues || []).filter(l => !EXPANSION_IDS.includes(l));
     const athlete = await pickValidatedAthlete(mergedPool, usedIdsRef.current, handleProgressMsg, config.difficulty, standardLeaguesForValidation);
     if (athlete) usedIdsRef.current.push(athlete.id);
-
     if (athlete) addToSessionHistory(athlete.id);
+
     const roles = assignRoles(config.playerNames, config.impostorCount);
     const hint = getHint(athlete);
     const firstPlayer = config.playerNames[Math.floor(Math.random() * config.playerNames.length)];
-
     setGameState({ ...config, athlete, roles, hint, firstPlayer });
     playTransition(config.leagues);
     setScreen('roles');
@@ -148,7 +170,6 @@ export default function Home() {
     }
 
     setLoadingMsg('Validating athlete photo...');
-    // Merge supplementary athletes into pool for subsequent rounds
     const suppFlat = Object.values(suppPoolRef.current).flat();
     const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
     const standardLeaguesPA = (setupConfig.leagues || []).filter(l => !EXPANSION_IDS_PA.includes(l));
@@ -158,7 +179,6 @@ export default function Home() {
     const roles = assignRoles(setupConfig.playerNames, setupConfig.impostorCount);
     const hint = getHint(athlete);
     const firstPlayer = setupConfig.playerNames[Math.floor(Math.random() * setupConfig.playerNames.length)];
-
     setGameState({ ...setupConfig, athlete, roles, hint, firstPlayer });
     setScreen('roles');
   };
@@ -188,7 +208,7 @@ export default function Home() {
 
         {screen === 'howtoplay' && (
           <motion.div key="howtoplay" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }}>
-            <HowToPlayScreen darkMode={darkMode} onBack={() => setScreen('setup')} />
+            <HowToPlayScreen darkMode={darkMode} onBack={() => navigate(-1)} />
           </motion.div>
         )}
 
@@ -218,7 +238,12 @@ export default function Home() {
               gameState={gameState}
               darkMode={darkMode}
               onPlayAgain={handlePlayAgain}
-              onChangeSettings={() => { clearSessionHistory(); clearSuppCache(); usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {}; setScreen('setup'); setGameState(null); }}
+              onChangeSettings={() => {
+                clearSessionHistory(); clearSuppCache();
+                usedIdsRef.current = []; poolRef.current = []; suppPoolRef.current = {};
+                setGameState(null);
+                navigate('#setup', { replace: true });
+              }}
             />
           </motion.div>
         )}
