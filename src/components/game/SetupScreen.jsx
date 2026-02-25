@@ -259,7 +259,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
                 >
                   {d.emoji
                     ? <span className="text-xl flex-shrink-0">{d.emoji}</span>
-                    : <LeagueEmojiCluster leagues={leagues} />
+                    : <LeagueEmojiCluster leagues={allActiveLeagues} />
                   }
                   <div className="flex flex-col items-start text-left">
                     <span className="font-bold text-sm">{d.label}</span>
