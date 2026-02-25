@@ -54,12 +54,18 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const [hintEnabled, setHintEnabled] = useState(false);
   const [selectedDecades, setSelectedDecades] = useState([]);
   const [expansionLeagues, setExpansionLeagues] = useState([]);
-  const [selectedTeamPack, setSelectedTeamPack] = useState(null);
+  const [selectedTeamPacks, setSelectedTeamPacks] = useState([]);
   const [showExpansionModal, setShowExpansionModal] = useState(false);
 
   const toggleExpansionLeague = (id) => {
     setExpansionLeagues(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+
+  const toggleTeamPack = (name) => {
+    setSelectedTeamPacks(prev =>
+      prev.includes(name) ? prev.filter(x => x !== name) : [...prev, name]
     );
   };
 
