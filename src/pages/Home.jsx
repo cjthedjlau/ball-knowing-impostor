@@ -88,7 +88,7 @@ export default function Home() {
     }
 
     setLoadingMsg('Validating athlete photo...');
-    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, setupConfig.difficulty);
+    const athlete = await pickValidatedAthlete(pool, usedIdsRef.current, handleProgressMsg, setupConfig.difficulty, setupConfig.leagues);
     if (athlete) { usedIdsRef.current.push(athlete.id); addToSessionHistory(athlete.id); }
 
     const roles = assignRoles(setupConfig.playerNames, setupConfig.impostorCount);
