@@ -75,30 +75,28 @@ export const buildExpansionPool = (selectedExpansionLeagues, difficulty) => {
 };
 
 /**
- * Build pool for a specific team pack across all difficulty tiers.
- * Difficulty filters within the team pool:
- *   normal → team.normal
- *   legends → team.legends
- *   ballknowledge → team.ballknowledge
+ * Build pool for a specific team pack — always merges ALL three tiers (normal + legends + ballknowledge)
+ * into one unified pool regardless of difficulty setting.
+ * Difficulty parameter is ignored for team packs.
  */
-export const buildTeamPackPool = (teamName, difficulty) => {
+export const buildTeamPackPool = (teamName) => {
   const pack = TEAM_PACKS[teamName];
   if (!pack) return [];
 
-  const tier = difficulty === 'legends' ? 'legends'
-    : difficulty === 'ballknowledge' ? 'ballknowledge'
-    : 'normal';
+  const prefix = `team_${teamName.replace(/\s+/g, '_')}`;
+  const emojiMap = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
 
-  const raw = pack[tier] || [];
+  const allRaw = [
+    ...(pack.normal || []).map((a, i) => ({ ...a, id: `${prefix}_n_${i}` })),
+    ...(pack.legends || []).map((a, i) => ({ ...a, id: `${prefix}_l_${i}` })),
+    ...(pack.ballknowledge || []).map((a, i) => ({ ...a, id: `${prefix}_b_${i}` })),
+  ];
+
   return shuffle(
-    raw.map((a, i) => ({
+    allRaw.map(a => ({
       ...a,
-      id: `team_${teamName.replace(/\s+/g, '_')}_${tier}_${i}`,
       photoUrl: '',
-      emoji: (() => {
-        const map = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
-        return map[a.league] || '🏅';
-      })(),
+      emoji: emojiMap[a.league] || '🏅',
     }))
   );
 };
