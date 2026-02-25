@@ -171,7 +171,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
         )}
       </AnimatePresence>
       {/* Header */}
-      <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 pt-12 pb-6 sticky top-0 z-10 shadow-sm`}>
+      <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 safe-top pb-6 sticky top-0 z-10 shadow-sm`}>
         <div className="flex items-center justify-between max-w-lg mx-auto">
           <div className="flex flex-col items-center text-center flex-1">
             <h1 className={`text-3xl font-black tracking-tight ${text}`}>
