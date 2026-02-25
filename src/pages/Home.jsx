@@ -184,7 +184,7 @@ export default function Home() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''}`} style={{ WebkitTapHighlightColor: 'transparent', userSelect: 'none' }}>
+    <div className={`${darkMode ? 'dark' : ''}`} style={{ WebkitTapHighlightColor: 'transparent' }}>
       <AnimatePresence mode="wait">
         {screen === 'loading' && (
           <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
