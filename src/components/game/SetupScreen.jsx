@@ -93,12 +93,13 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
     }
   };
 
-  // All active leagues for emoji cluster (main + expansion, or just main if team pack active)
-  const allActiveLeagues = selectedTeamPack
+  // All active leagues for emoji cluster
+  const allActiveLeagues = selectedTeamPacks.length > 0
     ? leagues
     : [...leagues, ...expansionLeagues];
 
-  const canStart = playerNames.slice(0, playerCount).every(n => n.trim().length > 0) && (leagues.length > 0 || selectedTeamPack);
+  const hasAnyLeague = leagues.length > 0 || expansionLeagues.length > 0 || selectedTeamPacks.length > 0;
+  const canStart = playerNames.slice(0, playerCount).every(n => n.trim().length > 0) && hasAnyLeague;
 
   return (
     <div className={`min-h-screen ${bg} pb-10 transition-colors duration-300`}>
