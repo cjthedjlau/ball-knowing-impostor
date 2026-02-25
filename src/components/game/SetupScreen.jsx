@@ -337,8 +337,8 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
             darkMode={darkMode}
             selectedExpansionLeagues={expansionLeagues}
             onToggleExpansionLeague={toggleExpansionLeague}
-            selectedTeamPack={selectedTeamPack}
-            onSelectTeamPack={setSelectedTeamPack}
+            selectedTeamPacks={selectedTeamPacks}
+            onToggleTeamPack={toggleTeamPack}
             onClose={() => setShowExpansionModal(false)}
           />
         )}
