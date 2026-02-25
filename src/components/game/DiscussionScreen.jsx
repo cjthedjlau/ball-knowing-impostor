@@ -4,9 +4,10 @@ import { MessageCircle, Eye, ArrowLeft } from 'lucide-react';
 
 const haptic = () => { try { navigator.vibrate?.([20, 50, 20]); } catch {} };
 
-export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
+export default function DiscussionScreen({ gameState, darkMode, onReveal, onBack }) {
   const { playerNames, impostorCount } = gameState;
   const [seconds, setSeconds] = useState(0);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setSeconds(s => s + 1), 1000);
@@ -21,7 +22,37 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal }) {
   const sub  = darkMode ? 'text-white/50' : 'text-slate-500';
 
   return (
-    <div className={`min-h-screen ${bg} flex flex-col items-center justify-center p-6`}>
+    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none' }}>
+      {/* Confirm quit */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              className={`${card} rounded-3xl p-6 w-full max-w-xs`}
+            >
+              <p className={`text-lg font-black mb-2 ${text}`}>Quit Game?</p>
+              <p className={`text-sm mb-5 ${sub}`}>This will end the current game and return to setup.</p>
+              <div className="flex gap-3">
+                <button onClick={() => setShowConfirm(false)} className={`flex-1 py-3 rounded-2xl font-bold text-sm select-none ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>
+                <button onClick={() => { setShowConfirm(false); onBack(); }} className="flex-1 py-3 rounded-2xl font-bold text-sm bg-red-500 text-white select-none">Quit</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Back button row */}
+      <div className="px-5 safe-top pb-2 flex items-center">
+        <button onClick={() => setShowConfirm(true)} className={`p-2 rounded-xl select-none ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
+          <ArrowLeft size={20} />
+        </button>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center p-6">
       {/* Timer */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
