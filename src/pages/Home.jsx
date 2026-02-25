@@ -97,7 +97,15 @@ export default function Home() {
 
     let pool = poolRef.current;
     if (!pool || pool.length === 0) {
-      pool = await buildAthletePool(setupConfig.leagues, setupConfig.difficulty, handleProgressMsg);
+      if (setupConfig.selectedTeamPack) {
+        pool = buildTeamPackPool(setupConfig.selectedTeamPack, setupConfig.difficulty);
+      } else {
+        const mainPool = await buildAthletePool(setupConfig.leagues, setupConfig.difficulty, handleProgressMsg, setupConfig.selectedDecades || []);
+        const expansionPool = setupConfig.expansionLeagues && setupConfig.expansionLeagues.length > 0
+          ? buildExpansionPool(setupConfig.expansionLeagues, setupConfig.difficulty)
+          : [];
+        pool = [...mainPool, ...expansionPool].sort(() => Math.random() - 0.5);
+      }
       poolRef.current = pool;
     }
 
