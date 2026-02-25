@@ -67,10 +67,22 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
     );
   };
 
+  const teamPackActive = selectedTeamPacks.length > 0;
+
   const toggleTeamPack = (name) => {
-    setSelectedTeamPacks(prev =>
-      prev.includes(name) ? prev.filter(x => x !== name) : [...prev, name]
-    );
+    setSelectedTeamPacks(prev => {
+      const next = prev.includes(name) ? prev.filter(x => x !== name) : [...prev, name];
+      // When activating first team pack: save current difficulty and lock it
+      if (next.length > 0 && prev.length === 0) {
+        setPriorDifficulty(difficulty);
+      }
+      // When deactivating last team pack: restore prior difficulty
+      if (next.length === 0 && prev.length > 0) {
+        if (priorDifficulty) setDifficulty(priorDifficulty);
+        setPriorDifficulty(null);
+      }
+      return next;
+    });
   };
 
   const bg    = darkMode ? 'bg-[#0a0f1e]'    : 'bg-slate-100';
