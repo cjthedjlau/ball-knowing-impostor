@@ -85,9 +85,7 @@ export default function ExpansionPacksModal({
                 );
               })}
             </div>
-            <p className={`text-xs mt-3 ${sub}`}>
-              NCAAF & NCAA Basketball use name + emoji only — no photos.
-            </p>
+
           </div>
 
           {/* ── Section 2: Team Packs ── */}
