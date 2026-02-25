@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { playTap, playSneakerSqueak } from '../lib/soundSystem';
-import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, VolumeX } from 'lucide-react';
+import { playTap } from '../lib/soundSystem';
+import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, VolumeX, Zap } from 'lucide-react';
 import LeagueDecadeSelector from './LeagueDecadeSelector';
+import ExpansionPacksModal from './expansionPacks/ExpansionPacksModal';
+import { EXPANSION_LEAGUE_EMOJI } from './expansionPacks/expansionData';
 
 const LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const DIFFICULTIES = [
@@ -11,13 +13,14 @@ const DIFFICULTIES = [
   { id: 'ballknowledge', label: 'Ball Knowledge', emoji: '🔎',  desc: 'Deep bench — brutal even for real fans' },
 ];
 
-// Ordered display — always MLB, NBA, NFL, NHL
+// Ordered display — MLB, NBA, NFL, NHL + expansion leagues
 const LEAGUE_ORDER = ['MLB', 'NBA', 'NFL', 'NHL'];
-const LEAGUE_EMOJI_MAP = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
+const LEAGUE_EMOJI_MAP = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒', ...EXPANSION_LEAGUE_EMOJI };
+const ALL_LEAGUE_ORDER = [...LEAGUE_ORDER, 'PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
 
 function LeagueEmojiCluster({ leagues }) {
-  const active = LEAGUE_ORDER.filter(l => leagues.includes(l));
-  const OFFSET = 14; // px per emoji
+  const active = ALL_LEAGUE_ORDER.filter(l => leagues.includes(l));
+  const OFFSET = 14;
   const totalWidth = active.length > 1 ? OFFSET * (active.length - 1) + 24 : 24;
 
   return (
