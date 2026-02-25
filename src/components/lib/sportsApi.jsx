@@ -1474,7 +1474,7 @@ const saveNLPhotoCache = (cache) => { try { sessionStorage.setItem(NL_PHOTO_CACH
 const VALID_LEAGUES = ['MLB', 'NBA', 'NFL', 'NHL', 'PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
 
 // Strict emoji map — used for cross-verification
-const LEAGUE_EMOJI_STRICT = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒' };
+const LEAGUE_EMOJI_STRICT = { MLB: '⚾', NBA: '🏀', NFL: '🏈', NHL: '🏒', PGA: '⛳', FIFA: '⚽', NCAAF: '🏈', NCAAMB: '🏀' };
 
 // Internal failure log for identifying unreliable sources
 const _sportVerifyLog = [];
