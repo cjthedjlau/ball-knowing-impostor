@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Check } from 'lucide-react';
+import { Eye, EyeOff, Check, ArrowLeft } from 'lucide-react';
 import { playPop, playTap } from '../lib/soundSystem';
 
 const haptic = () => { try { navigator.vibrate?.([30]); } catch {} };

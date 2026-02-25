@@ -17,11 +17,11 @@ export default function HowToPlayScreen({ darkMode, onBack }) {
   const sub  = darkMode ? 'text-white/50' : 'text-slate-500';
 
   return (
-    <div className={`min-h-screen ${bg} pb-10`}>
-      <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 pt-12 pb-5 flex items-center gap-3`}>
+    <div className={`min-h-screen ${bg} pb-10 overflow-y-auto`} style={{ overscrollBehavior: 'none' }}>
+      <div className={`${darkMode ? 'bg-[#0a0f1e]' : 'bg-white'} px-5 safe-top pb-5 flex items-center gap-3`}>
         <button
           onClick={onBack}
-          className={`p-2 rounded-xl ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}
+          className={`p-2 rounded-xl flex-shrink-0 select-none ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}
         >
           <ArrowLeft size={20} />
         </button>
