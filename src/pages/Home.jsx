@@ -41,6 +41,7 @@ export default function Home() {
   const [setupConfig, setSetupConfig] = useState(null);
   const poolRef = useRef([]);
   const usedIdsRef = useRef([]);
+  const suppPoolRef = useRef({});  // supplementary athletes by league
 
   const toggleSound = () => {
     const next = !soundOn;
