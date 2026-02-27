@@ -35,6 +35,17 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
       const t = setTimeout(() => { playSuccess(); setStage('athlete'); }, 2800);
       return () => clearTimeout(t);
     }
+    if (stage === 'athlete') {
+      const t = setTimeout(() => {
+        setShowAd(true);
+        try {
+          if (adRef.current && window.adsbygoogle) {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          }
+        } catch {}
+      }, 1000);
+      return () => clearTimeout(t);
+    }
   }, [stage]);
 
   return (
