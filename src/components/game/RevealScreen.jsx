@@ -12,6 +12,8 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
   const [stage, setStage] = useState('suspense');
   const [imgLoaded, setImgLoaded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showAd, setShowAd] = useState(false);
+  const adRef = React.useRef(null);
 
   const impostors = playerNames.filter(n => roles[n] === 'impostor');
 
