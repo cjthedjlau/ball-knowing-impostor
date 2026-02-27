@@ -212,6 +212,21 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
               )}
             </div>
 
+            {/* Ad unit */}
+            {showAd && (
+              <div className="mt-5 overflow-hidden rounded-2xl" style={{ minHeight: 0 }}>
+                <ins
+                  ref={adRef}
+                  className="adsbygoogle"
+                  style={{ display: 'block' }}
+                  data-ad-client="ca-pub-1818161492484327"
+                  data-ad-slot="auto"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                />
+              </div>
+            )}
+
             {/* Actions */}
             <div className="mt-5 space-y-3">
               <motion.button
