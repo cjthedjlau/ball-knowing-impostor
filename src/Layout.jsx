@@ -46,5 +46,6 @@ export default function Layout({ children }) {
       {children}
       <CookieConsent />
     </div>
+    </ErrorBoundary>
   );
 }
