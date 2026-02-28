@@ -5,6 +5,7 @@ import { buildAthletePool, pickValidatedAthlete, getHint, clearSessionHistory, a
 import { buildExpansionPool, buildTeamPackPool } from '../components/game/expansionPacks/expansionPacksApi';
 import { runSupplementationIfOnline, clearSuppCache } from '../components/lib/apiSupplementation';
 import { playTransition, playConfirmation, setSoundEnabled } from '../components/lib/soundSystem';
+import { getLoadingPhrase } from '../components/lib/loadingPhrases';
 import LoadingScreen from '../components/game/LoadingScreen';
 import SetupScreen from '../components/game/SetupScreen';
 import RoleRevealScreen from '../components/game/RoleRevealScreen';
