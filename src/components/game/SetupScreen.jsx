@@ -5,6 +5,7 @@ import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, Volum
 import LeagueDecadeSelector from './LeagueDecadeSelector';
 import ExpansionPacksModal from './expansionPacks/ExpansionPacksModal';
 import { EXPANSION_LEAGUE_EMOJI } from './expansionPacks/expansionData';
+import SetupFooter from './SetupFooter';
 
 const STANDARD_LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const EXPANSION_LEAGUE_LABELS = { PGA: '⛳ PGA', FIFA: '⚽ FIFA', NCAAF: '🏈 NCAAF', NCAAMB: '🏀 NCAAMB' };
