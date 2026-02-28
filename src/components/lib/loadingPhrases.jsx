@@ -1,3 +1,4 @@
+
 export const LOADING_PHRASES = [
   "Lacing up cleats...",
   "Tucking in the jersey...",
@@ -19,6 +20,7 @@ export const LOADING_PHRASES = [
   "Getting the signals from the coach...",
   "Stepping into the batter's box...",
   "Tying the skates...",
+  "Bribing the officials...",
 ];
 
 export const getLoadingPhrase = () =>
