@@ -170,12 +170,27 @@ const fetchTeamPlayers = async (teamId, league) => {
   );
   if (!data || !data.player) return [];
 
+  const expectedSport = LEAGUE_SPORT[league]; // e.g. "Basketball"
+
   return data.player
-    .map((p) => normalisePlayer(p, league))
+    .map((p) => {
+      // Hard sport check: if TheSportsDB returns a sport field, it must match
+      if (expectedSport && p.strSport) {
+        if (p.strSport.toLowerCase() !== expectedSport.toLowerCase()) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn(`[SportLock] Rejected ${p.strPlayer} — sport "${p.strSport}" ≠ expected "${expectedSport}" for ${league}`);
+          }
+          return null;
+        }
+      }
+      return normalisePlayer(p, league);
+    })
     .filter(Boolean)
-    .filter((a) => LEAGUE_SPORT[league] === undefined ||
-      // Validate sport matches (guard against TheSportsDB mixing sports)
-      (a.position !== 'Assistant Coach' && a.position !== 'Head Coach' && a.position !== 'Coach'));
+    .filter((a) =>
+      a.position !== 'Assistant Coach' &&
+      a.position !== 'Head Coach' &&
+      a.position !== 'Coach'
+    );
 };
 
 // ── Main supplementation function ────────────────────────────────────────────
