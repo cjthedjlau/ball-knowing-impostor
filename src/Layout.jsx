@@ -26,6 +26,7 @@ export default function Layout({ children }) {
         * { -webkit-tap-highlight-color: transparent; }
         html, body {
           overscroll-behavior: none;
+          overscroll-behavior-y: contain;
           overflow: hidden;
           height: 100%;
         }
