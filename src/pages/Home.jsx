@@ -96,7 +96,7 @@ export default function Home() {
     setSetupConfig(config);
     setScreen('loading');
     setLoadingProgress(0);
-    setLoadingMsg(randomPhrase());
+    setLoadingMsg(getLoadingPhrase());
 
     clearSuppCache();
     suppPoolRef.current = {};
