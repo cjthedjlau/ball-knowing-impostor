@@ -179,6 +179,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
               🏆 Ball Knowing
             </h1>
             <p className={`text-[#3b82f6] font-black tracking-[0.25em] uppercase text-3xl`}>Imposter</p>
+            <p className={`text-xs mt-1 font-medium ${darkMode ? 'text-white/35' : 'text-slate-400'}`}>Sports party game · Find the impostor</p>
           </div>
           <div className="flex gap-2">
             <button
