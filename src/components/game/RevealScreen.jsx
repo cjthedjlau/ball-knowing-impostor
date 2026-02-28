@@ -49,7 +49,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
   }, [stage]);
 
   return (
-    <div className={`min-h-screen ${bg} flex flex-col overflow-hidden`} style={{ overscrollBehavior: 'none' }}>
+    <div className={`min-h-screen ${bg} flex flex-col overflow-hidden`} style={{ overscrollBehavior: 'none', touchAction: 'pan-x pan-y' }}>
       {/* Confirm quit */}
       <AnimatePresence>
         {showConfirm && (
