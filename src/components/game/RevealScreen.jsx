@@ -171,7 +171,6 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
             {/* Athlete card */}
             <div className={`${card} rounded-3xl overflow-hidden shadow-2xl`}>
               {(() => {
-                const [imgError, setImgError] = React.useState(false);
                 const showPhoto = athlete?.photoUrl && !imgError;
                 return showPhoto ? (
                   <div className="relative">
