@@ -1595,8 +1595,7 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
   const needsPhoto = pool.filter(a => !photoCache[a.id]);
 
   if (needsPhoto.length > 0) {
-    const { getLoadingPhrase: glp } = await import('./loadingPhrases.js');
-    onProgress?.(glp());
+    onProgress?.(getLoadingPhrase());
     const BATCH = 8;
     for (let i = 0; i < needsPhoto.length; i += BATCH) {
       const batch = needsPhoto.slice(i, i + BATCH);
