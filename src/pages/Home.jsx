@@ -169,7 +169,7 @@ export default function Home() {
 
   const handlePlayAgain = async () => {
     setScreen('loading');
-    setLoadingMsg('Picking new athlete...');
+    setLoadingMsg(randomPhrase());
     setLoadingProgress(0);
 
     const EXPANSION_IDS_PA = ['PGA', 'FIFA', 'NCAAF', 'NCAAMB'];
