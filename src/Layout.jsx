@@ -1,4 +1,5 @@
 import React from 'react';
+import CookieConsent from './components/game/CookieConsent';
 
 export default function Layout({ children }) {
   React.useEffect(() => {
