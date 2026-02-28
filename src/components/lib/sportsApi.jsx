@@ -1210,7 +1210,6 @@ const BALL_KNOWLEDGE_RAW = [
   { name: 'Chase Meidroth',           team: 'Boston Red Sox',             league: 'MLB', position: 'Infielder' },
   { name: 'Chase Dollander',          team: 'Colorado Rockies',           league: 'MLB', position: 'Pitcher' },
   { name: 'Jett Williams',            team: 'New York Mets',              league: 'MLB', position: 'Shortstop' },
-  { name: 'Isaiah Hartenstein',       team: 'Oklahoma City Thunder',      league: 'NBA', position: 'Center' },
   { name: 'Brandon Sproat',           team: 'New York Mets',              league: 'MLB', position: 'Pitcher' },
   { name: 'Joe Gray Jr.',             team: 'Oakland Athletics',          league: 'MLB', position: 'Outfielder' },
   { name: 'Tyler Soderstrom',         team: 'Oakland Athletics',          league: 'MLB', position: 'Catcher' },
