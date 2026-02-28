@@ -164,7 +164,7 @@ export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed, o
   const allDone = done.size === playerNames.length;
 
   return (
-    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none' }}>
+    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none', touchAction: 'pan-x pan-y' }}>
       {/* Confirm quit dialog */}
       <AnimatePresence>
         {showConfirm && (

@@ -22,7 +22,7 @@ export default function DiscussionScreen({ gameState, darkMode, onReveal, onBack
   const sub  = darkMode ? 'text-white/50' : 'text-slate-500';
 
   return (
-    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none' }}>
+    <div className={`min-h-screen ${bg} flex flex-col`} style={{ overscrollBehavior: 'none', touchAction: 'pan-x pan-y' }}>
       {/* Confirm quit */}
       <AnimatePresence>
         {showConfirm && (

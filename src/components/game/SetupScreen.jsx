@@ -72,10 +72,10 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   const handleTouchMove = (e) => {
     if (touchStartY.current === null) return;
     const delta = e.touches[0].clientY - touchStartY.current;
-    if (delta > 0) setPullY(Math.min(delta * 0.4, 70));
+    if (delta > 0) setPullY(Math.min(delta * 0.4, 80));
   };
   const handleTouchEnd = () => {
-    if (pullY > 50) {
+    if (pullY > 150) {
       setRefreshing(true);
       setTimeout(() => { setRefreshing(false); setPullY(0); touchStartY.current = null; }, 1000);
     } else {
