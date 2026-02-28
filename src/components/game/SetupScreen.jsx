@@ -444,6 +444,8 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           <Play size={22} fill="currentColor" />
           Start Game
         </motion.button>
+
+        <SetupFooter darkMode={darkMode} />
       </div>
 
       {/* Expansion Packs Modal */}
