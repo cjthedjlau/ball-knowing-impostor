@@ -87,22 +87,28 @@ function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficu
               <div className={`${card} rounded-3xl overflow-hidden shadow-xl border-2 border-[#3b82f6]/30`}>
                 {athlete?.photoUrl ? (
                   <div className="relative">
-                    {!imgLoaded && (
-                      <div className="w-full h-64 flex items-center justify-center bg-gradient-to-br from-[#0d1b35] to-[#0a0f1e]">
-                        <div className="w-10 h-10 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
-                      </div>
+                    {!imgError && athlete?.photoUrl ? (
+                      <>
+                        {!imgLoaded && (
+                          <div className="w-full h-64 flex items-center justify-center bg-gradient-to-br from-[#0d1b35] to-[#0a0f1e]">
+                            <div className="w-10 h-10 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
+                          </div>
+                        )}
+                        <motion.img
+                          src={athlete.photoUrl}
+                          alt={athlete.name}
+                          initial={{ scale: 1.08, opacity: 0 }}
+                          animate={imgLoaded ? { scale: 1, opacity: 1 } : {}}
+                          transition={{ duration: 0.55, ease: 'easeOut' }}
+                          className={`w-full h-64 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
+                          onLoad={() => setImgLoaded(true)}
+                          onError={() => { setImgError(true); setImgLoaded(true); }}
+                        />
+                      </>
+                    ) : (
+                      <AthletePlaceholder name={athlete?.name} className="w-full h-64" />
                     )}
-                    <motion.img
-                      src={athlete.photoUrl}
-                      alt={athlete.name}
-                      initial={{ scale: 1.08, opacity: 0 }}
-                      animate={imgLoaded ? { scale: 1, opacity: 1 } : {}}
-                      transition={{ duration: 0.55, ease: 'easeOut' }}
-                      className={`w-full h-64 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
-                      onLoad={() => setImgLoaded(true)}
-                      onError={() => setImgLoaded(true)}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <p className="text-white font-black text-xl leading-tight">{athlete?.name}</p>
                       <p className="text-white/70 text-sm">{athlete?.team}</p>
