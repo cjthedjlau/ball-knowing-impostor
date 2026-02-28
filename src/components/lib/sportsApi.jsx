@@ -1436,12 +1436,16 @@ const enc = (n) => encodeURIComponent(n);
 
 const fetchNLPhoto = async (athlete) => {
   const name = athlete.name;
+  const league = athlete.league;
   try {
     const r = await fetch(`${SPORTSDB_BASE}/searchplayers.php?p=${enc(name)}`);
     const d = await r.json();
     const players = d.player || [];
-    const exact = players.find(p => p.strPlayer?.toLowerCase() === name.toLowerCase());
-    const candidate = exact || players[0];
+    // Sport-filter results to prevent cross-sport image contamination
+    const sportFiltered = players.filter(p => sportMatchesLeague(p, league));
+    const pool = sportFiltered.length > 0 ? sportFiltered : [];
+    const exact = pool.find(p => p.strPlayer?.toLowerCase() === name.toLowerCase());
+    const candidate = exact || pool[0];
     if (candidate) {
       const url = candidate.strCutout || candidate.strThumb || '';
       if (url && url.startsWith('http')) return url;
