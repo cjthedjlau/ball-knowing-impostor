@@ -1599,7 +1599,7 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
     for (let i = 0; i < needsPhoto.length; i += BATCH) {
       const batch = needsPhoto.slice(i, i + BATCH);
       await Promise.all(batch.map(async a => {
-        const url = await searchPlayerPhoto(a.name);
+        const url = await searchPlayerPhoto(a.name, a.league);
         photoCache[a.id] = url || 'NONE';
       }));
       const pct = Math.min(Math.round(((i + BATCH) / needsPhoto.length) * 100), 100);
