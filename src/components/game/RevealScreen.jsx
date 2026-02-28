@@ -169,62 +169,71 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
 
             {/* Athlete card */}
             <div className={`${card} rounded-3xl overflow-hidden shadow-2xl`}>
-              {athlete.photoUrl ? (
-                <div className="relative">
-                  {!imgLoaded && (
-                    <div className="w-full h-72 flex items-center justify-center bg-gradient-to-br from-[#0d1b35] to-[#0a0f1e]">
-                      <div className="w-12 h-12 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
+              {(() => {
+                const [imgError, setImgError] = React.useState(false);
+                const showPhoto = athlete?.photoUrl && !imgError;
+                return showPhoto ? (
+                  <div className="relative">
+                    {!imgLoaded && (
+                      <div className="w-full h-72 flex items-center justify-center bg-gradient-to-br from-[#0d1b35] to-[#0a0f1e]">
+                        <div className="w-12 h-12 rounded-full border-4 border-[#1e3a6e] border-t-[#3b82f6] animate-spin" />
+                      </div>
+                    )}
+                    <img
+                      src={athlete.photoUrl}
+                      alt={athlete?.name}
+                      className={`w-full h-72 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
+                      onLoad={() => setImgLoaded(true)}
+                      onError={() => { setImgError(true); setImgLoaded(true); }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      {gameState.difficulty === 'legends' && (
+                        <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
+                      )}
+                      <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete?.league}</span>
                     </div>
-                  )}
-                  <img
-                    src={athlete.photoUrl}
-                    alt={athlete.name}
-                    className={`w-full h-72 object-cover object-top ${imgLoaded ? 'block' : 'hidden'}`}
-                    onLoad={() => setImgLoaded(true)}
-                    onError={() => setImgLoaded(true)}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                  <div className="absolute top-3 right-3 flex gap-2">
-                    {gameState.difficulty === 'legends' && (
-                      <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
-                    )}
-                    <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete.league}</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-1">The Secret Athlete</p>
+                      <p className="text-white font-black text-2xl leading-tight">{athlete?.name}</p>
+                      <p className="text-white/70 text-sm">{athlete?.team}</p>
+                      {athlete?.position && <p className="text-white/50 text-xs mt-0.5">{athlete.position}</p>}
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-1">The Secret Athlete</p>
-                    <p className="text-white font-black text-2xl leading-tight">{athlete.name}</p>
-                    <p className="text-white/70 text-sm">{athlete.team}</p>
-                    {athlete.position && <p className="text-white/50 text-xs mt-0.5">{athlete.position}</p>}
+                ) : (
+                  <div className="relative">
+                    <AthletePlaceholder name={athlete?.name} className="w-full h-48" />
+                    <div className="p-4 bg-[#0a0f1e]">
+                      <p className="text-white font-black text-xl leading-tight">{athlete?.name}</p>
+                      <p className="text-white/60 text-sm">{athlete?.team}</p>
+                      {athlete?.position && <p className="text-white/40 text-xs mt-0.5">{athlete.position}</p>}
+                    </div>
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      {gameState.difficulty === 'legends' && (
+                        <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
+                      )}
+                      <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete?.league}</span>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className={`relative flex flex-col items-center justify-center py-10 px-6 ${gameState.difficulty === 'legends' ? 'bg-gradient-to-br from-yellow-900/60 to-[#0a1628]' : 'bg-gradient-to-br from-[#1e3a6e] to-[#0a1628]'}`}>
-                  <div className="text-7xl mb-3">{gameState.difficulty === 'legends' ? '🏆' : (athlete.emoji || '🏅')}</div>
-                  <p className="text-white font-black text-2xl text-center leading-tight">{athlete.name}</p>
-                  <p className="text-white/60 text-sm mt-1">{athlete.team}</p>
-                  {athlete.position && <p className="text-white/40 text-xs mt-0.5">{athlete.position}</p>}
-                  <div className="absolute top-3 right-3 flex gap-2">
-                    {gameState.difficulty === 'legends' && (
-                      <span className="bg-yellow-500 text-black text-xs font-black px-2.5 py-1 rounded-full">⭐ Legend</span>
-                    )}
-                    <span className="bg-[#3b82f6] text-white text-xs font-black px-3 py-1.5 rounded-full">{athlete.league}</span>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
 
-            {/* Ad unit */}
+            {/* Ad unit — only after all animations, clearly labeled */}
             {showAd && (
-              <div className="mt-5 overflow-hidden rounded-2xl" style={{ minHeight: 0 }}>
-                <ins
-                  ref={adRef}
-                  className="adsbygoogle"
-                  style={{ display: 'block' }}
-                  data-ad-client="ca-pub-1818161492484327"
-                  data-ad-slot="auto"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                />
+              <div className="mt-6 pt-5 border-t border-white/10">
+                <p className="text-center text-xs text-slate-400 mb-2 tracking-wide">Advertisement</p>
+                <div className="overflow-hidden rounded-2xl">
+                  <ins
+                    ref={adRef}
+                    className="adsbygoogle"
+                    style={{ display: 'block' }}
+                    data-ad-client="ca-pub-1818161492484327"
+                    data-ad-slot="auto"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"
+                  />
+                </div>
               </div>
             )}
 
