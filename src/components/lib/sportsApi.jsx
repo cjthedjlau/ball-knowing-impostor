@@ -1664,8 +1664,7 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
 
   const isLegends = difficulty === 'legends';
   const photoCache = getNLPhotoCache();
-  const { getLoadingPhrase: glpNL } = await import('./loadingPhrases.js');
-  onProgress?.(glpNL());
+  onProgress?.(getLoadingPhrase());
 
   for (const raw of candidates) {
     const athlete = stampSportTag(raw);
