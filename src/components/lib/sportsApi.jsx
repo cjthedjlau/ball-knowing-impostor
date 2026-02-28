@@ -1570,7 +1570,8 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
   }
 
   if (difficulty === 'legends') {
-    onProgress?.('Loading Legends roster...');
+    const { getLoadingPhrase } = await import('./loadingPhrases.js');
+    onProgress?.(getLoadingPhrase());
     await new Promise(r => setTimeout(r, 300));
     // Hard filter at source
     let pool = LEGENDS_ATHLETES
