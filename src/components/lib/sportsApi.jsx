@@ -1608,7 +1608,8 @@ export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, 
     }
     saveBKPhotoCache(photoCache);
   } else {
-    onProgress?.('Loading Ball Knowledge roster...');
+    const { getLoadingPhrase } = await import('./loadingPhrases.js');
+    onProgress?.(getLoadingPhrase());
     await new Promise(r => setTimeout(r, 300));
   }
 
