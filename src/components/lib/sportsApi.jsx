@@ -1392,12 +1392,32 @@ const BALL_KNOWLEDGE_ATHLETES = BALL_KNOWLEDGE_RAW.map((a, i) => ({
 // ─────────────────────────────────────────────────────────────────────────────
 // TheSportsDB helpers
 // ─────────────────────────────────────────────────────────────────────────────
-const searchPlayerPhoto = async (name) => {
+// Sport string as TheSportsDB returns for each league
+const LEAGUE_SPORT_STRING = {
+  NBA: 'basketball', NFL: 'american football', MLB: 'baseball', NHL: 'ice hockey',
+  PGA: 'golf', FIFA: 'soccer', NCAAF: 'american football', NCAAMB: 'basketball',
+};
+
+// Returns true if the TheSportsDB player record's sport matches the expected league
+const sportMatchesLeague = (playerRecord, league) => {
+  const expectedSport = LEAGUE_SPORT_STRING[league];
+  if (!expectedSport) return true; // unknown league — allow
+  const recordSport = (playerRecord.strSport || '').toLowerCase();
+  if (!recordSport) return true; // no sport field — can't reject
+  return recordSport.includes(expectedSport) || expectedSport.includes(recordSport);
+};
+
+const searchPlayerPhoto = async (name, league) => {
   try {
     const r = await fetch(`${SPORTSDB_BASE}/searchplayers.php?p=${encodeURIComponent(name)}`);
     const d = await r.json();
     const players = d.player || [];
-    for (const p of players) {
+    // Filter by sport if league is known, to prevent cross-sport image contamination
+    const sportFiltered = league
+      ? players.filter(p => sportMatchesLeague(p, league))
+      : players;
+    const candidates = sportFiltered.length > 0 ? sportFiltered : [];
+    for (const p of candidates) {
       const url = p.strCutout || p.strThumb || '';
       if (url && url.startsWith('http')) return url;
     }
