@@ -1561,7 +1561,6 @@ const stampSportTag = (athlete) => {
 
 export const buildAthletePool = async (selectedLeagues, difficulty, onProgress, selectedDecades = []) => {
   if (difficulty === 'normal') {
-    const { getLoadingPhrase } = await import('./loadingPhrases.js');
     onProgress?.(getLoadingPhrase());
     await new Promise(r => setTimeout(r, 300));
     // Hard filter: only athletes whose league is explicitly in selectedLeagues
