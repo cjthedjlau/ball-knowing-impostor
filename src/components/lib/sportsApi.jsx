@@ -1645,8 +1645,7 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
   const shouldSkipPhoto = (athlete) => athlete.noPhoto === true || athlete.photoUrl === null;
 
   if (isBallKnowledge) {
-    const { getLoadingPhrase: glpBK } = await import('./loadingPhrases.js');
-    onProgress?.(glpBK());
+    onProgress?.(getLoadingPhrase());
     for (const raw of candidates) {
       const athlete = stampSportTag(raw);
       if (!verifySportTag(athlete, effectiveLeagues)) continue;
