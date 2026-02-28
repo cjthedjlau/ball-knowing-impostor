@@ -1701,6 +1701,12 @@ export const pickValidatedAthlete = async (pool, usedIds = [], onProgress, diffi
 
 export const getHint = (athlete) => {
   if (!athlete) return 'Unknown';
+
+  // Use player-specific hints array if available (e.g. PGA golfers)
+  if (Array.isArray(athlete.hints) && athlete.hints.length > 0) {
+    return athlete.hints[Math.floor(Math.random() * athlete.hints.length)];
+  }
+
   const hints = [];
   const pos = (athlete.position || '').toLowerCase();
 
