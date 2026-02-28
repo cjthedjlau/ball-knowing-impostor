@@ -30,8 +30,12 @@ export default function AboutModal({ darkMode, onClose }) {
             <div className="text-4xl mb-3">🏆</div>
             <h2 className={`text-xl font-black mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Ball Knowing Imposter</h2>
             <p className={`text-sm mb-4 ${darkMode ? 'text-white/50' : 'text-slate-500'}`}>
-              The ultimate sports trivia social deduction game.
+              The ultimate sports trivia social deduction party game.
             </p>
+            <div className={`text-xs rounded-xl px-3 py-2.5 mb-4 text-left ${darkMode ? 'bg-white/5 text-white/40' : 'bg-slate-50 text-slate-400'}`}>
+              <p className="font-bold mb-0.5">Content Rating: 4+</p>
+              <p>No violence · No explicit content · No user-generated content. Safe for all ages.</p>
+            </div>
             <a
               href="mailto:support@ballknowingimpostor.com"
               className="text-[#3b82f6] text-sm underline"
