@@ -41,6 +41,7 @@ export default function Layout({ children }) {
         button, [role="button"] { user-select: none; }
       `}</style>
       {children}
+      <CookieConsent />
     </div>
   );
 }
