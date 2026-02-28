@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RotateCcw, Settings, ArrowLeft } from 'lucide-react';
 import { playImpostorReveal, playSuccess } from '../lib/soundSystem';
+import AthletePlaceholder from '../game/AthletePlaceholder';
 
 const haptic = (pattern) => { try { navigator.vibrate?.(pattern || [30]); } catch {} };
 

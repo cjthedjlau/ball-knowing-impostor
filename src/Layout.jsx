@@ -14,6 +14,7 @@ export default function Layout({ children }) {
   }, []);
 
   return (
+    <ErrorBoundary>
     <div
       className="min-h-screen overflow-x-hidden"
       style={{
