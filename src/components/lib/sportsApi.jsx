@@ -2,6 +2,8 @@
 // Sports API — athlete pools for Ball Knowing Impostor
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { getLoadingPhrase } from './loadingPhrases';
+
 const SPORTSDB_BASE = 'https://www.thesportsdb.com/api/v1/json/3';
 
 export const LEAGUE_EMOJI = {
