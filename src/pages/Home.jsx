@@ -119,7 +119,7 @@ export default function Home() {
     setSetupConfig(config);
     setScreen('loading');
     setLoadingProgress(0);
-    setLoadingMsg('Building roster...');
+    setLoadingMsg(randomPhrase());
 
     clearSuppCache();
     suppPoolRef.current = {};
