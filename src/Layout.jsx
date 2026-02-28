@@ -1,5 +1,6 @@
 import React from 'react';
 import CookieConsent from './components/game/CookieConsent';
+import ErrorBoundary from './components/game/ErrorBoundary';
 
 export default function Layout({ children }) {
   React.useEffect(() => {
