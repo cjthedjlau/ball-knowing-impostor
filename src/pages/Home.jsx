@@ -170,7 +170,7 @@ export default function Home() {
       poolRef.current = pool;
     }
 
-    setLoadingMsg(randomPhrase());
+    setLoadingMsg(getLoadingPhrase());
     const suppFlat = Object.values(suppPoolRef.current).flat();
     const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
     const standardLeaguesPA = (setupConfig.leagues || []).filter(l => !EXPANSION_IDS_PA.includes(l));
