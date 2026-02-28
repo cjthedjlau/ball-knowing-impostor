@@ -151,7 +151,7 @@ export default function Home() {
     poolRef.current = pool;
     usedIdsRef.current = [];
 
-    setLoadingMsg('Validating athlete photo...');
+    setLoadingMsg(randomPhrase());
     const suppFlat = Object.values(suppPoolRef.current).flat();
     const mergedPool = suppFlat.length > 0 ? [...pool, ...suppFlat].sort(() => Math.random() - 0.5) : pool;
     const standardLeaguesForValidation = (config.leagues || []).filter(l => !EXPANSION_IDS.includes(l));
