@@ -15,37 +15,36 @@ export default function Layout({ children }) {
 
   return (
     <ErrorBoundary>
-    <div
-      className="min-h-screen overflow-x-hidden"
-      style={{
-        paddingTop: 'env(safe-area-inset-top)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        paddingLeft: 'env(safe-area-inset-left)',
-        paddingRight: 'env(safe-area-inset-right)',
-      }}
-    >
-      <style>{`
-        * { -webkit-tap-highlight-color: transparent; }
-        html, body {
-          overscroll-behavior: none;
-          overscroll-behavior-y: contain;
-          overflow: hidden;
-          height: 100%;
-        }
-        #root {
-          height: 100%;
-          overflow-y: auto;
-          overscroll-behavior: none;
-        }
-        @media (max-width: 640px) { html { font-size: 16px; } }
-        /* iOS safe area meta */
-        .safe-top    { padding-top: max(1.25rem, env(safe-area-inset-top)); }
-        .safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
-        button, [role="button"] { user-select: none; }
-      `}</style>
-      {children}
-      <CookieConsent />
-    </div>
+      <div
+        className="min-h-screen overflow-x-hidden"
+        style={{
+          paddingTop: 'env(safe-area-inset-top)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
+        }}
+      >
+        <style>{`
+          * { -webkit-tap-highlight-color: transparent; }
+          html, body {
+            overscroll-behavior: none;
+            overscroll-behavior-y: contain;
+            overflow: hidden;
+            height: 100%;
+          }
+          #root {
+            height: 100%;
+            overflow-y: auto;
+            overscroll-behavior: none;
+          }
+          @media (max-width: 640px) { html { font-size: 16px; } }
+          .safe-top    { padding-top: max(1.25rem, env(safe-area-inset-top)); }
+          .safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+          button, [role="button"] { user-select: none; }
+        `}</style>
+        {children}
+        <CookieConsent />
+      </div>
     </ErrorBoundary>
   );
 }
