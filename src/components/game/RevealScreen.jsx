@@ -12,6 +12,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
   const { playerNames, roles, athlete, impostorCount } = gameState;
   const [stage, setStage] = useState('suspense');
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showAd, setShowAd] = useState(false);
   const adRef = React.useRef(null);
