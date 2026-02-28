@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import AboutModal from './AboutModal';
 
 export default function SetupFooter({ darkMode }) {
