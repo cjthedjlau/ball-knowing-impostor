@@ -4,6 +4,19 @@ import ErrorBoundary from './components/game/ErrorBoundary';
 
 export default function Layout({ children }) {
 
+  // Suppress console warnings in production (but keep errors)
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+      const originalWarn = console.warn;
+      console.warn = (...args) => {
+        // Only suppress known safe warnings (AdSense, iOS quirks)
+        const msg = String(args[0]);
+        if (msg.includes('adsbygoogle') || msg.includes('WebKit') || msg.includes('Passive event')) return;
+        originalWarn.apply(console, args);
+      };
+    }
+  }, []);
+
   return (
     <ErrorBoundary>
       <div
@@ -13,6 +26,8 @@ export default function Layout({ children }) {
           paddingBottom: 'env(safe-area-inset-bottom)',
           paddingLeft: 'env(safe-area-inset-left)',
           paddingRight: 'env(safe-area-inset-right)',
+          WebkitFontSmoothing: 'antialiased',
+          WebkitTextSizeAdjust: '100%',
         }}
       >
         <style>{`
