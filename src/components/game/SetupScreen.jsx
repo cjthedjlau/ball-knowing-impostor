@@ -6,6 +6,8 @@ import LeagueDecadeSelector from './LeagueDecadeSelector';
 import ExpansionPacksModal from './expansionPacks/ExpansionPacksModal';
 import { EXPANSION_LEAGUE_EMOJI } from './expansionPacks/expansionData';
 import SetupFooter from './SetupFooter';
+import BannerAd from './BannerAd';
+import { requestATTConsent, injectAdScript, hasATTBeenAsked } from '../lib/adManager';
 
 const STANDARD_LEAGUES = ['NBA', 'NFL', 'MLB', 'NHL'];
 const EXPANSION_LEAGUE_LABELS = { PGA: '⛳ PGA', FIFA: '⚽ FIFA', NCAAF: '🏈 NCAAF', NCAAMB: '🏀 NCAAMB' };
