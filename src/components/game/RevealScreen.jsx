@@ -38,7 +38,19 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
       return () => clearTimeout(t);
     }
     if (stage === 'athlete') {
-      // stage ready
+      // Fire interstitial after 1500ms delay once athlete screen is shown
+      const t = setTimeout(() => {
+        try {
+          const roundDuration = Math.floor((Date.now() - roundStartRef.current) / 1000);
+          showInterstitialAd({
+            roundDuration,
+            onDone: () => setActionsVisible(true),
+          });
+        } catch (e) {
+          setActionsVisible(true);
+        }
+      }, 1500);
+      return () => clearTimeout(t);
     }
   }, [stage]);
 
