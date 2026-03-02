@@ -76,16 +76,15 @@ function getNPA() {
 // ── Inject AdSense script once ────────────────────────────────────────────────
 let scriptInjected = false;
 export function injectAdScript() {
-  if (scriptInjected || document.querySelector(`script[data-ad-client="${AD_CLIENT}"]`)) {
-    scriptInjected = true;
-    return;
-  }
+  if (scriptInjected) return;
+
   try {
+    const config = getAdConfig();
     const s = document.createElement('script');
     s.async = true;
-    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${AD_CLIENT}`;
+    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${config.appId}`;
     s.crossOrigin = 'anonymous';
-    s.dataset.adClient = AD_CLIENT;
+    s.dataset.adClient = config.appId;
     document.head.appendChild(s);
     scriptInjected = true;
   } catch (e) {
