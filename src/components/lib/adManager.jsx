@@ -100,11 +100,11 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
     return;
   }
 
-  // 3-second timeout failsafe
+  // 5-second timeout failsafe (iOS and Android)
   const failTimer = setTimeout(() => {
     cleanup();
     onDone();
-  }, 3000);
+  }, 5000);
 
   let cleaned = false;
   function cleanup() {
@@ -121,14 +121,16 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
       return;
     }
 
+    const config = getAdConfig();
+
     container = document.createElement('div');
     container.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;';
 
     const ins = document.createElement('ins');
     ins.className = 'adsbygoogle';
     ins.style.display = 'block';
-    ins.setAttribute('data-ad-client', AD_CLIENT);
-    ins.setAttribute('data-ad-slot', INTERSTITIAL_SLOT);
+    ins.setAttribute('data-ad-client', config.appId);
+    ins.setAttribute('data-ad-slot', config.interstitialId);
     ins.setAttribute('data-ad-format', 'autorelaxed');
     ins.setAttribute('data-full-width-responsive', 'true');
     if (getNPA()) ins.setAttribute('data-npa', '1');
