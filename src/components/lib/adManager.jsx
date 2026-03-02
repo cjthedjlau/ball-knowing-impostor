@@ -120,6 +120,49 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
   }
 }
 
+// ── Rewarded ad ───────────────────────────────────────────────────────────────
+const REWARDED_CLIENT = 'ca-app-pub-1818161492484327~5393881452';
+const REWARDED_SLOT   = '4601546090';
+
+// Session cache: set of unlocked pack/league IDs
+const _unlockedPacks = new Set();
+export function isPackUnlocked(id) { return _unlockedPacks.has(id); }
+export function unlockPack(id)     { _unlockedPacks.add(id); }
+
+export function showRewardedAd(onRewardEarned) {
+  // 5-second failsafe — unlock anyway if ad never loads
+  const failTimer = setTimeout(() => {
+    onRewardEarned({ failed: true });
+  }, 5000);
+
+  try {
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', REWARDED_CLIENT);
+    ins.setAttribute('data-ad-slot', REWARDED_SLOT);
+    ins.setAttribute('data-ad-format', 'rewarded');
+    ins.setAttribute('data-full-width-responsive', 'true');
+    if (getNPA()) ins.setAttribute('data-npa', '1');
+    document.body.appendChild(ins);
+
+    (window.adsbygoogle = window.adsbygoogle || []).push({
+      params: {
+        google_ad_client: REWARDED_CLIENT,
+        google_ad_slot: REWARDED_SLOT,
+        google_rewards_earned_callback: () => {
+          clearTimeout(failTimer);
+          try { document.body.removeChild(ins); } catch (e) {}
+          onRewardEarned({ failed: false });
+        },
+      },
+    });
+  } catch (e) {
+    clearTimeout(failTimer);
+    onRewardEarned({ failed: true });
+  }
+}
+
 // ── Banner ad element ─────────────────────────────────────────────────────────
 export function createBannerIns() {
   const npa = getNPA();
