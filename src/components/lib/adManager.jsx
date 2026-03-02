@@ -2,10 +2,38 @@
 // Ad Manager — AdMob / AdSense integration
 // ─────────────────────────────────────────────────────────────────────────────
 
-const AD_CLIENT = 'ca-pub-1818161492484327';
-const INTERSTITIAL_SLOT = '4549575204';
 const ATT_KEY = 'bki_att_consent';
 const ATT_ASKED_KEY = 'bki_att_asked';
+
+// ── Platform Detection & Ad Config ────────────────────────────────────────────
+export function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+function getAdConfig() {
+  const iosMode = isIOS();
+  return {
+    appId: iosMode 
+      ? 'ca-app-pub-1818161492484327~8864224737' 
+      : 'ca-pub-1818161492484327',
+    interstitialId: iosMode 
+      ? 'ca-app-pub-1818161492484327/9165964299' 
+      : '4549575204',
+    rewardedId: iosMode 
+      ? 'ca-app-pub-1818161492484327/8535408902' 
+      : '4601546090',
+    rewardedClient: iosMode
+      ? 'ca-app-pub-1818161492484327~8864224737'
+      : 'ca-app-pub-1818161492484327~5393881452'
+  };
+}
+
+// Log platform & ad config on app load for testing
+if (typeof window !== 'undefined') {
+  const config = getAdConfig();
+  console.log('Platform detected:', isIOS() ? 'iOS' : 'Android');
+  console.log('Using ad config:', config);
+}
 
 // ── App Tracking Transparency (iOS only) ─────────────────────────────────────
 export function isIOS() {
