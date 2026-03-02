@@ -42,6 +42,9 @@ export default function AboutModal({ darkMode, onClose }) {
             >
               support@ballknowingimpostor.com
             </a>
+            <p className="text-white/30 text-xs mt-4 leading-relaxed">
+              Ball Knowing Imposter is an independent trivia game. It is not affiliated with, endorsed by, or sponsored by the NBA, NFL, MLB, NHL, PGA Tour, FIFA, NCAA, or any athlete mentioned in the game. All athlete and team names are used for identification purposes only.
+            </p>
           </div>
         </motion.div>
       </motion.div>

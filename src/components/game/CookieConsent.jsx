@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const COOKIE_KEY = 'bki_cookie_consent';
 
-export default function CookieConsent() {
+export const hasConsented = () => Boolean(localStorage.getItem(COOKIE_KEY));
+
+export default function CookieConsent({ onAccept }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -15,6 +17,7 @@ export default function CookieConsent() {
   const accept = () => {
     localStorage.setItem(COOKIE_KEY, '1');
     setVisible(false);
+    if (onAccept) onAccept();
   };
 
   return (

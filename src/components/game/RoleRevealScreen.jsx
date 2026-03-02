@@ -216,6 +216,8 @@ export default function RoleRevealScreen({ gameState, darkMode, onAllRevealed, o
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.07, type: 'spring', stiffness: 300, damping: 22 }}
               whileTap={{ scale: 0.93 }}
+              role="button"
+              aria-label="Tap to reveal your role"
               onClick={() => { if (!isDone) { haptic(); playTap(); setActivePlayer(name); } }}
               className={`py-6 rounded-2xl flex flex-col items-center justify-center gap-2 transition-colors ${
                 isDone

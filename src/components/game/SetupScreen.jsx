@@ -184,18 +184,21 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           <div className="flex gap-2">
             <button
               onClick={onHowToPlay}
+              aria-label="How to play"
               className={`p-2.5 rounded-xl ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-600'}`}
             >
               <HelpCircle size={20} />
             </button>
             <button
               onClick={onToggleSound}
+              aria-label="Toggle sound"
               className={`p-2.5 rounded-xl ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-600'}`}
             >
               {soundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
             </button>
             <button
               onClick={onToggleDark}
+              aria-label="Toggle dark mode"
               className={`p-2.5 rounded-xl ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-600'}`}
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -214,11 +217,11 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
               <span className={`font-bold ${text}`}>Players</span>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={() => adjustPlayers(-1)} className={`w-8 h-8 rounded-full flex items-center justify-center ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
+              <button onClick={() => adjustPlayers(-1)} aria-label="Decrease player count" className={`w-8 h-8 rounded-full flex items-center justify-center ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
                 <Minus size={16} />
               </button>
               <span className={`text-xl font-black w-6 text-center ${text}`}>{playerCount}</span>
-              <button onClick={() => adjustPlayers(1)} className={`w-8 h-8 rounded-full flex items-center justify-center ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
+              <button onClick={() => adjustPlayers(1)} aria-label="Increase player count" className={`w-8 h-8 rounded-full flex items-center justify-center ${darkMode ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>
                 <Plus size={16} />
               </button>
             </div>

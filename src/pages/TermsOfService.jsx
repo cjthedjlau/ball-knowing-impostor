@@ -20,7 +20,7 @@ export default function TermsOfService() {
 
         <section>
           <h2 className="text-white font-bold mb-2">Age Requirement</h2>
-          <p>By using this app, you confirm that you are at least 4 years of age or older. This app is not intended for use by children under the age of 4 without parental supervision.</p>
+          <p>By using this app, you confirm that you are at least 13 years of age, or the minimum digital age of consent in your country. If you are under 13, please use this app only under parental supervision.</p>
         </section>
 
         <section>

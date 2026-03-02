@@ -16,27 +16,23 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="text-white font-bold mb-2">Data Collection</h2>
           <p>Ball Knowing Imposter does not collect, store, or process any personal user data. We do not require account registration, and no personally identifiable information is gathered by this application.</p>
+          <p className="mt-2">We do not collect any data for advertising purposes within this app. All advertising functionality is implemented through AdMob, Google's mobile advertising platform, in accordance with Google's mobile advertising policies.</p>
         </section>
 
         <section>
-          <h2 className="text-white font-bold mb-2">Google AdSense &amp; Advertising</h2>
-          <p>This app uses Google AdSense to display advertisements. Google AdSense may use cookies and collect anonymous usage data to serve personalized ads based on your interests.</p>
-          <p className="mt-2">Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this app or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this and/or other sites on the internet.</p>
-        </section>
-
-        <section>
-          <h2 className="text-white font-bold mb-2">Opt-Out of Personalized Ads</h2>
-          <p>You may opt out of personalized advertising by visiting <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-[#3b82f6] underline">Google's Ads Settings</a> at adssettings.google.com.</p>
+          <h2 className="text-white font-bold mb-2">Third-Party Data Services</h2>
+          <p>This app fetches athlete photo data from TheSportsDB (thesportsdb.com), a third-party sports data service. No personal user data is transmitted in these requests. We do not store or log any user information on our servers.</p>
         </section>
 
         <section>
           <h2 className="text-white font-bold mb-2">Cookies</h2>
-          <p>This app may use cookies solely through Google AdSense for ad personalization and frequency capping. No first-party cookies are set by this application.</p>
+          <p>This app uses a single cookie solely to remember your cookie consent preference. No advertising or tracking cookies are set by this application directly.</p>
         </section>
 
         <section>
           <h2 className="text-white font-bold mb-2">Contact</h2>
           <p>If you have any questions about this privacy policy, please contact us at <a href="mailto:support@ballknowingimpostor.com" className="text-[#3b82f6] underline">support@ballknowingimpostor.com</a>.</p>
+          <p className="mt-2">To request deletion of any data associated with your use of this app (including any advertising identifiers), please email <a href="mailto:support@ballknowingimpostor.com" className="text-[#3b82f6] underline">support@ballknowingimpostor.com</a> with the subject line "Data Deletion Request".</p>
         </section>
       </div>
     </div>

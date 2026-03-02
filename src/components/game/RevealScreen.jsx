@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RotateCcw, Settings, ArrowLeft } from 'lucide-react';
+import { RotateCcw, Settings, ArrowLeft, Share2 } from 'lucide-react';
 import { playImpostorReveal, playSuccess } from '../lib/soundSystem';
 import AthletePlaceholder from '../game/AthletePlaceholder';
-
-const haptic = (pattern) => { try { navigator.vibrate?.(pattern || [30]); } catch {} };
+import { haptic } from '../../utils/haptics';
 
 const STAGES = ['suspense', 'reveal', 'athlete'];
 
@@ -14,8 +13,6 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showAd, setShowAd] = useState(false);
-  const adRef = React.useRef(null);
 
   const impostors = playerNames.filter(n => roles[n] === 'impostor');
 
@@ -38,20 +35,22 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
       return () => clearTimeout(t);
     }
     if (stage === 'athlete') {
-      const t = setTimeout(() => {
-        setShowAd(true);
-        try {
-          if (adRef.current && window.adsbygoogle) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          }
-        } catch {}
-      }, 1000);
-      return () => clearTimeout(t);
+      // stage ready
     }
   }, [stage]);
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Ball Knowing Imposter',
+        text: `We just played Ball Knowing Imposter! The athlete was ${athlete?.name}. Can you spot the impostor? 🏆`,
+        url: 'https://ballknowingimpostor.com',
+      }).catch(() => {});
+    }
+  };
+
   return (
-    <div className={`min-h-screen ${bg} flex flex-col overflow-hidden`} style={{ overscrollBehavior: 'none', touchAction: 'pan-x pan-y' }}>
+    <div aria-live="polite" className={`min-h-screen ${bg} flex flex-col overflow-hidden`} style={{ overscrollBehavior: 'none', touchAction: 'pan-x pan-y' }}>
       {/* Confirm quit */}
       <AnimatePresence>
         {showConfirm && (
@@ -219,23 +218,8 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
               })()}
             </div>
 
-            {/* Ad unit — only after all animations, clearly labeled */}
-            {showAd && (
-              <div className="mt-6 pt-5 border-t border-white/10">
-                <p className="text-center text-xs text-slate-400 mb-2 tracking-wide">Advertisement</p>
-                <div className="overflow-hidden rounded-2xl">
-                  <ins
-                    ref={adRef}
-                    className="adsbygoogle"
-                    style={{ display: 'block' }}
-                    data-ad-client="ca-pub-1818161492484327"
-                    data-ad-slot="auto"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                  />
-                </div>
-              </div>
-            )}
+            {/* AD_SLOT_PLACEHOLDER: Replace with AdMob banner component when native wrapper is added */}
+            <div className="w-full h-14 bg-transparent" />
 
             {/* Actions */}
             <div className="mt-5 space-y-3">
@@ -246,6 +230,15 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
               >
                 <RotateCcw size={18} /> Play Again
               </motion.button>
+              {navigator.share && (
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => { haptic([20]); handleShare(); }}
+                  className={`w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-200 text-slate-600'}`}
+                >
+                  <Share2 size={18} /> Share Result
+                </motion.button>
+              )}
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => { haptic([20]); onChangeSettings(); }}

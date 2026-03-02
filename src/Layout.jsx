@@ -3,15 +3,6 @@ import CookieConsent from './components/game/CookieConsent';
 import ErrorBoundary from './components/game/ErrorBoundary';
 
 export default function Layout({ children }) {
-  React.useEffect(() => {
-    if (!document.querySelector('script[src*="adsbygoogle"]')) {
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1818161492484327';
-      s.crossOrigin = 'anonymous';
-      document.head.appendChild(s);
-    }
-  }, []);
 
   return (
     <ErrorBoundary>
