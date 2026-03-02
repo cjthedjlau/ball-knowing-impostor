@@ -36,9 +36,6 @@ if (typeof window !== 'undefined') {
 }
 
 // ── App Tracking Transparency (iOS only) ─────────────────────────────────────
-export function isIOS() {
-  return /iPhone|iPad|iPod/.test(navigator.userAgent);
-}
 
 export function hasATTConsent() {
   return localStorage.getItem(ATT_KEY) === 'granted';
