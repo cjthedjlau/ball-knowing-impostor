@@ -233,35 +233,40 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
               })()}
             </div>
 
-            {/* AD_SLOT_PLACEHOLDER: Replace with AdMob banner component when native wrapper is added */}
-            <div className="w-full h-14 bg-transparent" />
-
-            {/* Actions */}
-            <div className="mt-5 space-y-3">
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={() => { haptic([30]); onPlayAgain(); }}
-                className="w-full py-4 rounded-2xl bg-[#3b82f6] text-white font-black text-base flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
-              >
-                <RotateCcw size={18} /> Play Again
-              </motion.button>
-              {navigator.share && (
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => { haptic([20]); handleShare(); }}
-                  className={`w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-200 text-slate-600'}`}
+            {/* Actions — shown after interstitial completes or skips */}
+            <AnimatePresence>
+              {actionsVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-5 space-y-3"
                 >
-                  <Share2 size={18} /> Share Result
-                </motion.button>
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => { haptic([30]); onPlayAgain(); }}
+                    className="w-full py-4 rounded-2xl bg-[#3b82f6] text-white font-black text-base flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+                  >
+                    <RotateCcw size={18} /> Play Again
+                  </motion.button>
+                  {navigator.share && (
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => { haptic([20]); handleShare(); }}
+                      className={`w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-200 text-slate-600'}`}
+                    >
+                      <Share2 size={18} /> Share Result
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => { haptic([20]); onChangeSettings(); }}
+                    className={`w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-200 text-slate-600'}`}
+                  >
+                    <Settings size={18} /> Change Settings
+                  </motion.button>
+                </motion.div>
               )}
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={() => { haptic([20]); onChangeSettings(); }}
-                className={`w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 ${darkMode ? 'bg-white/10 text-white/70' : 'bg-slate-200 text-slate-600'}`}
-              >
-                <Settings size={18} /> Change Settings
-              </motion.button>
-            </div>
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
