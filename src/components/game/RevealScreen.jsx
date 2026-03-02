@@ -4,6 +4,7 @@ import { RotateCcw, Settings, ArrowLeft, Share2 } from 'lucide-react';
 import { playImpostorReveal, playSuccess } from '../lib/soundSystem';
 import AthletePlaceholder from '../game/AthletePlaceholder';
 import { haptic } from '../lib/haptics';
+import { showInterstitialAd } from '../lib/adManager';
 
 const STAGES = ['suspense', 'reveal', 'athlete'];
 
