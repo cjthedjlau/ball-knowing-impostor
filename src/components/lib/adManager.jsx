@@ -28,7 +28,7 @@ function getAdConfig() {
   };
 }
 
-// Log platform & ad config on app load for testing
+// Platform detection logging
 if (typeof window !== 'undefined') {
   const config = getAdConfig();
   console.log('Platform detected:', isIOS() ? 'iOS' : 'Android');
