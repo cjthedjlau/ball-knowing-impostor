@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playTap } from '../lib/soundSystem';
 import { Users, Trophy, HelpCircle, Play, Sun, Moon, Plus, Minus, Volume2, VolumeX, Zap } from 'lucide-react';
