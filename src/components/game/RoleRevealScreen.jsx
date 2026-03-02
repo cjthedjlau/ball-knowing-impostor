@@ -4,7 +4,7 @@ import { Eye, EyeOff, Check, ArrowLeft } from 'lucide-react';
 import AthletePlaceholder from '../game/AthletePlaceholder';
 import { playPop, playTap } from '../lib/soundSystem';
 
-const haptic = () => { try { navigator.vibrate?.([30]); } catch {} };
+import { haptic } from '../lib/haptics';
 
 function RoleCard({ player, athlete, isImpostor, hint, darkMode, onDone, difficulty }) {
   const [revealed, setRevealed] = useState(false);

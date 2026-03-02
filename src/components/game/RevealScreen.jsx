@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RotateCcw, Settings, ArrowLeft, Share2 } from 'lucide-react';
 import { playImpostorReveal, playSuccess } from '../lib/soundSystem';
 import AthletePlaceholder from '../game/AthletePlaceholder';
-import { haptic } from '../../utils/haptics';
+import { haptic } from '../lib/haptics';
 
 const STAGES = ['suspense', 'reveal', 'athlete'];
 
