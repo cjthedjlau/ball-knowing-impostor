@@ -464,6 +464,7 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
           Start Game
         </motion.button>
 
+        <BannerAd darkMode={darkMode} />
         <SetupFooter darkMode={darkMode} />
       </div>
 
