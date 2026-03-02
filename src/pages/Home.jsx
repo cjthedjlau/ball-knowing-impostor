@@ -82,6 +82,30 @@ export default function Home() {
     if (!location.hash) navigate('#setup', { replace: true });
   }, []);
 
+  // ── iOS back swipe gesture handling ─────────────────────────────────────────
+  useEffect(() => {
+    const handlePopState = () => {
+      // If a game is in progress, show confirmation instead of silently going back
+      if (gameState && screen !== 'setup') {
+        const confirmed = window.confirm('Quit game in progress?');
+        if (confirmed) {
+          clearSessionHistory();
+          clearSuppCache();
+          usedIdsRef.current = [];
+          poolRef.current = [];
+          suppPoolRef.current = {};
+          setGameState(null);
+          navigate('#setup', { replace: true });
+        } else {
+          // Prevent the back navigation by pushing a dummy state
+          window.history.pushState(null, '');
+        }
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [gameState, screen, navigate]);
+
   const toggleSound = () => {
     const next = !soundOn;
     setSoundOn(next);
@@ -195,7 +219,16 @@ export default function Home() {
   };
 
   return (
-    <div className={`${darkMode ? 'dark' : ''}`} style={{ WebkitTapHighlightColor: 'transparent' }}>
+    <div 
+      className={`${darkMode ? 'dark' : ''}`} 
+      style={{ 
+        WebkitTapHighlightColor: 'transparent',
+        overscrollBehavior: 'none',
+        overflowX: 'hidden',
+        width: '100vw',
+        maxWidth: '100%'
+      }}
+    >
       <AnimatePresence mode="wait">
         {screen === 'loading' && (
           <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
