@@ -12,6 +12,7 @@ import RoleRevealScreen from '../components/game/RoleRevealScreen';
 import DiscussionScreen from '../components/game/DiscussionScreen';
 import RevealScreen from '../components/game/RevealScreen';
 import HowToPlayScreen from '../components/game/HowToPlayScreen';
+import RateAppPrompt from '../components/game/RateAppPrompt';
 
 // Screen order for back-button logic
 const SCREEN_ORDER = ['setup', 'howtoplay', 'loading', 'roles', 'discussion', 'reveal'];
@@ -71,6 +72,7 @@ export default function Home() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [gameState, setGameState] = useState(null);
   const [setupConfig, setSetupConfig] = useState(null);
+  const [showRatePrompt, setShowRatePrompt] = useState(false);
   const poolRef = useRef([]);
   const usedIdsRef = useRef([]);
   const suppPoolRef = useRef({});
@@ -141,6 +143,10 @@ export default function Home() {
     const firstPlayer = config.playerNames[Math.floor(Math.random() * config.playerNames.length)];
     setGameState({ ...config, athlete, roles, hint, firstPlayer });
     playTransition(config.leagues);
+    // Game count tracking for rate prompt
+    const count = parseInt(localStorage.getItem('bki_game_count') || '0') + 1;
+    localStorage.setItem('bki_game_count', String(count));
+    if (count === 3 && !localStorage.getItem('bki_rated')) setShowRatePrompt(true);
     setScreen('roles');
   };
 
@@ -181,6 +187,10 @@ export default function Home() {
     const hint = getHint(athlete);
     const firstPlayer = setupConfig.playerNames[Math.floor(Math.random() * setupConfig.playerNames.length)];
     setGameState({ ...setupConfig, athlete, roles, hint, firstPlayer });
+    // Game count tracking for rate prompt
+    const count = parseInt(localStorage.getItem('bki_game_count') || '0') + 1;
+    localStorage.setItem('bki_game_count', String(count));
+    if (count === 3 && !localStorage.getItem('bki_rated')) setShowRatePrompt(true);
     setScreen('roles');
   };
 
@@ -250,6 +260,12 @@ export default function Home() {
               }}
             />
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showRatePrompt && (
+          <RateAppPrompt onDismiss={() => setShowRatePrompt(false)} />
         )}
       </AnimatePresence>
     </div>

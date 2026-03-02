@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Check, ArrowLeft } from 'lucide-react';
 import AthletePlaceholder from '../game/AthletePlaceholder';
