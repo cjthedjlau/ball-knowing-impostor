@@ -197,10 +197,11 @@ export function showRewardedAd(onRewardEarned) {
 
 // ── Banner ad element ─────────────────────────────────────────────────────────
 export function createBannerIns() {
+  const config = getAdConfig();
   const npa = getNPA();
   return {
-    adClient: AD_CLIENT,
-    adSlot: INTERSTITIAL_SLOT,
+    adClient: config.appId,
+    adSlot: config.interstitialId,
     npa,
   };
 }
