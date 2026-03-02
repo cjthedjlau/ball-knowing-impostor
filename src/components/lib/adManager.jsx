@@ -46,12 +46,18 @@ export function hasATTBeenAsked() {
 }
 
 export function requestATTConsent(onResult) {
-  if (!isIOS() || hasATTBeenAsked()) {
+  // ATT prompt is iOS-only; skip entirely on Android
+  if (!isIOS()) {
     onResult(true);
     return;
   }
 
-  // Show native-style prompt
+  if (hasATTBeenAsked()) {
+    onResult(true);
+    return;
+  }
+
+  // Show native-style prompt (iOS only)
   const granted = window.confirm(
     'Allow "Ball Knowing Imposter" to use your activity?\n\nYour data will be used to deliver personalized ads.'
   );
