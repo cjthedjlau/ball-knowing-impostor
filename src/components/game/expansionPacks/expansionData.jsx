@@ -582,6 +582,39 @@ export const TEAM_PACKS = {
       { name: 'Demarcus Robinson',   team: 'Los Angeles Rams', league: 'NFL', position: 'Wide Receiver' },
     ],
   },
+  'Washington Commanders': {
+    league: 'NFL', color: '#5A1414', emoji: '🏛️',
+    normal: [
+      { name: 'Terry McLaurin',      team: 'Washington Commanders', league: 'NFL', position: 'Wide Receiver' },
+      { name: 'Jayden Daniels',      team: 'Washington Commanders', league: 'NFL', position: 'Quarterback' },
+      { name: 'Brian Robinson Jr.',  team: 'Washington Commanders', league: 'NFL', position: 'Running Back' },
+      { name: 'Jahan Dotson',        team: 'Washington Commanders', league: 'NFL', position: 'Wide Receiver' },
+      { name: 'Logan Thomas',        team: 'Washington Commanders', league: 'NFL', position: 'Tight End' },
+      { name: 'Jonathan Allen',      team: 'Washington Commanders', league: 'NFL', position: 'Defensive Tackle' },
+      { name: 'Daron Payne',         team: 'Washington Commanders', league: 'NFL', position: 'Defensive Tackle' },
+      { name: 'Frankie Luvu',        team: 'Washington Commanders', league: 'NFL', position: 'Linebacker' },
+    ],
+    legends: [
+      { name: 'Joe Theismann',       team: 'Washington Redskins', league: 'NFL', position: 'Quarterback' },
+      { name: 'John Riggins',        team: 'Washington Redskins', league: 'NFL', position: 'Running Back' },
+      { name: 'Art Monk',            team: 'Washington Redskins', league: 'NFL', position: 'Wide Receiver' },
+      { name: 'Darrell Green',       team: 'Washington Redskins', league: 'NFL', position: 'Cornerback' },
+      { name: 'Sonny Jurgensen',     team: 'Washington Redskins', league: 'NFL', position: 'Quarterback' },
+      { name: 'Charley Taylor',      team: 'Washington Redskins', league: 'NFL', position: 'Wide Receiver' },
+      { name: 'Bobby Mitchell',      team: 'Washington Redskins', league: 'NFL', position: 'Running Back' },
+      { name: 'Chris Hanburger',     team: 'Washington Redskins', league: 'NFL', position: 'Linebacker' },
+      { name: 'Sam Huff',            team: 'Washington Redskins', league: 'NFL', position: 'Linebacker' },
+      { name: 'Mark Moseley',        team: 'Washington Redskins', league: 'NFL', position: 'Kicker' },
+    ],
+    ballknowledge: [
+      { name: 'Emmanuel Forbes',     team: 'Washington Commanders', league: 'NFL', position: 'Cornerback' },
+      { name: 'Chris Rodriguez Jr.', team: 'Washington Commanders', league: 'NFL', position: 'Running Back' },
+      { name: 'Cody Barton',         team: 'Washington Commanders', league: 'NFL', position: 'Linebacker' },
+      { name: 'Tress Way',           team: 'Washington Commanders', league: 'NFL', position: 'Punter' },
+      { name: 'Andrew Wylie',        team: 'Washington Commanders', league: 'NFL', position: 'Offensive Lineman' },
+      { name: 'Braeden Daniels',     team: 'Washington Commanders', league: 'NFL', position: 'Offensive Tackle' },
+    ],
+  },
 
   // ── NBA Teams ──
   'Los Angeles Lakers': {
@@ -1270,7 +1303,7 @@ export const TEAM_PACKS = {
   },
 };
 
-export const NFL_TEAMS  = ['Dallas Cowboys','New England Patriots','Kansas City Chiefs','San Francisco 49ers','Green Bay Packers','Philadelphia Eagles','Chicago Bears','New York Giants','Las Vegas Raiders','Los Angeles Rams'];
+export const NFL_TEAMS  = ['Dallas Cowboys','New England Patriots','Kansas City Chiefs','San Francisco 49ers','Green Bay Packers','Philadelphia Eagles','Chicago Bears','New York Giants','Las Vegas Raiders','Los Angeles Rams','Washington Commanders'];
 export const NBA_TEAMS  = ['Los Angeles Lakers','Chicago Bulls','Golden State Warriors','Boston Celtics','New York Knicks','Miami Heat','Brooklyn Nets','Dallas Mavericks','Phoenix Suns','Houston Rockets'];
 export const MLB_TEAMS  = ['New York Yankees','Los Angeles Dodgers','Boston Red Sox','Chicago Cubs','New York Mets','San Francisco Giants','Houston Astros','Atlanta Braves','St. Louis Cardinals','Philadelphia Phillies'];
 export const NHL_TEAMS  = ['Toronto Maple Leafs','New York Rangers','Montreal Canadiens','Chicago Blackhawks','Boston Bruins','Detroit Red Wings','Pittsburgh Penguins','Edmonton Oilers','Philadelphia Flyers','Los Angeles Kings'];
