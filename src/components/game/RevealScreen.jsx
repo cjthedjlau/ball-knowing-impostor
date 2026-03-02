@@ -14,6 +14,8 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [actionsVisible, setActionsVisible] = useState(false);
+  const roundStartRef = useRef(Date.now());
 
   const impostors = playerNames.filter(n => roles[n] === 'impostor');
 
