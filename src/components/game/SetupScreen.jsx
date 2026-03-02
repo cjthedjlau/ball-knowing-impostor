@@ -50,6 +50,19 @@ function LeagueEmojiCluster({ leagues }) {
 
 export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDark, soundOn, onToggleSound, initialPlayerNames }) {
   const savedNames = initialPlayerNames && initialPlayerNames.length >= 3 ? initialPlayerNames : null;
+
+  // Initialize ads & ATT on first mount
+  useEffect(() => {
+    try {
+      injectAdScript();
+      if (!hasATTBeenAsked()) {
+        // Small delay so screen renders first
+        setTimeout(() => {
+          requestATTConsent(() => {});
+        }, 500);
+      }
+    } catch (e) {}
+  }, []);
   const [playerCount, setPlayerCount] = useState(savedNames ? savedNames.length : 4);
   const [playerNames, setPlayerNames] = useState(savedNames || ['', '', '', '']);
   const [impostorCount, setImpostorCount] = useState(1);
