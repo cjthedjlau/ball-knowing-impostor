@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { safeLocalStorageGet, safeLocalStorageSet } from '../lib/security';
 
 const COOKIE_KEY = 'bki_cookie_consent';
 
-export const hasConsented = () => Boolean(localStorage.getItem(COOKIE_KEY));
+export const hasConsented = () => Boolean(safeLocalStorageGet(COOKIE_KEY));
 
 export default function CookieConsent({ onAccept }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(COOKIE_KEY)) {
+    if (!safeLocalStorageGet(COOKIE_KEY)) {
       setVisible(true);
     }
   }, []);
 
   const accept = () => {
-    localStorage.setItem(COOKIE_KEY, '1');
+    safeLocalStorageSet(COOKIE_KEY, '1');
     setVisible(false);
     if (onAccept) onAccept();
   };
