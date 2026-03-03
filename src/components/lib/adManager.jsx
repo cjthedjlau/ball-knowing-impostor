@@ -71,7 +71,7 @@ export function requestATTConsent(onResult) {
 function getNPA() {
   if (!isIOS()) return false;
   if (!hasATTBeenAsked()) return false;
-  return localStorage.getItem(ATT_KEY) !== 'granted';
+  return safeLocalStorageGet(ATT_KEY) !== 'granted';
 }
 
 // ── Inject AdSense script once ────────────────────────────────────────────────
