@@ -1,1 +1,3 @@
-google.com, pub-1818161492484327, DIRECT, f08c47fec0942fa0
+export default function AdsPage() {
+  return null;
+}
