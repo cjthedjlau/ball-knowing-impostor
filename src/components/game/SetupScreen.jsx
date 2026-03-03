@@ -251,9 +251,10 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
                 value={playerNames[i] || ''}
                 onChange={e => {
                   const n = [...playerNames];
-                  n[i] = e.target.value;
+                  n[i] = sanitizeInput(e.target.value);
                   setPlayerNames(n);
                 }}
+                maxLength={50}
               />
             ))}
           </div>
