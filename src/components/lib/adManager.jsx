@@ -25,7 +25,10 @@ function getAdConfig() {
       : '4601546090',
     rewardedClient: iosMode
       ? 'ca-app-pub-1818161492484327~8864224737'
-      : 'ca-app-pub-1818161492484327~5393881452'
+      : 'ca-app-pub-1818161492484327~5393881452',
+    bannerId: iosMode
+      ? 'ca-app-pub-1818161492484327/9165964299'
+      : '4549575204'
   };
 }
 
@@ -98,8 +101,8 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
   // Skip if app is backgrounded
   if (!window._adsEnabled) { onDone(); return; }
 
-  // Frequency cap: skip if round lasted < 60 seconds
-  if (roundDuration < 60) {
+  // Frequency cap: skip if round lasted < 30 seconds
+  if (roundDuration < 30) {
     onDone();
     return;
   }
@@ -212,7 +215,7 @@ export function createBannerIns() {
   const npa = getNPA();
   return {
     adClient: config.appId,
-    adSlot: config.interstitialId,
+    adSlot: config.bannerId,
     npa,
   };
 }
