@@ -6,13 +6,13 @@ const APP_STORE_URL = 'https://apps.apple.com'; // Replace with actual App Store
 
 export default function RateAppPrompt({ onDismiss }) {
   const handleRate = () => {
-    localStorage.setItem('bki_rated', 'done');
+    safeLocalStorageSet('bki_rated', 'done');
     window.open(APP_STORE_URL, '_blank');
     onDismiss();
   };
 
   const handleLater = () => {
-    localStorage.setItem('bki_rated', 'later');
+    safeLocalStorageSet('bki_rated', 'later');
     onDismiss();
   };
 
