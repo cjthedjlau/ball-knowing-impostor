@@ -3,6 +3,7 @@ import '../components/lib/security'; // bootstrap security (HTTPS redirect, glob
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { buildAthletePool, pickValidatedAthlete, getHint, clearSessionHistory, addToSessionHistory } from '../components/lib/sportsApi';
+import { safeLocalStorageGet, safeLocalStorageSet, validateSessionToken } from '../components/lib/security';
 import { buildExpansionPool, buildTeamPackPool } from '../components/game/expansionPacks/expansionPacksApi';
 import { runSupplementationIfOnline, clearSuppCache } from '../components/lib/apiSupplementation';
 import { playTransition, playConfirmation, setSoundEnabled } from '../components/lib/soundSystem';
