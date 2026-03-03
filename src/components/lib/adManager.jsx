@@ -95,6 +95,9 @@ export function injectAdScript() {
 
 // ── Interstitial ad ───────────────────────────────────────────────────────────
 export function showInterstitialAd({ onDone, roundDuration = 0 }) {
+  // Skip if app is backgrounded
+  if (!window._adsEnabled) { onDone(); return; }
+
   // Frequency cap: skip if round lasted < 60 seconds
   if (roundDuration < 60) {
     onDone();
