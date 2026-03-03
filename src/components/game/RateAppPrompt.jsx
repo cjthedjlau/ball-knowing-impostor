@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { safeLocalStorageSet } from '../lib/security';
 
 const APP_STORE_URL = 'https://apps.apple.com'; // Replace with actual App Store URL
 

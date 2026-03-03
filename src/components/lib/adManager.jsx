@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Ad Manager — AdMob / AdSense integration
 // ─────────────────────────────────────────────────────────────────────────────
+import { safeLocalStorageGet, safeLocalStorageSet, canInteractWithAd, recordAdInteraction } from './security';
 
 const ATT_KEY = 'bki_att_consent';
 const ATT_ASKED_KEY = 'bki_att_asked';
