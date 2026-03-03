@@ -63,8 +63,8 @@ export function requestATTConsent(onResult) {
     'Allow "Ball Knowing Imposter" to use your activity?\n\nYour data will be used to deliver personalized ads.'
   );
 
-  localStorage.setItem(ATT_ASKED_KEY, 'true');
-  localStorage.setItem(ATT_KEY, granted ? 'granted' : 'denied');
+  safeLocalStorageSet(ATT_ASKED_KEY, 'true');
+  safeLocalStorageSet(ATT_KEY, granted ? 'granted' : 'denied');
   onResult(granted);
 }
 
