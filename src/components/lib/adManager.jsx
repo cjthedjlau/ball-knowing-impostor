@@ -164,6 +164,13 @@ export function isPackUnlocked(id) { return _unlockedPacks.has(id); }
 export function unlockPack(id)     { _unlockedPacks.add(id); }
 
 export function showRewardedAd(onRewardEarned) {
+  // Skip if app is backgrounded or ad cooldown active
+  if (!window._adsEnabled || !canInteractWithAd()) {
+    onRewardEarned({ failed: true });
+    return;
+  }
+  recordAdInteraction();
+
   // 5-second failsafe — unlock anyway if ad never loads (iOS and Android)
   const failTimer = setTimeout(() => {
     onRewardEarned({ failed: true });
