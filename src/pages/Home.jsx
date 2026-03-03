@@ -170,9 +170,9 @@ export default function Home() {
     setGameState({ ...config, athlete, roles, hint, firstPlayer });
     playTransition(config.leagues);
     // Game count tracking for rate prompt
-    const count = parseInt(localStorage.getItem('bki_game_count') || '0') + 1;
-    localStorage.setItem('bki_game_count', String(count));
-    if (count === 3 && !localStorage.getItem('bki_rated')) setShowRatePrompt(true);
+    const count = parseInt(safeLocalStorageGet('bki_game_count') || '0') + 1;
+    safeLocalStorageSet('bki_game_count', String(count));
+    if (count === 3 && !safeLocalStorageGet('bki_rated')) setShowRatePrompt(true);
     setScreen('roles');
   };
 
