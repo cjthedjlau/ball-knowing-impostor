@@ -214,9 +214,9 @@ export default function Home() {
     const firstPlayer = setupConfig.playerNames[Math.floor(Math.random() * setupConfig.playerNames.length)];
     setGameState({ ...setupConfig, athlete, roles, hint, firstPlayer });
     // Game count tracking for rate prompt
-    const count = parseInt(localStorage.getItem('bki_game_count') || '0') + 1;
-    localStorage.setItem('bki_game_count', String(count));
-    if (count === 3 && !localStorage.getItem('bki_rated')) setShowRatePrompt(true);
+    const count = parseInt(safeLocalStorageGet('bki_game_count') || '0') + 1;
+    safeLocalStorageSet('bki_game_count', String(count));
+    if (count === 3 && !safeLocalStorageGet('bki_rated')) setShowRatePrompt(true);
     setScreen('roles');
   };
 
