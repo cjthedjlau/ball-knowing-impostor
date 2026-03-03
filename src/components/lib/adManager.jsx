@@ -10,25 +10,22 @@ export function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }
 
-// ── TEST MODE — swap back to real IDs before App Store submission ─────────────
-const IOS_TEST_CONFIG = {
-  appId: 'ca-app-pub-3940256099942544~1458002511',
-  interstitialId: 'ca-app-pub-3940256099942544/4411468910',
-  rewardedId: 'ca-app-pub-3940256099942544/1712485313',
-  bannerId: 'ca-app-pub-3940256099942544/2934735716',
-  rewardedClient: 'ca-app-pub-3940256099942544~1458002511',
-};
-
-const ANDROID_TEST_CONFIG = {
-  appId: 'ca-app-pub-3940256099942544~3347511713',
-  interstitialId: 'ca-app-pub-3940256099942544/1033173712',
-  rewardedId: 'ca-app-pub-3940256099942544/5224354917',
-  bannerId: 'ca-app-pub-3940256099942544/6300978111',
-  rewardedClient: 'ca-app-pub-3940256099942544~3347511713',
-};
-
 function getAdConfig() {
-  return isIOS() ? IOS_TEST_CONFIG : ANDROID_TEST_CONFIG;
+  const iosMode = isIOS();
+  return {
+    appId: iosMode 
+      ? 'ca-app-pub-1818161492484327~8864224737' 
+      : 'ca-pub-1818161492484327',
+    interstitialId: iosMode 
+      ? 'ca-app-pub-1818161492484327/9165964299' 
+      : '4549575204',
+    rewardedId: iosMode 
+      ? 'ca-app-pub-1818161492484327/8535408902' 
+      : '4601546090',
+    rewardedClient: iosMode
+      ? 'ca-app-pub-1818161492484327~8864224737'
+      : 'ca-app-pub-1818161492484327~5393881452'
+  };
 }
 
 // Platform detection logging

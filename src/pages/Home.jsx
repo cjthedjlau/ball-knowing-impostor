@@ -229,9 +229,6 @@ export default function Home() {
         maxWidth: '100%'
       }}
     >
-      <div style={{ background: '#ff0000', color: '#fff', fontWeight: 'bold', textAlign: 'center', padding: '6px', fontSize: '13px', letterSpacing: '1px', zIndex: 9999, position: 'relative' }}>
-        ⚠️ TEST ADS MODE — NOT FOR PRODUCTION ⚠️
-      </div>
       <AnimatePresence mode="wait">
         {screen === 'loading' && (
           <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
