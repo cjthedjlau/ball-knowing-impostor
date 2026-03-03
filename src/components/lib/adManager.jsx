@@ -1,46 +1,73 @@
+/*
+ * CAPACITOR ADMOB SETUP REQUIRED FOR NATIVE BUILD
+ * ─────────────────────────────────────────────────
+ * When wrapping with Capacitor, install the AdMob plugin:
+ *   npm install @capacitor-community/admob
+ *   npx cap sync
+ *
+ * iOS — add to Info.plist:
+ *   <key>GADApplicationIdentifier</key>
+ *   <string>ca-app-pub-1818161492484327~8864224737</string>
+ *
+ * Android — add to AndroidManifest.xml:
+ *   <meta-data
+ *     android:name="com.google.android.gms.ads.APPLICATION_ID"
+ *     android:value="ca-app-pub-1818161492484327~5393881452"/>
+ *
+ * Then replace the web ad calls in this file with:
+ *   import { AdMob } from '@capacitor-community/admob';
+ */
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Ad Manager — AdMob / AdSense integration
+// Ad Manager — AdMob integration (mobile-only)
 // ─────────────────────────────────────────────────────────────────────────────
 import { safeLocalStorageGet, safeLocalStorageSet, canInteractWithAd, recordAdInteraction } from './security';
 
 const ATT_KEY = 'bki_att_consent';
 const ATT_ASKED_KEY = 'bki_att_asked';
 
-// ── Platform Detection & Ad Config ────────────────────────────────────────────
+// ── Platform Detection ────────────────────────────────────────────────────────
 export function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }
 
-function getAdConfig() {
-  const iosMode = isIOS();
-  return {
-    appId: iosMode 
-      ? 'ca-app-pub-1818161492484327~8864224737' 
-      : 'ca-pub-1818161492484327',
-    interstitialId: iosMode 
-      ? 'ca-app-pub-1818161492484327/9165964299' 
-      : '4549575204',
-    rewardedId: iosMode 
-      ? 'ca-app-pub-1818161492484327/8535408902' 
-      : '4601546090',
-    rewardedClient: iosMode
-      ? 'ca-app-pub-1818161492484327~8864224737'
-      : 'ca-app-pub-1818161492484327~5393881452',
-    bannerId: iosMode
-      ? 'ca-app-pub-1818161492484327/9165964299'
-      : '4549575204'
-  };
+export function isMobileApp() {
+  const ua = navigator.userAgent;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  const isNative = !!(window.webkit?.messageHandlers || window.Android);
+  return isMobile || isNative;
 }
 
-// Platform detection logging
+// Block all ads on desktop browsers
 if (typeof window !== 'undefined') {
-  const config = getAdConfig();
-  console.log('Platform detected:', isIOS() ? 'iOS' : 'Android');
-  console.log('Using ad config:', config);
+  if (!isMobileApp()) {
+    console.log('Desktop environment detected — ads disabled');
+    window._adsEnabled = false;
+  }
+}
+
+// ── Ad Config — Full AdMob format for both platforms ─────────────────────────
+function getAdConfig() {
+  if (isIOS()) {
+    return {
+      appId:         'ca-app-pub-1818161492484327~8864224737',
+      interstitialId:'ca-app-pub-1818161492484327/9165964299',
+      rewardedId:    'ca-app-pub-1818161492484327/8535408902',
+      rewardedClient:'ca-app-pub-1818161492484327~8864224737',
+      bannerId:      'ca-app-pub-1818161492484327/9165964299',
+    };
+  } else {
+    return {
+      appId:         'ca-app-pub-1818161492484327~5393881452',
+      interstitialId:'ca-app-pub-1818161492484327/4549575204',
+      rewardedId:    'ca-app-pub-1818161492484327/4601546090',
+      rewardedClient:'ca-app-pub-1818161492484327~5393881452',
+      bannerId:      'ca-app-pub-1818161492484327/4549575204',
+    };
+  }
 }
 
 // ── App Tracking Transparency (iOS only) ─────────────────────────────────────
-
 export function hasATTConsent() {
   return safeLocalStorageGet(ATT_KEY) === 'granted';
 }
@@ -61,7 +88,6 @@ export function requestATTConsent(onResult) {
     return;
   }
 
-  // Show native-style prompt (iOS only)
   const granted = window.confirm(
     'Allow "Ball Knowing Imposter" to use your activity?\n\nYour data will be used to deliver personalized ads.'
   );
@@ -77,29 +103,14 @@ function getNPA() {
   return safeLocalStorageGet(ATT_KEY) !== 'granted';
 }
 
-// ── Inject AdSense script once ────────────────────────────────────────────────
-let scriptInjected = false;
-export function injectAdScript() {
-  if (scriptInjected) return;
-
-  try {
-    const config = getAdConfig();
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${config.appId}`;
-    s.crossOrigin = 'anonymous';
-    s.dataset.adClient = config.appId;
-    document.head.appendChild(s);
-    scriptInjected = true;
-  } catch (e) {
-    // fail silently
-  }
-}
-
 // ── Interstitial ad ───────────────────────────────────────────────────────────
+// Only called from RevealScreen after the athlete stage.
 export function showInterstitialAd({ onDone, roundDuration = 0 }) {
-  // Skip if app is backgrounded
-  if (!window._adsEnabled) { onDone(); return; }
+  // Guard: mobile-only, must be enabled
+  if (!isMobileApp() || !window._adsEnabled) {
+    onDone?.();
+    return;
+  }
 
   // Frequency cap: skip if round lasted < 30 seconds
   if (roundDuration < 30) {
@@ -107,7 +118,7 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
     return;
   }
 
-  // 5-second timeout failsafe (iOS and Android)
+  // 5-second timeout failsafe
   const failTimer = setTimeout(() => {
     cleanup();
     onDone();
@@ -147,12 +158,10 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
 
     (window.adsbygoogle = window.adsbygoogle || []).push({});
 
-    // Auto-dismiss after 5 seconds
     setTimeout(() => {
       cleanup();
       onDone();
     }, 5000);
-
   } catch (e) {
     cleanup();
     onDone();
@@ -160,21 +169,19 @@ export function showInterstitialAd({ onDone, roundDuration = 0 }) {
 }
 
 // ── Rewarded ad ───────────────────────────────────────────────────────────────
-
-// Session cache: set of unlocked pack/league IDs
+// Only called from RewardedAdModal.
 const _unlockedPacks = new Set();
 export function isPackUnlocked(id) { return _unlockedPacks.has(id); }
 export function unlockPack(id)     { _unlockedPacks.add(id); }
 
 export function showRewardedAd(onRewardEarned) {
-  // Skip if app is backgrounded or ad cooldown active
-  if (!window._adsEnabled || !canInteractWithAd()) {
+  // Guard: mobile-only, must be enabled and not in cooldown
+  if (!isMobileApp() || !window._adsEnabled || !canInteractWithAd()) {
     onRewardEarned({ failed: true });
     return;
   }
   recordAdInteraction();
 
-  // 5-second failsafe — unlock anyway if ad never loads (iOS and Android)
   const failTimer = setTimeout(() => {
     onRewardEarned({ failed: true });
   }, 5000);
@@ -209,7 +216,8 @@ export function showRewardedAd(onRewardEarned) {
   }
 }
 
-// ── Banner ad element ─────────────────────────────────────────────────────────
+// ── Banner ad config ──────────────────────────────────────────────────────────
+// Only used by BannerAd component on SetupScreen.
 export function createBannerIns() {
   const config = getAdConfig();
   const npa = getNPA();

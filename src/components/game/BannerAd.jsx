@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { createBannerIns, injectAdScript } from '../lib/adManager';
+import { createBannerIns, isMobileApp } from '../lib/adManager';
 
+// Never render banner on desktop — mobile AdMob only
 export default function BannerAd({ darkMode }) {
   const insRef = useRef(null);
   const [hidden, setHidden] = useState(false);
 
+  // Don't render at all on desktop
+  if (!isMobileApp()) return null;
+
   useEffect(() => {
     try {
-      injectAdScript();
       const { adClient, adSlot, npa } = createBannerIns();
 
       if (insRef.current) {
