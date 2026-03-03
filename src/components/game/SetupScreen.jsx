@@ -55,7 +55,6 @@ export default function SetupScreen({ onStart, onHowToPlay, darkMode, onToggleDa
   // Initialize ads & ATT on first mount
   useEffect(() => {
     try {
-      injectAdScript();
       if (!hasATTBeenAsked()) {
         // Small delay so screen renders first
         setTimeout(() => {
