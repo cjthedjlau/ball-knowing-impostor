@@ -58,7 +58,7 @@ export default function RevealScreen({ gameState, darkMode, onPlayAgain, onChang
     if (navigator.share) {
       navigator.share({
         title: 'Ball Knowing Imposter',
-        text: `We just played Ball Knowing Imposter! The athlete was ${athlete?.name}. Can you spot the impostor? 🏆`,
+        text: `We just played Ball Knowing Imposter! The athlete was ${athlete?.name}. Can you spot the imposter? 🏆`,
         url: 'https://ballknowingimpostor.com',
       }).catch(() => {});
     }
