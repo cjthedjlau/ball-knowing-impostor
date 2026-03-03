@@ -39,11 +39,11 @@ if (typeof window !== 'undefined') {
 // ── App Tracking Transparency (iOS only) ─────────────────────────────────────
 
 export function hasATTConsent() {
-  return localStorage.getItem(ATT_KEY) === 'granted';
+  return safeLocalStorageGet(ATT_KEY) === 'granted';
 }
 
 export function hasATTBeenAsked() {
-  return localStorage.getItem(ATT_ASKED_KEY) === 'true';
+  return safeLocalStorageGet(ATT_ASKED_KEY) === 'true';
 }
 
 export function requestATTConsent(onResult) {
