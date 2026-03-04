@@ -83,7 +83,7 @@ export const buildExpansionPool = (selectedExpansionLeagues, difficulty) => {
  * Difficulty parameter is ignored for team packs.
  */
 export const buildTeamPackPool = (teamName) => {
-  const pack = TEAM_PACKS[teamName];
+  const pack = ALL_TEAM_PACKS[teamName];
   if (!pack) return [];
 
   const prefix = `team_${teamName.replace(/\s+/g, '_')}`;
