@@ -3,9 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, ChevronUp, Lock, CheckCircle } from 'lucide-react';
 import { playTap } from '../../lib/soundSystem';
 import {
-  NFL_TEAMS, NBA_TEAMS, MLB_TEAMS, NHL_TEAMS, EXPANSION_LEAGUE_EMOJI, TEAM_PACKS,
+  NFL_TEAMS, NBA_TEAMS, MLB_TEAMS, NHL_TEAMS,
 } from './expansionData';
+import {
+  NFL_TEAMS_2, NBA_TEAMS_2, MLB_TEAMS_2, NHL_TEAMS_2,
+} from './expansionDataTeams2';
+import { ALL_TEAM_PACKS } from './expansionPacksApi';
 import { isPackUnlocked } from '../../lib/adManager';
+
+// Merge and sort alphabetically within each league
+const ALL_NFL = [...new Set([...NFL_TEAMS, ...NFL_TEAMS_2])].sort();
+const ALL_NBA = [...new Set([...NBA_TEAMS, ...NBA_TEAMS_2])].sort();
+const ALL_MLB = [...new Set([...MLB_TEAMS, ...MLB_TEAMS_2])].sort();
+const ALL_NHL = [...new Set([...NHL_TEAMS, ...NHL_TEAMS_2])].sort();
 import RewardedAdModal from '../RewardedAdModal';
 
 const EXPANSION_LEAGUES = [
