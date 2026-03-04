@@ -188,7 +188,7 @@ export default function ExpansionPacksModal({
                       >
                         <div className="px-4 pb-3 grid grid-cols-1 gap-1.5">
                           {section.teams.map(teamName => {
-                            const pack = TEAM_PACKS[teamName];
+                            const pack = ALL_TEAM_PACKS[teamName];
                             const active = selectedTeamPacks.includes(teamName);
                             const unlocked = isPackUnlocked(teamName);
                             return (
