@@ -26,10 +26,10 @@ const EXPANSION_LEAGUES = [
 ];
 
 const TEAM_SECTIONS = [
-  { label: 'NFL Teams', teams: NFL_TEAMS },
-  { label: 'NBA Teams', teams: NBA_TEAMS },
-  { label: 'MLB Teams', teams: MLB_TEAMS },
-  { label: 'NHL Teams', teams: NHL_TEAMS },
+  { label: 'NFL Teams', teams: ALL_NFL },
+  { label: 'NBA Teams', teams: ALL_NBA },
+  { label: 'MLB Teams', teams: ALL_MLB },
+  { label: 'NHL Teams', teams: ALL_NHL },
 ];
 
 export default function ExpansionPacksModal({
