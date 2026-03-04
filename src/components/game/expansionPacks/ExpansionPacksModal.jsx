@@ -78,7 +78,7 @@ export default function ExpansionPacksModal({
       onToggleTeamPack(teamName);
       return;
     }
-    const pack = TEAM_PACKS[teamName];
+    const pack = ALL_TEAM_PACKS[teamName];
     setPending({ packId: teamName, packLabel: `${pack?.emoji || '🏅'} ${teamName}`, type: 'team' });
   };
 
