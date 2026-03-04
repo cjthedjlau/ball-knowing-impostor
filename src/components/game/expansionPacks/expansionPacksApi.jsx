@@ -10,6 +10,9 @@ import {
   TEAM_PACKS,
   EXPANSION_LEAGUE_EMOJI,
 } from './expansionData';
+import { TEAM_PACKS_2 } from './expansionDataTeams2';
+
+export const ALL_TEAM_PACKS = { ...TEAM_PACKS, ...TEAM_PACKS_2 };
 
 // Leagues that never use photos under any circumstance
 const NO_PHOTO_LEAGUES = new Set(['NCAAF', 'NCAAMB']);
